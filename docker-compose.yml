@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: demyx_db
+    image: demyx/mariadb
+    restart: unless-stopped
+    networks:
+      - demyx
+    volumes:
+      - demyx_db:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: demyx_db
+      MARIADB_USERNAME: demyx_user
+      MARIADB_PASSWORD: demyx_password
+      MARIADB_ROOT_PASSWORD: demyx_root_password
+  wp:
+    container_name: demyx_wp
+    image: demyx/wordpress
+    restart: unless-stopped
+    networks:
+      - demyx
+    volumes:
+      - demyx_wp:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: demyx_db
+      WORDPRESS_DB_USER: demyx_user
+      WORDPRESS_DB_PASSWORD: demyx_password
+      TZ: America/Los_Angeles
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:domain.tld"
+      #- "traefik.frontend.redirect.entryPoint=https"
+      #- "traefik.frontend.auth.basic.users=${DEMYX_STACK_AUTH}"
+      #- "traefik.frontend.headers.forceSTSHeader=true"
+      #- "traefik.frontend.headers.STSSeconds=315360000"
+      #- "traefik.frontend.headers.STSIncludeSubdomains=true"
+      #- "traefik.frontend.headers.STSPreload=true"  
+volumes:
+  demyx_wp:
+    name: demyx_wp
+  demyx_db:
+    name: demyx_db
+networks:
+  demyx:
+    name: demyx
+    
