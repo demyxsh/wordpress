@@ -17,7 +17,7 @@ PORT | 9000
 TIMEZONE | America/Los_Angeles
 PHP | /etc/php7/php.ini<br />/etc/php7/php-fpm.d/php-fpm.conf
 
-# Updates
+## Updates
 [![Code Size](https://img.shields.io/github/languages/code-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
 [![Repository Size](https://img.shields.io/github/repo-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
 [![Watches](https://img.shields.io/github/watchers/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
@@ -27,7 +27,7 @@ PHP | /etc/php7/php.ini<br />/etc/php7/php-fpm.d/php-fpm.conf
 * Auto built weekly on Sundays (America/Los_Angeles)
 * Rolling release updates
 
-# Extensions
+## Extensions
 Extension | Installed
 ------------- | -------------
 ssh2 | 1
