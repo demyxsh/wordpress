@@ -4,7 +4,7 @@ if [[ ! -d /var/www/html/wp-admin ]]; then
 	echo "WordPress is missing, installing now."
 	cp -R /usr/src/wordpress/* /var/www/html
 
-	if [ "$WORDPRESS_DB_NAME" ] && [ "$WORDPRESS_DB_USER" ] && [ "$WORDPRESS_DB_PASSWORD" ] && [ "$WORDPRESS_DB_HOST" ]; then
+	if [[ "$WORDPRESS_DB_NAME" ]] && [[ "$WORDPRESS_DB_USER" ]] && [[ "$WORDPRESS_DB_PASSWORD" ]] && [[ "$WORDPRESS_DB_HOST" ]]; then
 		mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 		sed -i "s/database_name_here/$WORDPRESS_DB_NAME/g" /var/www/html/wp-config.php
 		sed -i "s/username_here/$WORDPRESS_DB_USER/g" /var/www/html/wp-config.php
@@ -16,11 +16,25 @@ if [[ ! -d /var/www/html/wp-admin ]]; then
 	fi
 fi
 
-if [[ -d /demyx ]]; then
-    rm /etc/php7/php.ini
-    rm /etc/php7/php-fpm.d/www.conf
-    ln -s /demyx/php.ini /etc/php7
-    ln -s /demyx/php-fpm.conf /etc/php7/php-fpm.d
+# Domain replacement
+if [[ -n "$WORDPRESS_DOMAIN" ]]; then
+	sed -i "s|demyx.error|$WORDPRESS_DOMAIN.error|g" /etc/php7/php-fpm.d/www.conf
+fi
+
+# PHP Upload limit
+if [[ -n "$DEMYX_UPLOAD_LIMIT" ]]; then
+	sed -i "s|post_max_size = 128M|post_max_size = $DEMYX_UPLOAD_LIMIT|g" /etc/php7/php.ini
+	sed -i "s|upload_max_filesize = 128M|upload_max_filesize = $DEMYX_UPLOAD_LIMIT|g" /etc/php7/php.ini
+fi
+
+# PHP max memory limit
+if [[ -n "$DEMYX_PHP_MEMORY" ]]; then
+	sed -i "s|memory_limit = 256M|memory_limit = $DEMYX_PHP_MEMORY|g" /etc/php7/php.ini
+fi
+
+# PHP max execution time
+if [[ -n "$DEMYX_PHP_MAX_EXECUTION_TIME" ]]; then
+	sed -i "s|max_execution_time = 300|max_execution_time = $DEMYX_PHP_MAX_EXECUTION_TIME|g" /etc/php7/php.ini
 fi
 
 find /var/www/html -type d -print0 | xargs -0 chmod 0755
