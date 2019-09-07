@@ -37,6 +37,12 @@ if [[ -n "$DEMYX_PHP_MAX_EXECUTION_TIME" ]]; then
 	sed -i "s|max_execution_time = 300|max_execution_time = $DEMYX_PHP_MAX_EXECUTION_TIME|g" /etc/php7/php.ini
 fi
 
+# PHP opcache
+if [[ "$DEMYX_PHP_OPCACHE" = off ]]; then
+	sed -i "s|opcache.enable=1|opcache.enable=0|g" /etc/php7/php.ini
+	sed -i "s|opcache.enable_cli=1|opcache.enable_cli=0|g" /etc/php7/php.ini
+fi
+
 find /var/www/html -type d -print0 | xargs -0 chmod 0755
 find /var/www/html -type f -print0 | xargs -0 chmod 0644
 chown -R www-data:www-data /var/www/html
