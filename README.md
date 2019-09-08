@@ -3,8 +3,9 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/demyx/wordpress?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Architecture](https://img.shields.io/badge/linux-amd64-important?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Alpine](https://img.shields.io/badge/alpine-3.10.2-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![PHP](https://img.shields.io/badge/php-7.3.8-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![PHP](https://img.shields.io/badge/php-7.3.9-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![WordPress](https://img.shields.io/badge/wordpress-5.2.2-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![Buy Me A Coffee](https://img.shields.io/badge/buy_me_coffee-$5-informational?style=flat&color=blue)](https://www.buymeacoffee.com/VXqkQK5tb)
 
 A few php extensions added based on the recommendations from [johnbillion/ext](https://github.com/johnbillion/ext). For automatic setup, see my repo: [github.com/demyxco](https://github.com/demyxco/demyx). 
 
@@ -16,7 +17,7 @@ PORT | 9000
 TIMEZONE | America/Los_Angeles
 PHP | /etc/php7/php.ini<br />/etc/php7/php-fpm.d/php-fpm.conf
 
-# Updates
+## Updates
 [![Code Size](https://img.shields.io/github/languages/code-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
 [![Repository Size](https://img.shields.io/github/repo-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
 [![Watches](https://img.shields.io/github/watchers/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
@@ -26,7 +27,7 @@ PHP | /etc/php7/php.ini<br />/etc/php7/php-fpm.d/php-fpm.conf
 * Auto built weekly on Sundays (America/Los_Angeles)
 * Rolling release updates
 
-# Extensions
+## Extensions
 Extension | Installed
 ------------- | -------------
 ssh2 | 1
