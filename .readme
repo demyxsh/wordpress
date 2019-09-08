@@ -30,28 +30,18 @@ PHP | /etc/php7/php.ini<br />/etc/php7/php-fpm.d/php-fpm.conf
 ## WordPress Container
 ENVIRONMENT | VARIABLE
 --- | ---
-WORDPRESS_DOMAIN | domain.tld
 WORDPRESS_DB_HOST | db
 WORDPRESS_DB_NAME | demyx_db
 WORDPRESS_DB_USER | demyx_user
 WORDPRESS_DB_PASSWORD | demyx_password
-DEMYX_UPLOAD_LIMIT | 128M
-DEMYX_PHP_MEMORY | 256M
-DEMYX_PHP_MAX_EXECUTION_TIME | 300
-DEMYX_PHP_OPCACHE | "on"
+WORDPRESS_DOMAIN | domain.tld
+WORDPRESS_UPLOAD_LIMIT | 128M
+WORDPRESS_PHP_MEMORY | 256M
+WORDPRESS_PHP_MAX_EXECUTION_TIME | 300
+WORDPRESS_PHP_OPCACHE | "on"
 TZ | America/Los_Angeles
 
 ## NGINX Container
-ENVIRONMENT | VARIABLE
---- | ---
-WORDPRESS | "true"
-WORDPRESS_SERVICE | wp
-WORDPRESS_DOMAIN | domain.tld
-DEMYX_UPLOAD_LIMIT | 128M
-DEMYX_NGINX_CACHE | "off"
-DEMYX_RATE_LIMIT | "off"
-DEMYX_BASIC_AUTH | demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1<br />(demyx:demyx)
-TZ | America/Los_Angeles
 
 * Install the helper plugin [Nginx Helper](https://wordpress.org/plugins/nginx-helper/) if DEMYX_NGINX_CACHE is "on"
 * To generate htpasswd: `docker run -it --rm demyx/utilities "htpasswd -nb demyx demyx"`
@@ -59,11 +49,22 @@ TZ | America/Los_Angeles
 * Set WORDPRESS env to true to use a WordPress nginx.conf
 * WORDPRESS_SERVICE env must match service name in your docker-compose.yml
 
+ENVIRONMENT | VARIABLE
+--- | ---
+WORDPRESS | "true"
+WORDPRESS_SERVICE | wp
+NGINX_DOMAIN | domain.tld
+NGINX_UPLOAD_LIMIT | 128M
+NGINX_CACHE | "off"
+NGINX_RATE_LIMIT | "off"
+NGINX_BASIC_AUTH | demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1<br />(demyx:demyx)
+TZ | America/Los_Angeles
+
 ## Usage
-```
 This config requires no .toml for Traefik and is ready to go when running: 
 `docker-compose up -d`. If you want SSL, just remove the comments and make sure you have acme.json chmod to 600 (`touch acme.json; chmod 600 acme.json`) before mounting.
 
+```
 version: "3.7"
 
 services:
@@ -132,10 +133,11 @@ services:
     environment:
       WORDPRESS: "true"
       WORDPRESS_SERVICE: wp
-      WORDPRESS_DOMAIN: domain.tld
-      DEMYX_UPLOAD_LIMIT: 128M
-      DEMYX_NGINX_CACHE: "off"
-      DEMYX_RATE_LIMIT: "off"
+      NGINX_DOMAIN: domain.tld
+      NGINX_UPLOAD_LIMIT: 128M
+      NGINX_CACHE: "off"
+      NGINX_RATE_LIMIT: "off"
+      NGINX_BASIC_AUTH: demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
       TZ: America/Los_Angeles
     labels:
       - "traefik.enable=true"
@@ -156,15 +158,15 @@ services:
     volumes:
       - demyx_wp:/var/www/html
     environment:
-      WORDPRESS_DOMAIN: domain.tld
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: demyx_db
       WORDPRESS_DB_USER: demyx_user
       WORDPRESS_DB_PASSWORD: demyx_password
-      DEMYX_UPLOAD_LIMIT: 128M
-      DEMYX_PHP_MEMORY: 256M
-      DEMYX_PHP_MAX_EXECUTION_TIME: 300
-      DEMYX_PHP_OPCACHE: "on"
+      WORDPRESS_DOMAIN: domain.tld
+      WORDPRESS_UPLOAD_LIMIT: 128M
+      WORDPRESS_PHP_MEMORY: 256M
+      WORDPRESS_PHP_MAX_EXECUTION_TIME: 300
+      WORDPRESS_PHP_OPCACHE: "on"
       TZ: America/Los_Angeles
 volumes:
   demyx_wp:

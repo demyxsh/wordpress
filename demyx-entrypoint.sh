@@ -22,23 +22,23 @@ if [[ -n "$WORDPRESS_DOMAIN" ]]; then
 fi
 
 # PHP Upload limit
-if [[ -n "$DEMYX_UPLOAD_LIMIT" ]]; then
-	sed -i "s|post_max_size = 128M|post_max_size = $DEMYX_UPLOAD_LIMIT|g" /etc/php7/php.ini
-	sed -i "s|upload_max_filesize = 128M|upload_max_filesize = $DEMYX_UPLOAD_LIMIT|g" /etc/php7/php.ini
+if [[ -n "$WORDPRESS_UPLOAD_LIMIT" ]]; then
+	sed -i "s|post_max_size = 128M|post_max_size = $WORDPRESS_UPLOAD_LIMIT|g" /etc/php7/php.ini
+	sed -i "s|upload_max_filesize = 128M|upload_max_filesize = $WORDPRESS_UPLOAD_LIMIT|g" /etc/php7/php.ini
 fi
 
 # PHP max memory limit
-if [[ -n "$DEMYX_PHP_MEMORY" ]]; then
-	sed -i "s|memory_limit = 256M|memory_limit = $DEMYX_PHP_MEMORY|g" /etc/php7/php.ini
+if [[ -n "$WORDPRESS_PHP_MEMORY" ]]; then
+	sed -i "s|memory_limit = 256M|memory_limit = $WORDPRESS_PHP_MEMORY|g" /etc/php7/php.ini
 fi
 
 # PHP max execution time
-if [[ -n "$DEMYX_PHP_MAX_EXECUTION_TIME" ]]; then
-	sed -i "s|max_execution_time = 300|max_execution_time = $DEMYX_PHP_MAX_EXECUTION_TIME|g" /etc/php7/php.ini
+if [[ -n "$WORDPRESS_PHP_MAX_EXECUTION_TIME" ]]; then
+	sed -i "s|max_execution_time = 300|max_execution_time = $WORDPRESS_PHP_MAX_EXECUTION_TIME|g" /etc/php7/php.ini
 fi
 
 # PHP opcache
-if [[ "$DEMYX_PHP_OPCACHE" = off ]]; then
+if [[ "$WORDPRESS_PHP_OPCACHE" = off ]]; then
 	sed -i "s|opcache.enable=1|opcache.enable=0|g" /etc/php7/php.ini
 	sed -i "s|opcache.enable_cli=1|opcache.enable_cli=0|g" /etc/php7/php.ini
 fi
