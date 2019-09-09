@@ -27,6 +27,7 @@ script:
   - docker run -t --rm --volumes-from demyx_wp --network container:demyx_wp wordpress:cli core install --url=http://domain.tld --title=demyx --admin_user=demyx --admin_password=demyx --admin_email=info@domain.tld --skip-email
   - docker run -t --rm --volumes-from demyx_wp --network container:demyx_wp wordpress:cli core is-installed
 
+
 after_success:
   - echo "$DEMYX_PASSWORD" | docker login -u "$DEMYX_USERNAME" --password-stdin
   - docker push demyx/"$DEMYX_REPOSITORY"

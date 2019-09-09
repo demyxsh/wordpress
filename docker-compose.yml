@@ -70,7 +70,7 @@ services:
       NGINX_UPLOAD_LIMIT: 128M
       NGINX_CACHE: "off"
       NGINX_RATE_LIMIT: "off"
-      NGINX_BASIC_AUTH: demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
+      NGINX_BASIC_AUTH:
       TZ: America/Los_Angeles
     labels:
       - "traefik.enable=true"
