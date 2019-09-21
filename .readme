@@ -17,7 +17,7 @@ PORT | 9000
 TIMEZONE | America/Los_Angeles
 PHP | /etc/php7/php.ini<br />/etc/php7/php-fpm.d/php-fpm.conf
 
-## Updates
+## Updates & Support
 [![Code Size](https://img.shields.io/github/languages/code-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
 [![Repository Size](https://img.shields.io/github/repo-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
 [![Watches](https://img.shields.io/github/watchers/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
@@ -26,6 +26,7 @@ PHP | /etc/php7/php.ini<br />/etc/php7/php-fpm.d/php-fpm.conf
 
 * Auto built weekly on Sundays (America/Los_Angeles)
 * Rolling release updates
+* For support: [#demyx](https://webchat.freenode.net/?channel=#demyx)
 
 ## WordPress Container
 ENVIRONMENT | VARIABLE
@@ -38,7 +39,7 @@ WORDPRESS_DOMAIN | domain.tld
 WORDPRESS_UPLOAD_LIMIT | 128M
 WORDPRESS_PHP_MEMORY | 256M
 WORDPRESS_PHP_MAX_EXECUTION_TIME | 300
-WORDPRESS_PHP_OPCACHE | "on"
+WORDPRESS_PHP_OPCACHE | on
 TZ | America/Los_Angeles
 
 ## NGINX Container
@@ -51,18 +52,21 @@ TZ | America/Los_Angeles
 
 ENVIRONMENT | VARIABLE
 --- | ---
-WORDPRESS | "true"
+WORDPRESS | true
 WORDPRESS_SERVICE | wp
 NGINX_DOMAIN | domain.tld
 NGINX_UPLOAD_LIMIT | 128M
-NGINX_CACHE | "off"
-NGINX_RATE_LIMIT | "off"
+NGINX_CACHE | off
+NGINX_RATE_LIMIT | off
 NGINX_BASIC_AUTH | demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1<br />(demyx:demyx)
 TZ | America/Los_Angeles
 
 ## Usage
-This config requires no .toml for Traefik and is ready to go when running: 
-`docker-compose up -d`. If you want SSL, just remove the comments and make sure you have acme.json chmod to 600 (`touch acme.json; chmod 600 acme.json`) before mounting.
+This config requires no .toml for Traefik and is ready to go when running: `docker-compose up -d`. 
+
+SSL/TLS
+* Remove the comments (#)
+* `docker run -t --rm -v demyx_traefik:/demyx demyx/utilities "touch /demyx/acme.json; chmod 600 /demyx/acme.json"`
 
 ```
 version: "3.7"
@@ -84,13 +88,13 @@ services:
       #- --defaultentrypoints=http,https
       #- --acme
       #- --acme.email=info@domain.tld
-      #- --acme.storage=/etc/traefik/acme.json
+      #- --acme.storage=/demyx/acme.json
       #- --acme.entrypoint=https
       #- --acme.onhostrule=true
       #- --acme.httpchallenge.entrypoint=http
       - --logLevel=INFO
-      - --accessLog.filePath=/etc/traefik/access.log
-      - --traefikLog.filePath=/etc/traefik/traefik.log
+      - --accessLog.filePath=/demyx/access.log
+      - --traefikLog.filePath=/demyx/traefik.log
     networks:
       - demyx
     ports:
@@ -98,7 +102,7 @@ services:
       #- 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      #- ./acme.json:/etc/traefik/acme.json # chmod 600
+      #- demyx_traefik:/demyx/acme.json
     labels:
       - "traefik.enable=true"
       - "traefik.port=8080"
@@ -108,7 +112,7 @@ services:
       #- "traefik.frontend.headers.forceSTSHeader=true"
       #- "traefik.frontend.headers.STSSeconds=315360000"
       #- "traefik.frontend.headers.STSIncludeSubdomains=true"
-      #- "traefik.frontend.headers.STSPreload=true"  
+      #- "traefik.frontend.headers.STSPreload=true"
   db:
     container_name: demyx_db
     image: demyx/mariadb
@@ -118,10 +122,35 @@ services:
     volumes:
       - demyx_db:/var/lib/mysql
     environment:
-      MARIADB_DATABASE: demyx_db
-      MARIADB_USERNAME: demyx_user
-      MARIADB_PASSWORD: demyx_password
-      MARIADB_ROOT_PASSWORD: demyx_root_password
+      - MARIADB_DATABASE=demyx_db
+      - MARIADB_USERNAME=demyx_user
+      - MARIADB_PASSWORD=demyx_password
+      - MARIADB_ROOT_PASSWORD=demyx_root_password # mandatory
+      - MARIADB_BINLOG_FORMAT=mixed
+      - MARIADB_CHARACTER_SET_SERVER=utf8
+      - MARIADB_COLLATION_SERVER=utf8_general_ci
+      - MARIADB_DEFAULT_CHARACTER_SET=utf8
+      - MARIADB_INNODB_BUFFER_POOL_SIZE=16M
+      - MARIADB_INNODB_DATA_FILE_PATH=ibdata1:10M:autoextend
+      - MARIADB_INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
+      - MARIADB_INNODB_LOCK_WAIT_TIMEOUT=50
+      - MARIADB_INNODB_LOG_BUFFER_SIZE=8M
+      - MARIADB_INNODB_LOG_FILE_SIZE=5M
+      - MARIADB_INNODB_USE_NATIVE_AIO=1
+      - MARIADB_KEY_BUFFER_SIZE=20M
+      - MARIADB_LOG_BIN=mysql-bin
+      - MARIADB_MAX_ALLOWED_PACKET=16M
+      - MARIADB_MAX_CONNECTIONS=151
+      - MARIADB_MYISAM_SORT_BUFFER_SIZE=8M
+      - MARIADB_NET_BUFFER_SIZE=8K
+      - MARIADB_READ_BUFFER=2M
+      - MARIADB_READ_BUFFER_SIZE=256K
+      - MARIADB_READ_RND_BUFFER_SIZE=512K
+      - MARIADB_SERVER_ID=1
+      - MARIADB_SORT_BUFFER_SIZE=20M
+      - MARIADB_TABLE_OPEN_CACHE=64
+      - MARIADB_WRITE_BUFFER=2M
+      - TZ=America/Los_Angeles
   nginx:
     container_name: demyx_nginx
     image: demyx/nginx
@@ -131,14 +160,14 @@ services:
     volumes:
       - demyx_wp:/var/www/html
     environment:
-      WORDPRESS: "true"
-      WORDPRESS_SERVICE: wp
-      NGINX_DOMAIN: domain.tld
-      NGINX_UPLOAD_LIMIT: 128M
-      NGINX_CACHE: "off"
-      NGINX_RATE_LIMIT: "off"
-      NGINX_BASIC_AUTH: demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
-      TZ: America/Los_Angeles
+      - WORDPRESS=true
+      - WORDPRESS_SERVICE=wp
+      - NGINX_DOMAIN=domain.tld
+      - NGINX_UPLOAD_LIMIT=128M
+      - NGINX_CACHE=off
+      - NGINX_RATE_LIMIT=off
+      - NGINX_BASIC_AUTH=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
+      - TZ=America/Los_Angeles
     labels:
       - "traefik.enable=true"
       - "traefik.port=80"
@@ -158,21 +187,23 @@ services:
     volumes:
       - demyx_wp:/var/www/html
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: demyx_db
-      WORDPRESS_DB_USER: demyx_user
-      WORDPRESS_DB_PASSWORD: demyx_password
-      WORDPRESS_DOMAIN: domain.tld
-      WORDPRESS_UPLOAD_LIMIT: 128M
-      WORDPRESS_PHP_MEMORY: 256M
-      WORDPRESS_PHP_MAX_EXECUTION_TIME: 300
-      WORDPRESS_PHP_OPCACHE: "on"
-      TZ: America/Los_Angeles
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_NAME=demyx_db
+      - WORDPRESS_DB_USER=demyx_user
+      - WORDPRESS_DB_PASSWORD=demyx_password
+      - WORDPRESS_DOMAIN=domain.tld
+      - WORDPRESS_UPLOAD_LIMIT=128M
+      - WORDPRESS_PHP_MEMORY=256M
+      - WORDPRESS_PHP_MAX_EXECUTION_TIME=300
+      - WORDPRESS_PHP_OPCACHE=on
+      - TZ=America/Los_Angeles
 volumes:
   demyx_wp:
     name: demyx_wp
   demyx_db:
     name: demyx_db
+  demyx_traefik:
+    name: demyx_traefik
 networks:
   demyx:
     name: demyx
