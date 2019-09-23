@@ -46,7 +46,7 @@ TZ | America/Los_Angeles
 
 * Install the helper plugin [Nginx Helper](https://wordpress.org/plugins/nginx-helper/) if DEMYX_NGINX_CACHE is "on"
 * To generate htpasswd: `docker run -it --rm demyx/utilities "htpasswd -nb demyx demyx"`
-* DEMYX_BASIC_AUTH must have double dollar signs ($$)
+* NGINX_BASIC_AUTH must have double dollar signs ($$)
 * Set WORDPRESS env to true to use a WordPress nginx.conf
 * WORDPRESS_SERVICE env must match service name in your docker-compose.yml
 
