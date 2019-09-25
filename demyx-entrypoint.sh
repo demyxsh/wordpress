@@ -1,4 +1,6 @@
 #!/bin/bash
+# Demyx
+# https://demyx.sh
 
 if [[ ! -d /var/www/html/wp-admin ]]; then
 	echo "WordPress is missing, installing now."
