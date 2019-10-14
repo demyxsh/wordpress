@@ -105,8 +105,8 @@ services:
       - WORDPRESS_SERVICE=wp
       - NGINX_DOMAIN=domain.tld
       - NGINX_UPLOAD_LIMIT=128M
-      - NGINX_CACHE=off
-      - NGINX_RATE_LIMIT=off
+      - NGINX_CACHE=false
+      - NGINX_RATE_LIMIT=false
       - NGINX_BASIC_AUTH=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
       - TZ=America/Los_Angeles
     labels:
@@ -136,7 +136,7 @@ services:
       - WORDPRESS_UPLOAD_LIMIT=128M
       - WORDPRESS_PHP_MEMORY=256M
       - WORDPRESS_PHP_MAX_EXECUTION_TIME=300
-      - WORDPRESS_PHP_OPCACHE=on
+      - WORDPRESS_PHP_OPCACHE=true
       - TZ=America/Los_Angeles
 volumes:
   demyx_wp:

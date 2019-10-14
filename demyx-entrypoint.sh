@@ -40,7 +40,7 @@ if [[ -n "$WORDPRESS_PHP_MAX_EXECUTION_TIME" ]]; then
 fi
 
 # PHP opcache
-if [[ "$WORDPRESS_PHP_OPCACHE" = off ]]; then
+if [[ "$WORDPRESS_PHP_OPCACHE" = off ]] || [[ "$WORDPRESS_PHP_OPCACHE" = false ]]; then
 	sed -i "s|opcache.enable=1|opcache.enable=0|g" /etc/php7/php.ini
 	sed -i "s|opcache.enable_cli=1|opcache.enable_cli=0|g" /etc/php7/php.ini
 fi
