@@ -4,7 +4,7 @@
 [![Architecture](https://img.shields.io/badge/linux-amd64-important?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Alpine](https://img.shields.io/badge/alpine-3.10.2-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![PHP](https://img.shields.io/badge/php-7.3.10-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![WordPress](https://img.shields.io/badge/wordpress-5.2.3-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![WordPress](https://img.shields.io/badge/wordpress-5.2.4-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Buy Me A Coffee](https://img.shields.io/badge/buy_me_coffee-$5-informational?style=flat&color=blue)](https://www.buymeacoffee.com/VXqkQK5tb)
 
 WordPress is open source software you can use to create a beautiful website, blog, or app.
