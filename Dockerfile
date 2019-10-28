@@ -14,47 +14,47 @@ RUN set -ex; \
     apk add --no-cache php7 \
     php7-bcmath \
     php7-ctype \
-	php7-curl \
-	php7-dom \
-	php7-exif \
+    php7-curl \
+    php7-dom \
+    php7-exif \
     php7-fileinfo \
     php7-fpm \
-	php7-ftp \
-	php7-gd \
-	php7-iconv \
-	php7-imagick \
-	php7-json \
-	php7-mbstring \
-	php7-mysqli \
+    php7-ftp \
+    php7-gd \
+    php7-iconv \
+    php7-imagick \
+    php7-json \
+    php7-mbstring \
+    php7-mysqli \
     php7-opcache \
-	php7-openssl \
+    php7-openssl \
     php7-pecl-ssh2 \
     php7-phar \
-	php7-posix \
+    php7-posix \
     php7-session \
-	php7-simplexml \
+    php7-simplexml \
     php7-soap \
     php7-sodium \
-	php7-sockets \
-	php7-tokenizer \
-	php7-xml \
-	php7-xmlreader \
+    php7-sockets \
+    php7-tokenizer \
+    php7-xml \
+    php7-xmlreader \
     php7-xmlwriter \
     php7-zip \
-	php7-zlib
+    php7-zlib
 
 RUN set -ex; \
-	apk add --no-cache ed dumb-init bash tzdata libsodium; \
+    apk add --no-cache ed dumb-init bash tzdata libsodium; \
     ln -s /usr/sbin/php-fpm7 /usr/local/bin/php-fpm; \
     mkdir -p /var/log/demyx
 
 RUN set -ex; \
-	mkdir -p /usr/src; \
-	mkdir -p /var/www/html; \
-	wget https://wordpress.org/latest.tar.gz -qO /usr/src/latest.tar.gz; \
-	tar -xzf /usr/src/latest.tar.gz -C /usr/src; \
-	rm /usr/src/latest.tar.gz; \
-	chown -R www-data:www-data /usr/src/wordpress
+    mkdir -p /usr/src; \
+    mkdir -p /var/www/html; \
+    wget https://wordpress.org/latest.tar.gz -qO /usr/src/latest.tar.gz; \
+    tar -xzf /usr/src/latest.tar.gz -C /usr/src; \
+    rm /usr/src/latest.tar.gz; \
+    chown -R www-data:www-data /usr/src/wordpress
 
 COPY demyx-entrypoint.sh /usr/local/bin/demyx-entrypoint
 COPY php.ini /etc/php7/php.ini
