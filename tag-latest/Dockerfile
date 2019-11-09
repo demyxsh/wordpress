@@ -9,8 +9,8 @@ LABEL sh.demyx.registry https://hub.docker.com/u/demyx
 ENV TZ America/Los_Angeles
 
 RUN set -ex; \
-    addgroup -g 82 -S www-data; \
-    adduser -u 82 -D -S -G www-data www-data; \
+    addgroup -g 1000 -S demyx; \
+    adduser -u 1000 -D -S -G demyx demyx; \
     apk add --no-cache php7 \
     php7-bcmath \
     php7-ctype \
@@ -44,7 +44,7 @@ RUN set -ex; \
     php7-zlib
 
 RUN set -ex; \
-    apk add --no-cache ed dumb-init bash tzdata libsodium; \
+    apk add --no-cache ed dumb-init bash tzdata libsodium curl; \
     ln -s /usr/sbin/php-fpm7 /usr/local/bin/php-fpm; \
     mkdir -p /var/log/demyx
 
@@ -54,17 +54,25 @@ RUN set -ex; \
     wget https://wordpress.org/latest.tar.gz -qO /usr/src/latest.tar.gz; \
     tar -xzf /usr/src/latest.tar.gz -C /usr/src; \
     rm /usr/src/latest.tar.gz; \
-    chown -R www-data:www-data /usr/src/wordpress
+    chown -R demyx:demyx /usr/src/wordpress; \
+    chown -R demyx:demyx /var/www/html
 
-COPY demyx-entrypoint.sh /usr/local/bin/demyx-entrypoint
-COPY php.ini /etc/php7/php.ini
-COPY www.conf /etc/php7/php-fpm.d/www.conf
-COPY docker.conf /etc/php7/php-fpm.d/docker.conf
+COPY demyx.sh /usr/local/bin/demyx
+COPY php.ini /demyx/php.ini
+COPY www.conf /demyx/www.conf
+COPY docker.conf /demyx/docker.conf
 
-RUN chmod +x /usr/local/bin/demyx-entrypoint
+RUN set -ex; \
+    ln -sf /demyx/php.ini /etc/php7/php.ini; \
+    ln -sf /demyx/www.conf /etc/php7/php-fpm.d/www.conf; \
+    ln -s /demyx/docker.conf /etc/php7/php-fpm.d/docker.conf; \
+    chown -R demyx:demyx /demyx; \
+    chmod +x /usr/local/bin/demyx
 
 EXPOSE 9000
 
 WORKDIR /var/www/html
 
-ENTRYPOINT ["dumb-init", "demyx-entrypoint"]
+USER demyx
+
+ENTRYPOINT ["dumb-init", "demyx"]

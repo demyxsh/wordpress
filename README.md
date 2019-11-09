@@ -5,18 +5,20 @@
 [![Alpine](https://img.shields.io/badge/alpine-3.10.3-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![PHP](https://img.shields.io/badge/php-7.3.11-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![WordPress](https://img.shields.io/badge/wordpress-5.2.4-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![wp-cli](https://img.shields.io/badge/wp--cli-2.3.0-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Buy Me A Coffee](https://img.shields.io/badge/buy_me_coffee-$5-informational?style=flat&color=blue)](https://www.buymeacoffee.com/VXqkQK5tb)
 
 WordPress is open source software you can use to create a beautiful website, blog, or app.
 
 TITLE | DESCRIPTION
 --- | ---
-USER<br />GROUP | www-data (82)<br />www-data (82)
+TAGS | latest cli
+USER<br />GROUP | demyx (1000)<br />demyx (1000)
 WORKDIR | /var/www/html
 PORT | 9000
-ENTRYPOINT | dumb-init
+ENTRYPOINT | ["dumb-init", "demyx"]
 TIMEZONE | America/Los_Angeles
-PHP | /etc/php7/php.ini<br />/etc/php7/php-fpm.d/php-fpm.conf
+PHP | /demyx/php.ini<br />/demyx/php-fpm.conf<br />/demyx/docker.conf<br />/demyx/www.conf
 
 ## Updates & Support
 [![Code Size](https://img.shields.io/github/languages/code-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
@@ -53,7 +55,7 @@ TZ | America/Los_Angeles
 ENVIRONMENT | VARIABLE
 --- | ---
 WORDPRESS | true
-WORDPRESS_SERVICE | wp
+WORDPRESS_CONTAINER | wp
 NGINX_DOMAIN | domain.tld
 NGINX_UPLOAD_LIMIT | 128M
 NGINX_CACHE | false
@@ -157,7 +159,7 @@ services:
       - MARIADB_TABLE_OPEN_CACHE=64
       - MARIADB_WRITE_BUFFER=2M
       - TZ=America/Los_Angeles
-  nginx:
+  nx:
     container_name: demyx_nginx
     image: demyx/nginx
     restart: unless-stopped
@@ -190,6 +192,8 @@ services:
     restart: unless-stopped
     networks:
       - demyx
+    depends_on:
+      - db
     volumes:
       - demyx_wp:/var/www/html
       - demyx_wp_log:/var/log/demyx

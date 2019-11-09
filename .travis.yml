@@ -21,16 +21,17 @@ before_install:
   - docker pull alpine
   - docker pull demyx/mariadb
   - docker pull traefik
-  - docker pull wordpress:cli
 
 script:
-  - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY" .
+  - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY" tag-latest/.
+  - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY":cli tag-cli/.
   - docker-compose up -d
   - sleep 5
-  - docker run -t --rm --volumes-from demyx_wp --network container:demyx_wp wordpress:cli core install --url=http://domain.tld --title=demyx --admin_user=demyx --admin_password=demyx --admin_email=info@domain.tld --skip-email
-  - docker run -t --rm --volumes-from demyx_wp --network container:demyx_wp wordpress:cli core is-installed
+  - docker run -t --rm --volumes-from demyx_wp --network container:demyx_wp demyx/"$DEMYX_REPOSITORY":cli core install --url=http://domain.tld --title=demyx --admin_user=demyx --admin_password=demyx --admin_email=info@domain.tld --skip-email
+  - docker run -t --rm --volumes-from demyx_wp --network container:demyx_wp demyx/"$DEMYX_REPOSITORY":cli core is-installed
 
 after_success:
   - echo "$DEMYX_PASSWORD" | docker login -u "$DEMYX_USERNAME" --password-stdin
   - docker push demyx/"$DEMYX_REPOSITORY"
+  - docker push demyx/"$DEMYX_REPOSITORY":cli
   - bash travis.sh
