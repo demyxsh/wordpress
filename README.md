@@ -50,7 +50,7 @@ TZ | America/Los_Angeles
 * To generate htpasswd: `docker run -it --rm demyx/utilities "htpasswd -nb demyx demyx"`
 * NGINX_BASIC_AUTH must have double dollar signs ($$)
 * Set WORDPRESS env to true to use a WordPress nginx.conf
-* WORDPRESS_SERVICE env must match service name in your docker-compose.yml
+* WORDPRESS_CONTAINER env must match service name in your docker-compose.yml
 
 ENVIRONMENT | VARIABLE
 --- | ---
@@ -171,11 +171,12 @@ services:
     environment:
       - WORDPRESS=true
       - WORDPRESS_CONTAINER=wp
-      - WORDPRESS_DOMAIN=domain.tld
-      - WORDPRESS_UPLOAD_LIMIT=128M
-      - WORDPRESS_CACHE=false
-      - WORDPRESS_NGINX_RATE_LIMIT=false
-      - WORDPRESS_NGINX_BASIC_AUTH=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
+      - NGINX_DOMAIN=domain.tld
+      - NGINX_UPLOAD_LIMIT=128M
+      - NGINX_CACHE=false
+      - NGINX_RATE_LIMIT=false
+      - NGINX_XMLRPC=false
+      - NGINX_BASIC_AUTH=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
       - TZ=America/Los_Angeles
     labels:
       - "traefik.enable=true"
