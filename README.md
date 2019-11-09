@@ -60,6 +60,7 @@ NGINX_DOMAIN | domain.tld
 NGINX_UPLOAD_LIMIT | 128M
 NGINX_CACHE | false
 NGINX_RATE_LIMIT | false
+NGINX_XMLRPC | false
 NGINX_BASIC_AUTH | demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1<br />(demyx:demyx)
 TZ | America/Los_Angeles
 
