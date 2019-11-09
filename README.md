@@ -170,12 +170,12 @@ services:
       - demyx_wp_log:/var/log/demyx
     environment:
       - WORDPRESS=true
-      - WORDPRESS_SERVICE=wp
-      - NGINX_DOMAIN=domain.tld
-      - NGINX_UPLOAD_LIMIT=128M
-      - NGINX_CACHE=false
-      - NGINX_RATE_LIMIT=false
-      - NGINX_BASIC_AUTH=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
+      - WORDPRESS_CONTAINER=wp
+      - WORDPRESS_DOMAIN=domain.tld
+      - WORDPRESS_UPLOAD_LIMIT=128M
+      - WORDPRESS_CACHE=false
+      - WORDPRESS_NGINX_RATE_LIMIT=false
+      - WORDPRESS_NGINX_BASIC_AUTH=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
       - TZ=America/Los_Angeles
     labels:
       - "traefik.enable=true"
