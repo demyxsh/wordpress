@@ -6,11 +6,11 @@ LABEL sh.demyx.url https://demyx.sh
 LABEL sh.demyx.github https://github.com/demyxco
 LABEL sh.demyx.registry https://hub.docker.com/u/demyx
 
+# Set default timezone
 ENV TZ America/Los_Angeles
 
+# Install php and friends
 RUN set -ex; \
-    addgroup -g 1000 -S demyx; \
-    adduser -u 1000 -D -S -G demyx demyx; \
     apk add --no-cache php7 \
     php7-bcmath \
     php7-ctype \
@@ -41,13 +41,17 @@ RUN set -ex; \
     php7-xmlreader \
     php7-xmlwriter \
     php7-zip \
-    php7-zlib
+    php7-zlib; \
+    \
+    ln -s /usr/sbin/php-fpm7 /usr/local/bin/php-fpm
 
+# Install additional packages and create demyx user
 RUN set -ex; \
     apk add --no-cache ed dumb-init bash tzdata libsodium curl; \
-    ln -s /usr/sbin/php-fpm7 /usr/local/bin/php-fpm; \
-    mkdir -p /var/log/demyx
+    addgroup -g 1000 -S demyx; \
+    adduser -u 1000 -D -S -G demyx demyx
 
+# Download WordPress
 RUN set -ex; \
     mkdir -p /usr/src; \
     mkdir -p /var/www/html; \
@@ -57,15 +61,19 @@ RUN set -ex; \
     chown -R demyx:demyx /usr/src/wordpress; \
     chown -R demyx:demyx /var/www/html
 
+# Copy core files
 COPY demyx.sh /usr/local/bin/demyx
 COPY php.ini /demyx/php.ini
 COPY www.conf /demyx/www.conf
 COPY docker.conf /demyx/docker.conf
 
+# Execute final commands
 RUN set -ex; \
+    mkdir -p /var/log/demyx; \
     ln -sf /demyx/php.ini /etc/php7/php.ini; \
     ln -sf /demyx/www.conf /etc/php7/php-fpm.d/www.conf; \
     ln -s /demyx/docker.conf /etc/php7/php-fpm.d/docker.conf; \
+    chown demyx:demyx /var/log/demyx; \
     chown -R demyx:demyx /demyx; \
     chmod +x /usr/local/bin/demyx
 
