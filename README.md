@@ -53,7 +53,7 @@ WORDPRESS_PHP_PM_MAX_REQUESTS | 500
 TZ | America/Los_Angeles
 
 ## NGINX Container
-* Install the helper plugin [Nginx Helper](https://wordpress.org/plugins/nginx-helper/) if DEMYX_NGINX_CACHE is "on"
+* Install the helper plugin [Nginx Helper](https://wordpress.org/plugins/nginx-helper/) if NGINX_CACHE is true
 * To generate htpasswd: `docker run -it --rm demyx/utilities "htpasswd -nb demyx demyx"`
 * NGINX_BASIC_AUTH must have double dollar signs ($$)
 * Set WORDPRESS env to true to use a WordPress nginx.conf
