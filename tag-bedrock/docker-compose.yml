@@ -96,6 +96,7 @@ services:
       - demyx_wp_log:/var/log/demyx
     environment:
       - WORDPRESS=true
+      - WORDPRESS_BEDROCK=true
       - WORDPRESS_CONTAINER=demyx_wp
       - NGINX_DOMAIN=domain.tld
       - NGINX_UPLOAD_LIMIT=128M
@@ -116,7 +117,7 @@ services:
       - "traefik.http.middlewares.domaintld-redirect.redirectscheme.scheme=https"
   demyx_wp:
     container_name: demyx_wp
-    image: demyx/wordpress
+    image: demyx/wordpress:bedrock
     restart: unless-stopped
     networks:
       - demyx
@@ -131,6 +132,8 @@ services:
       - WORDPRESS_DB_USER=demyx
       - WORDPRESS_DB_PASSWORD=demyx
       - WORDPRESS_DOMAIN=domain.tld
+      - WORDPRESS_BEDROCK_MODE=production
+      - WORDPRESS_SSL=true
       - WORDPRESS_UPLOAD_LIMIT=128M
       - WORDPRESS_PHP_MEMORY=256M
       - WORDPRESS_PHP_MAX_EXECUTION_TIME=300

@@ -24,6 +24,7 @@ before_install:
 
 script:
   - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY" tag-latest/.
+  - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY":bedrock tag-bedrock/.
   - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY":cli tag-cli/.
   - docker-compose up -d
   - sleep 5

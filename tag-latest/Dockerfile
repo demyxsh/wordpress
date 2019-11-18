@@ -51,7 +51,7 @@ RUN set -ex; \
     addgroup -g 1000 -S demyx; \
     adduser -u 1000 -D -S -G demyx demyx
 
-# Download WordPress
+# Download latest WordPress
 RUN set -ex; \
     mkdir -p /usr/src; \
     mkdir -p /var/www/html; \
@@ -62,10 +62,8 @@ RUN set -ex; \
     chown -R demyx:demyx /var/www/html
 
 # Copy core files
+COPY demyx /demyx
 COPY demyx.sh /usr/local/bin/demyx
-COPY php.ini /demyx/php.ini
-COPY www.conf /demyx/www.conf
-COPY docker.conf /demyx/docker.conf
 
 # Execute final commands
 RUN set -ex; \
@@ -75,6 +73,8 @@ RUN set -ex; \
     ln -s /demyx/docker.conf /etc/php7/php-fpm.d/docker.conf; \
     chown demyx:demyx /var/log/demyx; \
     chown -R demyx:demyx /demyx; \
+    chmod +x /demyx/env.sh; \
+    chmod +x /demyx/install.sh; \
     chmod +x /usr/local/bin/demyx
 
 EXPOSE 9000
