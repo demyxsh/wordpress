@@ -1,12 +1,13 @@
 #!/bin/bash
 # Demyx
 # https://demyx.sh
+set -euo pipefail
 
 # Install WordPress
-/demyx/install.sh
+demyx-install
 
-# Execute commands using environment variables
-/demyx/env.sh
+# Generate configs
+demyx-config
 
 # Run php-fpm in the foreground
 php-fpm -F

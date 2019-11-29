@@ -1,7 +1,52 @@
-; Demyx
-; https://demyx.sh
+#!/bin/bash
+# Demyx
+# https://demyx.sh
+set -euo pipefail
 
-[PHP]
+# Default environment variables
+WORDPRESS_PHP_OPCACHE="${WORDPRESS_PHP_OPCACHE:-true}"
+
+# PHP opcache
+if [[ "$WORDPRESS_PHP_OPCACHE" = off || "$WORDPRESS_PHP_OPCACHE" = false ]]; then
+    WORDPRESS_PHP_OPCACHE_ENABLE=0
+    WORDPRESS_PHP_OPCACHE_ENABLE_CLI=0
+fi
+
+# Generate /demyx/www.conf
+echo "[${WORDPRESS_DOMAIN:-www}]
+listen                      = 9000
+pm                          = ${WORDPRESS_PHP_PM:-ondemand}
+pm.max_children             = ${WORDPRESS_PHP_PM_MAX_CHILDREN:-100}
+pm.start_servers            = ${WORDPRESS_PHP_PM_START_SERVERS:-10}
+pm.min_spare_servers        = ${WORDPRESS_PHP_PM_MIN_SPARE_SERVERS:-5}
+pm.max_spare_servers        = ${WORDPRESS_PHP_PM_MAX_SPARE_SERVERS:-25}
+pm.process_idle_timeout     = ${WORDPRESS_PHP_PM_PROCESS_IDLE_TIMEOUT:-5s}
+pm.max_requests             = ${WORDPRESS_PHP_PM_MAX_REQUESTS:-500}
+chdir                       = /var/www/html
+catch_workers_output        = yes
+php_admin_value[error_log]  = /var/log/demyx/${WORDPRESS_DOMAIN:-demyx}.error.log
+" > /demyx/www.conf
+
+# Generate docker.conf
+echo "[global]
+error_log = /proc/self/fd/2
+
+; https://github.com/docker-library/php/pull/725#issuecomment-443540114
+log_limit = 8192
+
+[${WORDPRESS_DOMAIN:-www}]
+; if we send this to /proc/self/fd/1, it never appears
+access.log = /proc/self/fd/2
+
+clear_env = no
+
+; Ensure worker stdout and stderr are sent to the main error log.
+catch_workers_output = yes
+decorate_workers_output = no
+" > /demyx/docker.conf
+
+# Generate /demyx/php.ini
+echo "[PHP]
 engine = On
 short_open_tag = Off
 precision = 14
@@ -14,10 +59,10 @@ disable_functions = pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexi
 disable_classes =
 zend.enable_gc = On
 expose_php = Off
-max_execution_time = 300
+max_execution_time = ${WORDPRESS_PHP_MAX_EXECUTION_TIME:-300}
 max_input_vars = 20000
 max_input_time = 600
-memory_limit = 256M
+memory_limit = ${WORDPRESS_PHP_MEMORY:-256M}
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
 display_errors = Off
 display_startup_errors = Off
@@ -27,20 +72,20 @@ ignore_repeated_errors = Off
 ignore_repeated_source = Off
 report_memleaks = On
 html_errors = On
-variables_order = "GPCS"
-request_order = "GP"
+variables_order = \"GPCS\"
+request_order = \"GP\"
 register_argc_argv = Off
 auto_globals_jit = On
-post_max_size = 128M
+post_max_size = ${WORDPRESS_UPLOAD_LIMIT:-128M}
 auto_prepend_file =
 auto_append_file =
-default_mimetype = "text/html"
-default_charset = "UTF-8"
+default_mimetype = \"text/html\"
+default_charset = \"UTF-8\"
 doc_root =
 user_dir =
 enable_dl = Off
 file_uploads = On
-upload_max_filesize = 128M
+upload_max_filesize = ${WORDPRESS_UPLOAD_LIMIT:-128M}
 max_file_uploads = 20
 allow_url_fopen = On
 allow_url_include = Off
@@ -50,7 +95,7 @@ default_socket_timeout = 60
 cli_server.color = On
 
 [Date]
-date.timezone = UTC
+date.timezone = ${TZ:-America/Los_Angeles}
 [filter]
 
 [iconv]
@@ -85,9 +130,9 @@ odbc.defaultbinmode = 1
 ibase.allow_persistent = 1
 ibase.max_persistent = -1
 ibase.max_links = -1
-ibase.timestampformat = "%Y-%m-%d %H:%M:%S"
-ibase.dateformat = "%Y-%m-%d"
-ibase.timeformat = "%H:%M:%S"
+ibase.timestampformat = \"%Y-%m-%d %H:%M:%S\"
+ibase.dateformat = \"%Y-%m-%d\"
+ibase.timeformat = \"%H:%M:%S\"
 
 [MySQLi]
 mysqli.max_persistent = -1
@@ -140,7 +185,7 @@ session.cache_limiter = nocache
 session.cache_expire = 180
 session.use_trans_sid = 0
 session.sid_length = 26
-session.trans_sid_tags = "a=href,area=href,frame=src,form="
+session.trans_sid_tags = \"a=href,area=href,frame=src,form=\"
 session.sid_bits_per_character = 5
 
 [Assertion]
@@ -159,7 +204,7 @@ tidy.clean_output = Off
 
 [soap]
 soap.wsdl_cache_enabled=1
-soap.wsdl_cache_dir="/tmp"
+soap.wsdl_cache_dir=\"/tmp\"
 soap.wsdl_cache_ttl=86400
 soap.wsdl_cache_limit = 5
 
@@ -171,8 +216,8 @@ ldap.max_links = -1
 [dba]
 
 [opcache]
-opcache.enable=1
-opcache.enable_cli=1
+opcache.enable=${WORDPRESS_PHP_OPCACHE_ENABLE:-1}
+opcache.enable_cli=${WORDPRESS_PHP_OPCACHE_ENABLE_CLI:-1}
 opcache.interned_strings_buffer=8
 opcache.max_accelerated_files=10000
 opcache.max_wasted_percentage=10
@@ -185,3 +230,4 @@ opcache.consistency_checks=0
 [curl]
 
 [openssl]
+" > /demyx/php.ini

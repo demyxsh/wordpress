@@ -65,7 +65,7 @@ RUN set -ex; \
 COPY demyx /demyx
 COPY demyx.sh /usr/local/bin/demyx
 
-# Execute final commands
+# Finalize
 RUN set -ex; \
     mkdir -p /var/log/demyx; \
     ln -sf /demyx/php.ini /etc/php7/php.ini; \
@@ -73,8 +73,8 @@ RUN set -ex; \
     ln -s /demyx/docker.conf /etc/php7/php-fpm.d/docker.conf; \
     chown demyx:demyx /var/log/demyx; \
     chown -R demyx:demyx /demyx; \
-    chmod +x /demyx/env.sh; \
-    chmod +x /demyx/install.sh; \
+    mv /demyx/config.sh /usr/local/bin/demyx-config && chmod +x /usr/local/bin/demyx-config; \
+    mv /demyx/install.sh /usr/local/bin/demyx-install && chmod +x /usr/local/bin/demyx-install; \
     chmod +x /usr/local/bin/demyx
 
 EXPOSE 9000
