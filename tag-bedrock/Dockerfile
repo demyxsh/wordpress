@@ -23,8 +23,11 @@ RUN set -ex; \
     su -c 'composer create-project roots/bedrock /tmp/bedrock; composer clearcache' -s /bin/sh demyx; \
     tar -czf /usr/src/bedrock.tgz -C /tmp/bedrock .; \
     rm -rf /usr/src/wordpress; \
-    rm -rf /tmp/*; \
-    echo 'sed -i "s|WP_ENV=.*|WP_ENV=$WORDPRESS_BEDROCK_MODE|g" /var/www/html/.env' >> /demyx/env.sh; \
-    chmod +x /demyx/install.sh
+    rm -rf /tmp/*
+
+# Finalize
+RUN set -ex; \
+    mv /demyx/install.sh /usr/local/bin/demyx-install; \
+    chmod +x /usr/local/bin/demyx-install
 
 USER demyx
