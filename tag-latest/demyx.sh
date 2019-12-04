@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Demyx
 # https://demyx.sh
 set -euo pipefail

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Demyx
 # https://demyx.sh
 set -euo pipefail
@@ -11,7 +11,7 @@ WORDPRESS_DB_HOST="${WORDPRESS_DB_HOST:-}"
 
 if [[ ! -d /var/www/html/wp-admin ]]; then
     echo "WordPress is missing, installing now."
-    cp -r /usr/src/wordpress/* /var/www/html
+    cp -r /tmp/wordpress/* /var/www/html
 
     if [[ "$WORDPRESS_DB_NAME" && "$WORDPRESS_DB_USER" && "$WORDPRESS_DB_PASSWORD" && "$WORDPRESS_DB_HOST" ]]; then
         mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
