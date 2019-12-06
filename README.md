@@ -8,6 +8,7 @@
 [![Bedrock](https://img.shields.io/badge/bedrock-1.12.8-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![wp-cli](https://img.shields.io/badge/wp--cli-2.4.0-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Buy Me A Coffee](https://img.shields.io/badge/buy_me_coffee-$5-informational?style=flat&color=blue)](https://www.buymeacoffee.com/VXqkQK5tb)
+[![Become a Patron!](https://img.shields.io/badge/become%20a%20patron-$5-informational?style=flat&color=blue)](https://www.patreon.com/bePatron?u=23406156)
 
 WordPress is open source software you can use to create a beautiful website, blog, or app.
 
