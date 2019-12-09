@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Demyx
 # https://demyx.sh
 set -euo pipefail
@@ -13,7 +13,9 @@ WORDPRESS_DB_HOST="${WORDPRESS_DB_HOST:-}"
 
 if [[ ! -f /var/www/html/.env ]]; then
     echo "[demyx] installing Bedrock..."
-    tar -xzf /usr/src/bedrock.tgz -C /var/www/html
+    tar -xzf /tmp/bedrock.tgz -C /tmp
+    cp -r /tmp/bedrock/. /var/www/html
+    rm -rf /tmp/bedrock
 
     if [[ -n "$WORDPRESS_DB_NAME" && -n "$WORDPRESS_DB_USER" && -n "$WORDPRESS_DB_PASSWORD" && -n "$WORDPRESS_DB_HOST" && -n "$WORDPRESS_DOMAIN" ]]; then
         WORDPRESS_PROTO="http://$WORDPRESS_DOMAIN"
