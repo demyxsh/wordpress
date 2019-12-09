@@ -78,7 +78,8 @@ RUN set -ex; \
     mv /demyx/config.sh /usr/local/bin/demyx-config && chmod +x /usr/local/bin/demyx-config; \
     mv /demyx/install.sh /usr/local/bin/demyx-install && chmod +x /usr/local/bin/demyx-install; \
     \
-    chmod +x /usr/local/bin/demyx
+    chmod +x /usr/local/bin/demyx; \
+    chown -R root:root /usr/local/bin
 
 EXPOSE 9000
 
