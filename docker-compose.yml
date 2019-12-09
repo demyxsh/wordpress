@@ -49,7 +49,7 @@ services:
       - "traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https"
   demyx_db:
     container_name: demyx_db
-    image: demyx/mariadb
+    image: demyx/mariadb:edge
     restart: unless-stopped
     networks:
       - demyx
