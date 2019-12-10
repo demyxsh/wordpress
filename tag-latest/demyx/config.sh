@@ -3,7 +3,7 @@
 # https://demyx.sh
 set -euo pipefail
 
-# Default environment variables
+# Default variables
 WORDPRESS_PHP_OPCACHE="${WORDPRESS_PHP_OPCACHE:-true}"
 
 # PHP opcache
@@ -12,7 +12,7 @@ if [[ "$WORDPRESS_PHP_OPCACHE" = off || "$WORDPRESS_PHP_OPCACHE" = false ]]; the
     WORDPRESS_PHP_OPCACHE_ENABLE_CLI=0
 fi
 
-# Generate /demyx/www.conf
+# Generate www.conf
 echo "[${WORDPRESS_DOMAIN:-www}]
 listen                      = 9000
 pm                          = ${WORDPRESS_PHP_PM:-ondemand}
@@ -22,10 +22,10 @@ pm.min_spare_servers        = ${WORDPRESS_PHP_PM_MIN_SPARE_SERVERS:-5}
 pm.max_spare_servers        = ${WORDPRESS_PHP_PM_MAX_SPARE_SERVERS:-25}
 pm.process_idle_timeout     = ${WORDPRESS_PHP_PM_PROCESS_IDLE_TIMEOUT:-5s}
 pm.max_requests             = ${WORDPRESS_PHP_PM_MAX_REQUESTS:-500}
-chdir                       = /var/www/html
+chdir                       = $WORDPRESS_ROOT
 catch_workers_output        = yes
 php_admin_value[error_log]  = /var/log/demyx/${WORDPRESS_DOMAIN:-demyx}.error.log
-" > /demyx/www.conf
+" > "$WORDPRESS_CONFIG"/www.conf
 
 # Generate docker.conf
 echo "[global]
@@ -43,9 +43,9 @@ clear_env = no
 ; Ensure worker stdout and stderr are sent to the main error log.
 catch_workers_output = yes
 decorate_workers_output = no
-" > /demyx/docker.conf
+" > "$WORDPRESS_CONFIG"/docker.conf
 
-# Generate /demyx/php.ini
+# Generate php.ini
 echo "[PHP]
 engine = On
 short_open_tag = Off
@@ -230,4 +230,4 @@ opcache.consistency_checks=0
 [curl]
 
 [openssl]
-" > /demyx/php.ini
+" > "$WORDPRESS_CONFIG"/php.ini

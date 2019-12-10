@@ -6,8 +6,11 @@ LABEL sh.demyx.url https://demyx.sh
 LABEL sh.demyx.github https://github.com/demyxco
 LABEL sh.demyx.registry https://hub.docker.com/u/demyx
 
-# Set default timezone
-ENV TZ America/Los_Angeles
+# Set default variables
+ENV WORDPRESS_ROOT=/demyx
+ENV WORDPRESS_CONFIG=/etc/demyx
+ENV WORDPRESS_LOG=/var/log/demyx
+ENV TZ=America/Los_Angeles
 
 # Install php and friends
 RUN set -ex; \
@@ -54,36 +57,36 @@ RUN set -ex; \
 
 # Download latest WordPress
 RUN set -ex; \
-    install -d -m 0755 -o demyx -g demyx /var/www/html; \
+    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_ROOT"; \
     \
     wget https://wordpress.org/latest.tar.gz -qO /latest.tar.gz; \
     tar -xzf /latest.tar.gz -C /tmp; \
     rm -f /latest.tar.gz; \
     chown -R demyx:demyx /tmp/wordpress
 
-# Copy core files
-COPY demyx /demyx
+# Copy files
+COPY --chown=demyx:demyx demyx "$WORDPRESS_CONFIG"
 COPY demyx.sh /usr/local/bin/demyx
 
 # Finalize
 RUN set -ex; \
-    install -d -m 0755 -o demyx -g demyx /var/log/demyx; \
+    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_LOG"; \
     \
-    ln -sf /demyx/php.ini /etc/php7/php.ini; \
-    ln -sf /demyx/www.conf /etc/php7/php-fpm.d/www.conf; \
-    ln -s /demyx/docker.conf /etc/php7/php-fpm.d/docker.conf; \
+    ln -sf "$WORDPRESS_CONFIG"/php.ini /etc/php7/php.ini; \
+    ln -sf "$WORDPRESS_CONFIG"/www.conf /etc/php7/php-fpm.d/www.conf; \
+    ln -s "$WORDPRESS_CONFIG"/docker.conf /etc/php7/php-fpm.d/docker.conf; \
     \
-    chown -R demyx:demyx /demyx; \
+    chown -R demyx:demyx "$WORDPRESS_ROOT"; \
     \
-    mv /demyx/config.sh /usr/local/bin/demyx-config && chmod +x /usr/local/bin/demyx-config; \
-    mv /demyx/install.sh /usr/local/bin/demyx-install && chmod +x /usr/local/bin/demyx-install; \
+    mv "$WORDPRESS_CONFIG"/config.sh /usr/local/bin/demyx-config && chmod +x /usr/local/bin/demyx-config; \
+    mv "$WORDPRESS_CONFIG"/install.sh /usr/local/bin/demyx-install && chmod +x /usr/local/bin/demyx-install; \
     \
     chmod +x /usr/local/bin/demyx; \
     chown -R root:root /usr/local/bin
 
 EXPOSE 9000
 
-WORKDIR /var/www/html
+WORKDIR "$WORDPRESS_ROOT"
 
 USER demyx
 

@@ -6,7 +6,11 @@ LABEL sh.demyx.url https://demyx.sh
 LABEL sh.demyx.github https://github.com/demyxco
 LABEL sh.demyx.registry https://hub.docker.com/u/demyx
 
-# Install required packages
+# Set default variables
+ENV WORDPRESS_ROOT=/demyx
+ENV TZ=America/Los_Angeles
+
+# Install packages
 RUN set -ex; \
     apk add --no-cache --update \
     mysql-client \
@@ -40,7 +44,8 @@ RUN set -ex; \
     php7-xmlreader \
     php7-xmlwriter \
     php7-zip \
-    php7-zlib
+    php7-zlib \
+    tzdata
 
 # Create demyx user
 RUN set -ex; \
@@ -52,7 +57,7 @@ RUN set -ex; \
     wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
     chmod +x /usr/local/bin/wp
 
-WORKDIR /var/www/html
+WORKDIR "$WORDPRESS_ROOT"
 
 USER demyx
 

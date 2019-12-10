@@ -10,17 +10,17 @@
 [![Buy Me A Coffee](https://img.shields.io/badge/buy_me_coffee-$5-informational?style=flat&color=blue)](https://www.buymeacoffee.com/VXqkQK5tb)
 [![Become a Patron!](https://img.shields.io/badge/become%20a%20patron-$5-informational?style=flat&color=blue)](https://www.patreon.com/bePatron?u=23406156)
 
-WordPress is open source software you can use to create a beautiful website, blog, or app.
+Non-root Docker image running Alpine Linux, PHP, and WordPress.
 
 DEMYX | WORDPRESS
 --- | ---
 TAGS | latest bedrock cli
-USER<br />GROUP | demyx (1000)<br />demyx (1000)
-WORKDIR | /var/www/html
 PORT | 9000
+USER | demyx
+WORKDIR | /demyx
+CONFIG | /etc/demyx
 ENTRYPOINT | ["dumb-init", "demyx"]
 TIMEZONE | America/Los_Angeles
-PHP | /demyx/php.ini<br />/demyx/php-fpm.conf<br />/demyx/docker.conf<br />/demyx/www.conf
 
 ## Updates & Support
 [![Code Size](https://img.shields.io/github/languages/code-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
@@ -41,6 +41,9 @@ PHP | /demyx/php.ini<br />/demyx/php-fpm.conf<br />/demyx/docker.conf<br />/demy
 - WORDPRESS_DB_NAME=demyx
 - WORDPRESS_DB_USER=demyx
 - WORDPRESS_DB_PASSWORD=demyx
+- WORDPRESS_ROOT=/demyx
+- WORDPRESS_CONFIG=/etc/demyx
+- WORDPRESS_LOG=/var/log/demyx
 - WORDPRESS_DOMAIN=domain.tld
 - WORDPRESS_UPLOAD_LIMIT=128M
 - WORDPRESS_PHP_MEMORY=256M
@@ -60,6 +63,9 @@ PHP | /demyx/php.ini<br />/demyx/php-fpm.conf<br />/demyx/docker.conf<br />/demy
 
 - WORDPRESS=true
 - WORDPRESS_CONTAINER=demyx_wp
+- NGINX_ROOT=/demyx
+- NGINX_CONFIG=/etc/demyx
+- NGINX_LOG=/var/log/demyx
 - NGINX_DOMAIN=domain.tld
 - NGINX_UPLOAD_LIMIT=128M
 - NGINX_CACHE=false
@@ -82,6 +88,9 @@ PHP | /demyx/php.ini<br />/demyx/php-fpm.conf<br />/demyx/docker.conf<br />/demy
 - MARIADB_USERNAME=demyx
 - MARIADB_PASSWORD=demyx
 - MARIADB_ROOT_PASSWORD=demyx # mandatory
+- MARIADB_ROOT=/demyx
+- MARIADB_CONFIG=/etc/demyx
+- MARIADB_LOG=/var/log/demyx
 - MARIADB_CHARACTER_SET_SERVER=utf8
 - MARIADB_COLLATION_SERVER=utf8_general_ci
 - MARIADB_DEFAULT_CHARACTER_SET=utf8
@@ -155,26 +164,29 @@ services:
       - "traefik.http.routers.traefik-http.service=api@internal"
       - "traefik.http.routers.traefik-http.entrypoints=http"
       - "traefik.http.routers.traefik-http.middlewares=traefik-redirect"
+      - "traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.traefik-https.rule=Host(`traefik.domain.tld`)"
       - "traefik.http.routers.traefik-https.entrypoints=https"
       - "traefik.http.routers.traefik-https.service=api@internal"
       - "traefik.http.routers.traefik-https.tls.certresolver=demyx"
       - "traefik.http.routers.traefik-https.middlewares=traefik-auth"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1" # Password: demyx
-      - "traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https"
   demyx_db:
     container_name: demyx_db
-    image: demyx/mariadb
+    image: demyx/mariadb:edge
     restart: unless-stopped
     networks:
       - demyx
     volumes:
-      - demyx_db:/var/lib/mysql
+      - demyx_db:/demyx
     environment:
       - MARIADB_DATABASE=demyx
       - MARIADB_USERNAME=demyx
       - MARIADB_PASSWORD=demyx
       - MARIADB_ROOT_PASSWORD=demyx # mandatory
+      - MARIADB_ROOT=/demyx
+      - MARIADB_CONFIG=/etc/demyx
+      - MARIADB_LOG=/var/log/demyx
       - MARIADB_CHARACTER_SET_SERVER=utf8
       - MARIADB_COLLATION_SERVER=utf8_general_ci
       - MARIADB_DEFAULT_CHARACTER_SET=utf8
@@ -205,11 +217,14 @@ services:
     networks:
       - demyx
     volumes:
-      - demyx_wp:/var/www/html
+      - demyx_wp:/demyx
       - demyx_wp_log:/var/log/demyx
     environment:
       - WORDPRESS=true
       - WORDPRESS_CONTAINER=demyx_wp
+      - NGINX_ROOT=/demyx
+      - NGINX_CONFIG=/etc/demyx
+      - NGINX_LOG=/var/log/demyx
       - NGINX_DOMAIN=domain.tld
       - NGINX_UPLOAD_LIMIT=128M
       - NGINX_CACHE=false
@@ -223,10 +238,10 @@ services:
       - "traefik.http.routers.domaintld-http.rule=Host(`domain.tld`) || Host(`www.domain.tld`)"
       - "traefik.http.routers.domaintld-http.entrypoints=http"
       - "traefik.http.routers.domaintld-http.middlewares=domaintld-redirect"
+      - "traefik.http.middlewares.domaintld-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.domaintld-https.rule=Host(`domain.tld`) || Host(`www.domain.tld`)"
       - "traefik.http.routers.domaintld-https.entrypoints=https"
       - "traefik.http.routers.domaintld-https.tls.certresolver=demyx"
-      - "traefik.http.middlewares.domaintld-redirect.redirectscheme.scheme=https"
   demyx_wp:
     container_name: demyx_wp
     image: demyx/wordpress
@@ -236,13 +251,16 @@ services:
     depends_on:
       - demyx_db
     volumes:
-      - demyx_wp:/var/www/html
+      - demyx_wp:/demyx
       - demyx_wp_log:/var/log/demyx
     environment:
       - WORDPRESS_DB_HOST=demyx_db
       - WORDPRESS_DB_NAME=demyx
       - WORDPRESS_DB_USER=demyx
       - WORDPRESS_DB_PASSWORD=demyx
+      - WORDPRESS_ROOT=/demyx
+      - WORDPRESS_CONFIG=/etc/demyx
+      - WORDPRESS_LOG=/var/log/demyx
       - WORDPRESS_DOMAIN=domain.tld
       - WORDPRESS_UPLOAD_LIMIT=128M
       - WORDPRESS_PHP_MEMORY=256M
