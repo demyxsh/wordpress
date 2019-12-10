@@ -22,17 +22,6 @@ CONFIG | /etc/demyx
 ENTRYPOINT | ["dumb-init", "demyx"]
 TIMEZONE | America/Los_Angeles
 
-## Updates & Support
-[![Code Size](https://img.shields.io/github/languages/code-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-[![Repository Size](https://img.shields.io/github/repo-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-[![Watches](https://img.shields.io/github/watchers/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-[![Stars](https://img.shields.io/github/stars/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-[![Forks](https://img.shields.io/github/forks/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-
-- Auto built weekly on Sundays (America/Los_Angeles)
-- Rolling release updates
-- For support: [#demyx](https://webchat.freenode.net/?channel=#demyx)
-
 ## Environment Variables
 ```
 # wordpress
@@ -318,3 +307,14 @@ tokenizer | 1
 xml | 1    
 xmlreader | 1
 zlib | 1
+
+## Updates & Support
+[![Code Size](https://img.shields.io/github/languages/code-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
+[![Repository Size](https://img.shields.io/github/repo-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
+[![Watches](https://img.shields.io/github/watchers/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
+[![Stars](https://img.shields.io/github/stars/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
+[![Forks](https://img.shields.io/github/forks/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
+
+- Auto built weekly on Sundays (America/Los_Angeles)
+- Rolling release updates
+- For support: [#demyx](https://webchat.freenode.net/?channel=#demyx)
