@@ -47,7 +47,7 @@ RUN set -ex; \
 
 # Install additional packages and create demyx user
 RUN set -ex; \
-    apk add --no-cache ed dumb-init tzdata libsodium curl; \
+    apk add --no-cache ed dumb-init tzdata libsodium; \
     \
     addgroup -g 1000 -S demyx; \
     adduser -u 1000 -D -S -G demyx demyx
