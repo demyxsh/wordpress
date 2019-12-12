@@ -52,6 +52,7 @@ TIMEZONE | America/Los_Angeles
 
 - WORDPRESS=true
 - WORDPRESS_CONTAINER=demyx_wp
+- WORDPRESS_CONTAINER_PORT=9000
 - NGINX_ROOT=/demyx
 - NGINX_CONFIG=/etc/demyx
 - NGINX_LOG=/var/log/demyx
@@ -199,8 +200,8 @@ services:
       - MARIADB_TABLE_OPEN_CACHE=64
       - MARIADB_WRITE_BUFFER=2M
       - TZ=America/Los_Angeles
-  demyx_nginx:
-    container_name: demyx_nginx
+  demyx_nx:
+    container_name: demyx_nx
     image: demyx/nginx
     restart: unless-stopped
     networks:
@@ -211,6 +212,7 @@ services:
     environment:
       - WORDPRESS=true
       - WORDPRESS_CONTAINER=demyx_wp
+      - WORDPRESS_CONTAINER_PORT=9000
       - NGINX_ROOT=/demyx
       - NGINX_CONFIG=/etc/demyx
       - NGINX_LOG=/var/log/demyx

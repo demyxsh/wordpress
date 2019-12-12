@@ -11,7 +11,7 @@ WORDPRESS_DB_HOST="${WORDPRESS_DB_HOST:-}"
 
 if [[ ! -d "$WORDPRESS_ROOT"/wp-admin ]]; then
     echo "WordPress is missing, installing now."
-    cp -r /tmp/wordpress/* "$WORDPRESS_ROOT"
+    cp -r "$WORDPRESS_CONFIG"/wordpress/* "$WORDPRESS_ROOT"
 
     if [[ "$WORDPRESS_DB_NAME" && "$WORDPRESS_DB_USER" && "$WORDPRESS_DB_PASSWORD" && "$WORDPRESS_DB_HOST" ]]; then
         mv "$WORDPRESS_ROOT"/wp-config-sample.php "$WORDPRESS_ROOT"/wp-config.php

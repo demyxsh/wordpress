@@ -12,9 +12,20 @@ ENV WORDPRESS_CONFIG=/etc/demyx
 ENV WORDPRESS_LOG=/var/log/demyx
 ENV TZ=America/Los_Angeles
 
+# Configure Demyx
+RUN set -ex; \
+    addgroup -g 1000 -S demyx; \
+    adduser -u 1000 -D -S -G demyx demyx; \
+    \
+    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_ROOT"; \
+    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_CONFIG"; \
+    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_LOG"
+
 # Install php and friends
 RUN set -ex; \
-    apk add --no-cache php7 \
+    apk add --no-cache ed dumb-init libsodium tzdata \
+    \
+    php7 \
     php7-bcmath \
     php7-ctype \
     php7-curl \
@@ -48,21 +59,12 @@ RUN set -ex; \
     \
     ln -s /usr/sbin/php-fpm7 /usr/local/bin/php-fpm
 
-# Install additional packages and create demyx user
-RUN set -ex; \
-    apk add --no-cache ed dumb-init tzdata libsodium; \
-    \
-    addgroup -g 1000 -S demyx; \
-    adduser -u 1000 -D -S -G demyx demyx
-
 # Download latest WordPress
 RUN set -ex; \
-    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_ROOT"; \
-    \
     wget https://wordpress.org/latest.tar.gz -qO /latest.tar.gz; \
-    tar -xzf /latest.tar.gz -C /tmp; \
+    tar -xzf /latest.tar.gz -C "$WORDPRESS_CONFIG"; \
     rm -f /latest.tar.gz; \
-    chown -R demyx:demyx /tmp/wordpress
+    chown -R demyx:demyx "$WORDPRESS_CONFIG"
 
 # Copy files
 COPY --chown=demyx:demyx demyx "$WORDPRESS_CONFIG"
@@ -70,13 +72,9 @@ COPY demyx.sh /usr/local/bin/demyx
 
 # Finalize
 RUN set -ex; \
-    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_LOG"; \
-    \
     ln -sf "$WORDPRESS_CONFIG"/php.ini /etc/php7/php.ini; \
     ln -sf "$WORDPRESS_CONFIG"/www.conf /etc/php7/php-fpm.d/www.conf; \
     ln -s "$WORDPRESS_CONFIG"/docker.conf /etc/php7/php-fpm.d/docker.conf; \
-    \
-    chown -R demyx:demyx "$WORDPRESS_ROOT"; \
     \
     mv "$WORDPRESS_CONFIG"/config.sh /usr/local/bin/demyx-config && chmod +x /usr/local/bin/demyx-config; \
     mv "$WORDPRESS_CONFIG"/install.sh /usr/local/bin/demyx-install && chmod +x /usr/local/bin/demyx-install; \
