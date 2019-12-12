@@ -8,7 +8,18 @@ LABEL sh.demyx.registry https://hub.docker.com/u/demyx
 
 # Set default variables
 ENV WORDPRESS_ROOT=/demyx
+ENV WORDPRESS_CONFIG=/etc/demyx
+ENV WORDPRESS_LOG=/var/log/demyx
 ENV TZ=America/Los_Angeles
+
+# Configure Demyx
+RUN set -ex; \
+    addgroup -g 1000 -S demyx; \
+    adduser -u 1000 -D -S -G demyx demyx; \
+    \
+    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_ROOT"; \
+    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_CONFIG"; \
+    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_LOG"
 
 # Install packages
 RUN set -ex; \
@@ -46,11 +57,6 @@ RUN set -ex; \
     php7-zip \
     php7-zlib \
     tzdata
-
-# Create demyx user
-RUN set -ex; \
-    addgroup -g 1000 -S demyx; \
-    adduser -u 1000 -D -S -G demyx demyx
 
 # Install wp-cli
 RUN set -ex; \
