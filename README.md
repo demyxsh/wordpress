@@ -4,7 +4,7 @@
 [![Architecture](https://img.shields.io/badge/linux-amd64-important?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Alpine](https://img.shields.io/badge/alpine-3.10.3-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![PHP](https://img.shields.io/badge/php-7.3.11-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![WordPress](https://img.shields.io/badge/wordpress-5.3-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![WordPress](https://img.shields.io/badge/wordpress-5.3.1-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Bedrock](https://img.shields.io/badge/bedrock-1.12.8-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![wp-cli](https://img.shields.io/badge/wp--cli-2.4.0-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Buy Me A Coffee](https://img.shields.io/badge/buy_me_coffee-$5-informational?style=flat&color=blue)](https://www.buymeacoffee.com/VXqkQK5tb)
