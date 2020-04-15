@@ -33,108 +33,84 @@ TIMEZONE | America/Los_Angeles
 - WORDPRESS_CONTAINER env must match the container name in your docker-compose.yml
 
 ```
-# mariadb
-
-- MARIADB_DATABASE=demyx
-- MARIADB_USERNAME=demyx
-- MARIADB_PASSWORD=demyx
-- MARIADB_ROOT_PASSWORD=demyx # mandatory
-- MARIADB_ROOT=/demyx
-- MARIADB_CONFIG=/etc/demyx
-- MARIADB_LOG=/var/log/demyx
-- MARIADB_CHARACTER_SET_SERVER=utf8
-- MARIADB_COLLATION_SERVER=utf8_general_ci
-- MARIADB_DEFAULT_CHARACTER_SET=utf8
-- MARIADB_INNODB_BUFFER_POOL_SIZE=16M
-- MARIADB_INNODB_DATA_FILE_PATH=ibdata1:10M:autoextend
-- MARIADB_INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
-- MARIADB_INNODB_LOCK_WAIT_TIMEOUT=50
-- MARIADB_INNODB_LOG_BUFFER_SIZE=8M
-- MARIADB_INNODB_LOG_FILE_SIZE=5M
-- MARIADB_INNODB_USE_NATIVE_AIO=1
-- MARIADB_KEY_BUFFER_SIZE=20M
-- MARIADB_MAX_ALLOWED_PACKET=16M
-- MARIADB_MAX_CONNECTIONS=151
-- MARIADB_MYISAM_SORT_BUFFER_SIZE=8M
-- MARIADB_NET_BUFFER_SIZE=8K
-- MARIADB_READ_BUFFER=2M
-- MARIADB_READ_BUFFER_SIZE=256K
-- MARIADB_READ_RND_BUFFER_SIZE=512K
-- MARIADB_SERVER_ID=1
-- MARIADB_SORT_BUFFER_SIZE=20M
-- MARIADB_TABLE_OPEN_CACHE=64
-- MARIADB_WRITE_BUFFER=2M
-- TZ=America/Los_Angeles
-```
-
-## Usage
-- Configured for remote VPS
-- Ports 80 and 443 must be open when using Traefik
-- TLS/SSL enabled by default
-
-```
 # Demyx
 # https://demyx.sh
 #
-# Be sure to change all the domain.tld domains and credentials
+# This docker-compose.yml is designed for VPS use with SSL/TLS first.
+# Traefik requires no additional configurations and is ready to go.
+# Be sure to change all the domain.tld domains and credentials before running docker-compose up -d.
 #
 version: "3.7"
 services:
-  traefik:
-    image: traefik
-    container_name: demyx_traefik
+  demyx_socket:
+    # Uncomment below if your host OS is CentOS/RHEL/Fedora
+    #privileged: true
+    image: demyx/docker-socket-proxy
+    container_name: demyx_socket
     restart: unless-stopped
     networks:
-      - demyx
-    ports:
-      - 80:80
-      - 443:443
+      - demyx_socket
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - demyx_traefik:/demyx
     environment:
+      - CONTAINERS=1
+  demyx_traefik:
+    image: demyx/traefik
+    container_name: demyx_traefik
+    restart: unless-stopped
+    depends_on: 
+      - demyx_socket
+    networks:
+      - demyx
+      - demyx_socket
+    ports:
+      - 80:8081
+      - 443:8082
+    volumes:
+      - demyx_traefik:/demyx
+      - demyx_log:/var/log/demyx
+    environment:
+      - TRAEFIK_PROVIDERS_DOCKER_ENDPOINT=tcp://demyx_socket:2375
       - TRAEFIK_API=true
       - TRAEFIK_PROVIDERS_DOCKER=true
       - TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT=false
-      - TRAEFIK_ENTRYPOINTS_HTTP_ADDRESS=:80
-      - TRAEFIK_ENTRYPOINTS_HTTPS_ADDRESS=:443
+      # Uncomment if using Cloudflare to get client real IP
+      #- TRAEFIK_ENTRYPOINTS_HTTPS_FORWARDEDHEADERS_TRUSTEDIPS=173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/12,172.64.0.0/13,131.0.72.0/22
       - TRAEFIK_CERTIFICATESRESOLVERS_DEMYX_ACME_HTTPCHALLENGE=true
       - TRAEFIK_CERTIFICATESRESOLVERS_DEMYX_ACME_HTTPCHALLENGE_ENTRYPOINT=http
       - TRAEFIK_CERTIFICATESRESOLVERS_DEMYX_ACME_EMAIL=info@domain.tld
       - TRAEFIK_CERTIFICATESRESOLVERS_DEMYX_ACME_STORAGE=/demyx/acme.json
       - TRAEFIK_LOG=true
       - TRAEFIK_LOG_LEVEL=INFO
-      - TRAEFIK_LOG_FILEPATH=/demyx/error.log
+      - TRAEFIK_LOG_FILEPATH=/var/log/demyx/traefik.error.log
       - TRAEFIK_ACCESSLOG=true
-      - TRAEFIK_ACCESSLOG_FILEPATH=/demyx/access.log
+      - TRAEFIK_ACCESSLOG_FILEPATH=/var/log/demyx/traefik.access.log
       - TZ=America/Los_Angeles
     labels:
-      # traefik https://traefik.domain.tld
+      # Traefik Dashboard - https://traefik.domain.tld
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik-http.rule=Host(`traefik.domain.tld`)"
+      - "traefik.http.routers.traefik-http.rule=Host(`traefik.domain.tld`)" 
+      - "traefik.http.routers.traefik-http.entrypoints=https"
       - "traefik.http.routers.traefik-http.service=api@internal"
-      - "traefik.http.routers.traefik-http.entrypoints=http"
-      - "traefik.http.routers.traefik-http.middlewares=traefik-redirect"
-      - "traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.traefik-https.rule=Host(`traefik.domain.tld`)"
-      - "traefik.http.routers.traefik-https.entrypoints=https"
-      - "traefik.http.routers.traefik-https.service=api@internal"
-      - "traefik.http.routers.traefik-https.tls.certresolver=demyx"
-      - "traefik.http.routers.traefik-https.middlewares=traefik-auth"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1" # Password: demyx
+      - "traefik.http.routers.traefik-http.tls.certresolver=demyx"
+      - "traefik.http.routers.traefik-http.middlewares=traefik-http-auth"
+      - "traefik.http.middlewares.traefik-http-auth.basicauth.users=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1" # Password: demyx
   demyx_db:
     container_name: demyx_db
-    image: demyx/mariadb:edge
+    image: demyx/mariadb
     restart: unless-stopped
+    depends_on:
+      - demyx_traefik
     networks:
       - demyx
     volumes:
       - demyx_db:/demyx
+      - demyx_log:/var/log/demyx
     environment:
       - MARIADB_DATABASE=demyx
       - MARIADB_USERNAME=demyx
       - MARIADB_PASSWORD=demyx
-      - MARIADB_ROOT_PASSWORD=demyx # mandatory
+      - MARIADB_ROOT_PASSWORD=demyx # Mandatory
       - MARIADB_ROOT=/demyx
       - MARIADB_CONFIG=/etc/demyx
       - MARIADB_LOG=/var/log/demyx
@@ -148,9 +124,10 @@ services:
       - MARIADB_INNODB_LOG_BUFFER_SIZE=8M
       - MARIADB_INNODB_LOG_FILE_SIZE=5M
       - MARIADB_INNODB_USE_NATIVE_AIO=1
+      - MARIADB_INNODB_FILE_PER_TABLE=1
       - MARIADB_KEY_BUFFER_SIZE=20M
       - MARIADB_MAX_ALLOWED_PACKET=16M
-      - MARIADB_MAX_CONNECTIONS=151
+      - MARIADB_MAX_CONNECTIONS=1000
       - MARIADB_MYISAM_SORT_BUFFER_SIZE=8M
       - MARIADB_NET_BUFFER_SIZE=8K
       - MARIADB_READ_BUFFER=2M
@@ -165,6 +142,8 @@ services:
     container_name: demyx_nx
     image: demyx/nginx
     restart: unless-stopped
+    depends_on:
+      - demyx_wp
     networks:
       - demyx
     volumes:
@@ -198,6 +177,8 @@ services:
     container_name: demyx_wp
     image: demyx/wordpress
     restart: unless-stopped
+    depends_on:
+      - demyx_db
     networks:
       - demyx
     depends_on:
@@ -219,25 +200,27 @@ services:
       - WORDPRESS_PHP_MAX_EXECUTION_TIME=300
       - WORDPRESS_PHP_OPCACHE=true
       - WORDPRESS_PHP_PM=ondemand
-      - WORDPRESS_PHP_PM_MAX_CHILDREN=100
-      - WORDPRESS_PHP_PM_START_SERVERS=10
+      - WORDPRESS_PHP_PM_MAX_CHILDREN=25
+      - WORDPRESS_PHP_PM_START_SERVERS=5
       - WORDPRESS_PHP_PM_MIN_SPARE_SERVERS=5
-      - WORDPRESS_PHP_PM_MAX_SPARE_SERVERS=25
-      - WORDPRESS_PHP_PM_PROCESS_IDLE_TIMEOUT=5s
-      - WORDPRESS_PHP_PM_MAX_REQUESTS=500
+      - WORDPRESS_PHP_PM_MAX_SPARE_SERVERS=20
+      - WORDPRESS_PHP_PM_PROCESS_IDLE_TIMEOUT=3s
+      - WORDPRESS_PHP_PM_MAX_REQUESTS=25000
       - TZ=America/Los_Angeles
 volumes:
-  demyx_wp:
-    name: demyx_wp
-  demyx_wp_log:
-    name: demyx_wp_log
   demyx_db:
     name: demyx_db
+  demyx_log:
+    name: demyx_log
   demyx_traefik:
     name: demyx_traefik
+  demyx_wp:
+    name: demyx_wp
 networks:
   demyx:
     name: demyx
+  demyx_socket:
+    name: demyx_socket
 ```
 
 ## Extensions
