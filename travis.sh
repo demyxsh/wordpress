@@ -6,25 +6,25 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # Get versions
-DEMYX_ALPINE_VERSION="$(docker exec "$DEMYX_REPOSITORY" cat /etc/os-release | grep VERSION_ID | cut -c 12- | sed -e 's/\r//g')"
-DEMYX_PHP_VERSION="$(docker exec "$DEMYX_REPOSITORY" php -v | grep cli | awk -F '[ ]' '{print $2}' | sed -e 's/\r//g')"
-DEMYX_WP_VERSION="$(docker run --rm --volumes-from="$DEMYX_REPOSITORY" --network container:"$DEMYX_REPOSITORY" demyx/"$DEMYX_REPOSITORY":cli core version | sed -e 's/\r//g')"
-DEMYX_BEDROCK_VERSION="$(curl -sL https://api.github.com/repos/roots/bedrock/releases/latest | grep '"tag_name"' | head -n1 | awk -F '[:]' '{print $2}' | sed -e 's/"//g' | sed -e 's/,//g' | sed -e 's/ //g' | sed -e 's/\r//g')"
-DEMYX_WPCLI_VERSION="$(docker run --rm demyx/"$DEMYX_REPOSITORY":cli --version | awk -F '[ ]' '{print $2}' | sed -e 's/\r//g')"
+DEMYX_WORDPRESS_ALPINE_VERSION="$(docker exec "$DEMYX_REPOSITORY" cat /etc/os-release | grep VERSION_ID | cut -c 12- | sed -e 's/\r//g')"
+DEMYX_WORDPRESS_PHP_VERSION="$(docker exec "$DEMYX_REPOSITORY" php -v | grep cli | awk -F '[ ]' '{print $2}' | sed -e 's/\r//g')"
+DEMYX_WORDPRESS_VERSION="$(docker run --rm --volumes-from="$DEMYX_REPOSITORY" --network container:"$DEMYX_REPOSITORY" demyx/"$DEMYX_REPOSITORY":cli core version | sed -e 's/\r//g')"
+DEMYX_WORDPRESS_BEDROCK_VERSION="$(curl -sL https://api.github.com/repos/roots/bedrock/releases/latest | grep '"tag_name"' | head -n1 | awk -F '[:]' '{print $2}' | sed -e 's/"//g' | sed -e 's/,//g' | sed -e 's/ //g' | sed -e 's/\r//g')"
+DEMYX_WORDPRESS_CLI_VERSION="$(docker run --rm demyx/"$DEMYX_REPOSITORY":cli --version | awk -F '[ ]' '{print $2}' | sed -e 's/\r//g')"
 
 # Replace versions
-sed -i "s|alpine-.*.-informational|alpine-${DEMYX_ALPINE_VERSION}-informational|g" README.md
-sed -i "s|php-.*.-informational|php-${DEMYX_PHP_VERSION}-informational|g" README.md
-sed -i "s|wordpress-.*.-informational|wordpress-${DEMYX_WP_VERSION}-informational|g" README.md
-sed -i "s|bedrock-.*.-informational|bedrock-${DEMYX_BEDROCK_VERSION}-informational|g" README.md
-sed -i "s|wp--cli-.*.-informational|wp--cli-${DEMYX_WPCLI_VERSION}-informational|g" README.md
+sed -i "s|alpine-.*.-informational|alpine-${DEMYX_WORDPRESS_ALPINE_VERSION}-informational|g" README.md
+sed -i "s|php-.*.-informational|php-${DEMYX_WORDPRESS_PHP_VERSION}-informational|g" README.md
+sed -i "s|wordpress-.*.-informational|wordpress-${DEMYX_WORDPRESS_VERSION}-informational|g" README.md
+sed -i "s|bedrock-.*.-informational|bedrock-${DEMYX_WORDPRESS_BEDROCK_VERSION}-informational|g" README.md
+sed -i "s|wp--cli-.*.-informational|wp--cli-${DEMYX_WORDPRESS_CLI_VERSION}-informational|g" README.md
 
 # Echo version to file
-echo "DEMYX_ALPINE_VERSION=$DEMYX_ALPINE_VERSION
-DEMYX_PHP_VERSION=$DEMYX_PHP_VERSION
-DEMYX_WP_VERSION=$DEMYX_WP_VERSION
-DEMYX_BEDROCK_VERSION=$DEMYX_BEDROCK_VERSION
-DEMYX_WPCLI_VERSION=$DEMYX_WPCLI_VERSION" > VERSION
+echo "DEMYX_WORDPRESS_ALPINE_VERSION=$DEMYX_WORDPRESS_ALPINE_VERSION
+DEMYX_WORDPRESS_PHP_VERSION=$DEMYX_WORDPRESS_PHP_VERSION
+DEMYX_WORDPRESS_VERSION=$DEMYX_WORDPRESS_VERSION
+DEMYX_WORDPRESS_BEDROCK_VERSION=$DEMYX_WORDPRESS_BEDROCK_VERSION
+DEMYX_WORDPRESS_CLI_VERSION=$DEMYX_WORDPRESS_CLI_VERSION" > VERSION
 
 # Push back to GitHub
 git config --global user.email "travis@travis-ci.org"
@@ -32,7 +32,7 @@ git config --global user.name "Travis CI"
 git remote set-url origin https://${DEMYX_GITHUB_TOKEN}@github.com/demyxco/"$DEMYX_REPOSITORY".git
 # Commit VERSION first
 git add VERSION
-git commit -m "DEMYX_ALPINE_VERSION $DEMYX_ALPINE_VERSION, DEMYX_PHP_VERSION $DEMYX_PHP_VERSION, DEMYX_WP_VERSION $DEMYX_WP_VERSION, DEMYX_BEDROCK_VERSION $DEMYX_BEDROCK_VERSION, DEMYX_WPCLI_VERSION $DEMYX_WPCLI_VERSION"
+git commit -m "DEMYX_WORDPRESS_ALPINE_VERSION $DEMYX_WORDPRESS_ALPINE_VERSION, DEMYX_WORDPRESS_PHP_VERSION $DEMYX_WORDPRESS_PHP_VERSION, DEMYX_WORDPRESS_VERSION $DEMYX_WORDPRESS_VERSION, DEMYX_WORDPRESS_BEDROCK_VERSION $DEMYX_WORDPRESS_BEDROCK_VERSION, DEMYX_WORDPRESS_CLI_VERSION $DEMYX_WORDPRESS_CLI_VERSION"
 git push origin HEAD:master
 # Commit the rest
 git add .
