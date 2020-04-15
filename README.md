@@ -22,49 +22,10 @@ CONFIG | /etc/demyx
 ENTRYPOINT | ["demyx-entrypoint"]
 TIMEZONE | America/Los_Angeles
 
-## Environment Variables
-```
-# wordpress
-
-- WORDPRESS_DB_HOST=demyx_db
-- WORDPRESS_DB_NAME=demyx
-- WORDPRESS_DB_USER=demyx
-- WORDPRESS_DB_PASSWORD=demyx
-- WORDPRESS_ROOT=/demyx
-- WORDPRESS_CONFIG=/etc/demyx
-- WORDPRESS_LOG=/var/log/demyx
-- WORDPRESS_DOMAIN=domain.tld
-- WORDPRESS_UPLOAD_LIMIT=128M
-- WORDPRESS_PHP_MEMORY=256M
-- WORDPRESS_PHP_MAX_EXECUTION_TIME=300
-- WORDPRESS_PHP_OPCACHE=true
-- WORDPRESS_PHP_PM=ondemand
-- WORDPRESS_PHP_PM_MAX_CHILDREN=100
-- WORDPRESS_PHP_PM_START_SERVERS=10
-- WORDPRESS_PHP_PM_MIN_SPARE_SERVERS=5
-- WORDPRESS_PHP_PM_MAX_SPARE_SERVERS=25
-- WORDPRESS_PHP_PM_PROCESS_IDLE_TIMEOUT=5s
-- WORDPRESS_PHP_PM_MAX_REQUESTS=500
-- TZ=America/Los_Angeles
-```
-```
-# nginx
-
-- WORDPRESS=true
-- WORDPRESS_CONTAINER=demyx_wp
-- WORDPRESS_CONTAINER_PORT=9000
-- NGINX_ROOT=/demyx
-- NGINX_CONFIG=/etc/demyx
-- NGINX_LOG=/var/log/demyx
-- NGINX_DOMAIN=domain.tld
-- NGINX_UPLOAD_LIMIT=128M
-- NGINX_CACHE=false
-- NGINX_RATE_LIMIT=false
-- NGINX_XMLRPC=false
-- NGINX_BASIC_AUTH=demyx:$$apr1$$EqJj89Yw$$WLsBIjCILtBGjHppQ76YT1
-- TZ=America/Los_Angeles
-```
-
+## Usage
+- Configured for remote VPS
+- Ports 80 and 443 must be open when using Traefik
+- TLS/SSL enabled by default
 - Install the [Nginx Helper](https://wordpress.org/plugins/nginx-helper/) plugin if NGINX_CACHE is true
 - To generate htpasswd: `docker run -it --rm demyx/utilities "htpasswd -nb demyx demyx"`
 - NGINX_BASIC_AUTH must have double dollar signs ($$)
