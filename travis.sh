@@ -8,7 +8,7 @@ IFS=$'\n\t'
 # Get versions
 DEMYX_ALPINE_VERSION="$(docker exec "$DEMYX_REPOSITORY" cat /etc/os-release | grep VERSION_ID | cut -c 12- | sed -e 's/\r//g')"
 DEMYX_PHP_VERSION="$(docker exec "$DEMYX_REPOSITORY" php -v | grep cli | awk -F '[ ]' '{print $2}' | sed -e 's/\r//g')"
-DEMYX_WP_VERSION="$(docker run --rm --volumes-from=demyx_wp --network container:demyx_wp demyx/"$DEMYX_REPOSITORY":cli core version | sed -e 's/\r//g')"
+DEMYX_WP_VERSION="$(docker run --rm --volumes-from="$DEMYX_REPOSITORY" --network container:"$DEMYX_REPOSITORY" demyx/"$DEMYX_REPOSITORY":cli core version | sed -e 's/\r//g')"
 DEMYX_BEDROCK_VERSION="$(curl -sL https://api.github.com/repos/roots/bedrock/releases/latest | grep '"tag_name"' | head -n1 | awk -F '[:]' '{print $2}' | sed -e 's/"//g' | sed -e 's/,//g' | sed -e 's/ //g' | sed -e 's/\r//g')"
 DEMYX_WPCLI_VERSION="$(docker run --rm demyx/"$DEMYX_REPOSITORY":cli --version | awk -F '[ ]' '{print $2}' | sed -e 's/\r//g')"
 
