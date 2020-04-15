@@ -1,16 +1,28 @@
-FROM alpine
+FROM php:fpm-alpine
 
-LABEL sh.demyx.image demyx/wordpress
-LABEL sh.demyx.maintainer Demyx <info@demyx.sh>
-LABEL sh.demyx.url https://demyx.sh
-LABEL sh.demyx.github https://github.com/demyxco
-LABEL sh.demyx.registry https://hub.docker.com/u/demyx
+LABEL sh.demyx.image        demyx/wordpress
+LABEL sh.demyx.maintainer   Demyx <info@demyx.sh>
+LABEL sh.demyx.url          https://demyx.sh
+LABEL sh.demyx.github       https://github.com/demyxco
+LABEL sh.demyx.registry     https://hub.docker.com/u/demyx
 
 # Set default variables
-ENV WORDPRESS_ROOT=/demyx
-ENV WORDPRESS_CONFIG=/etc/demyx
-ENV WORDPRESS_LOG=/var/log/demyx
-ENV TZ=America/Los_Angeles
+ENV WORDPRESS_ROOT                              /demyx
+ENV WORDPRESS_CONFIG                            /etc/demyx
+ENV WORDPRESS_LOG                               /var/log/demyx
+ENV WORDPRESS_DOMAIN                            localhost
+ENV WORDPRESS_UPLOAD_LIMIT                      128M
+ENV WORDPRESS_PHP_MEMORY                        256M
+ENV WORDPRESS_PHP_MAX_EXECUTION_TIME            300
+ENV WORDPRESS_PHP_OPCACHE                       true
+ENV WORDPRESS_PHP_PM                            ondemand
+ENV WORDPRESS_PHP_PM_MAX_CHILDREN               25
+ENV WORDPRESS_PHP_PM_START_SERVERS              5
+ENV WORDPRESS_PHP_PM_MIN_SPARE_SERVERS          5
+ENV WORDPRESS_PHP_PM_MAX_SPARE_SERVERS          20
+ENV WORDPRESS_PHP_PM_PROCESS_IDLE_TIMEOUT       3s
+ENV WORDPRESS_PHP_PM_MAX_REQUESTS               25000
+ENV TZ                                          America/Los_Angeles
 
 # Configure Demyx
 RUN set -ex; \
@@ -21,43 +33,16 @@ RUN set -ex; \
     install -d -m 0755 -o demyx -g demyx "$WORDPRESS_CONFIG"; \
     install -d -m 0755 -o demyx -g demyx "$WORDPRESS_LOG"
 
-# Install php and friends
+# Install php extensions
 RUN set -ex; \
-    apk add --no-cache ed dumb-init libsodium tzdata \
-    \
-    php7 \
-    php7-bcmath \
-    php7-ctype \
-    php7-curl \
-    php7-dom \
-    php7-exif \
-    php7-fileinfo \
-    php7-fpm \
-    php7-ftp \
-    php7-gd \
-    php7-iconv \
-    php7-imagick \
-    php7-json \
-    php7-mbstring \
-    php7-mysqli \
-    php7-opcache \
-    php7-openssl \
-    php7-pecl-ssh2 \
-    php7-phar \
-    php7-posix \
-    php7-session \
-    php7-simplexml \
-    php7-soap \
-    php7-sodium \
-    php7-sockets \
-    php7-tokenizer \
-    php7-xml \
-    php7-xmlreader \
-    php7-xmlwriter \
-    php7-zip \
-    php7-zlib; \
-    \
-    ln -s /usr/sbin/php-fpm7 /usr/local/bin/php-fpm
+    wget https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -qO /usr/local/bin/install-php-extensions; \
+    chmod uga+x /usr/local/bin/install-php-extensions; \
+    sync; \
+    install-php-extensions exif gd imagick mysqli opcache pdo_mysql ssh2 sockets zip 
+
+# Main packages
+RUN set -ex; \
+    apk add --no-cache ed dumb-init tzdata
 
 # Download latest WordPress
 RUN set -ex; \
@@ -66,20 +51,32 @@ RUN set -ex; \
     rm -f /latest.tar.gz; \
     chown -R demyx:demyx "$WORDPRESS_CONFIG"
 
-# Copy files
-COPY --chown=demyx:demyx demyx "$WORDPRESS_CONFIG"
-COPY demyx.sh /usr/local/bin/demyx
+# Copy source
+COPY --chown=demyx:demyx src "$WORDPRESS_CONFIG"
 
 # Finalize
 RUN set -ex; \
-    ln -sf "$WORDPRESS_CONFIG"/php.ini /etc/php7/php.ini; \
-    ln -sf "$WORDPRESS_CONFIG"/www.conf /etc/php7/php-fpm.d/www.conf; \
-    ln -s "$WORDPRESS_CONFIG"/docker.conf /etc/php7/php-fpm.d/docker.conf; \
+    # Remove php-fpm configs
+    rm -f /usr/local/etc/php-fpm.d/*; \
     \
-    mv "$WORDPRESS_CONFIG"/config.sh /usr/local/bin/demyx-config && chmod +x /usr/local/bin/demyx-config; \
-    mv "$WORDPRESS_CONFIG"/install.sh /usr/local/bin/demyx-install && chmod +x /usr/local/bin/demyx-install; \
+    # Use our php-fpm configs
+    ln -s "$WORDPRESS_CONFIG"/php.ini /usr/local/etc/php/php.ini; \
+    ln -s "$WORDPRESS_CONFIG"/www.conf /usr/local/etc/php-fpm.d/www.conf; \
+    ln -s "$WORDPRESS_CONFIG"/docker.conf /usr/local/etc/php-fpm.d/docker.conf; \
     \
-    chmod +x /usr/local/bin/demyx; \
+    # demyx-config
+    chmod +x "$WORDPRESS_CONFIG"/config.sh; \
+    mv "$WORDPRESS_CONFIG"/config.sh /usr/local/bin/demyx-config; \
+    \
+    # demyx-install
+    chmod +x "$WORDPRESS_CONFIG"/install.sh; \
+    mv "$WORDPRESS_CONFIG"/install.sh /usr/local/bin/demyx-install; \
+    \
+    # demyx-entrypoint
+    chmod +x "$WORDPRESS_CONFIG"/entrypoint.sh; \
+    mv "$WORDPRESS_CONFIG"/entrypoint.sh /usr/local/bin/demyx-entrypoint; \
+    \
+    # Reset permissions
     chown -R root:root /usr/local/bin
 
 EXPOSE 9000
@@ -88,4 +85,4 @@ WORKDIR "$WORDPRESS_ROOT"
 
 USER demyx
 
-ENTRYPOINT ["dumb-init", "demyx"]
+ENTRYPOINT ["demyx-entrypoint"]

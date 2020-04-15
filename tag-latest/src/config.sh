@@ -4,7 +4,7 @@
 set -euo pipefail
 
 # Default variables
-WORDPRESS_PHP_OPCACHE="${WORDPRESS_PHP_OPCACHE:-true}"
+WORDPRESS_PHP_OPCACHE="$WORDPRESS_PHP_OPCACHE"
 
 # PHP opcache
 if [[ "$WORDPRESS_PHP_OPCACHE" = off || "$WORDPRESS_PHP_OPCACHE" = false ]]; then
@@ -15,16 +15,16 @@ fi
 # Generate www.conf
 echo "[${WORDPRESS_DOMAIN:-www}]
 listen                      = 9000
-pm                          = ${WORDPRESS_PHP_PM:-ondemand}
-pm.max_children             = ${WORDPRESS_PHP_PM_MAX_CHILDREN:-100}
-pm.start_servers            = ${WORDPRESS_PHP_PM_START_SERVERS:-10}
-pm.min_spare_servers        = ${WORDPRESS_PHP_PM_MIN_SPARE_SERVERS:-5}
-pm.max_spare_servers        = ${WORDPRESS_PHP_PM_MAX_SPARE_SERVERS:-25}
-pm.process_idle_timeout     = ${WORDPRESS_PHP_PM_PROCESS_IDLE_TIMEOUT:-5s}
-pm.max_requests             = ${WORDPRESS_PHP_PM_MAX_REQUESTS:-500}
+pm                          = $WORDPRESS_PHP_PM
+pm.max_children             = $WORDPRESS_PHP_PM_MAX_CHILDREN
+pm.start_servers            = $WORDPRESS_PHP_PM_START_SERVERS
+pm.min_spare_servers        = $WORDPRESS_PHP_PM_MIN_SPARE_SERVERS
+pm.max_spare_servers        = $WORDPRESS_PHP_PM_MAX_SPARE_SERVERS
+pm.process_idle_timeout     = $WORDPRESS_PHP_PM_PROCESS_IDLE_TIMEOUT
+pm.max_requests             = $WORDPRESS_PHP_PM_MAX_REQUESTS
 chdir                       = $WORDPRESS_ROOT
 catch_workers_output        = yes
-php_admin_value[error_log]  = /var/log/demyx/${WORDPRESS_DOMAIN:-demyx}.error.log
+php_admin_value[error_log]  = /var/log/demyx/${WORDPRESS_DOMAIN}.error.log
 " > "$WORDPRESS_CONFIG"/www.conf
 
 # Generate docker.conf
@@ -34,7 +34,7 @@ error_log = /proc/self/fd/2
 ; https://github.com/docker-library/php/pull/725#issuecomment-443540114
 log_limit = 8192
 
-[${WORDPRESS_DOMAIN:-www}]
+[${WORDPRESS_DOMAIN}]
 ; if we send this to /proc/self/fd/1, it never appears
 access.log = /proc/self/fd/2
 
@@ -59,10 +59,10 @@ disable_functions = pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexi
 disable_classes =
 zend.enable_gc = On
 expose_php = Off
-max_execution_time = ${WORDPRESS_PHP_MAX_EXECUTION_TIME:-300}
+max_execution_time = $WORDPRESS_PHP_MAX_EXECUTION_TIME
 max_input_vars = 20000
 max_input_time = 600
-memory_limit = ${WORDPRESS_PHP_MEMORY:-256M}
+memory_limit = $WORDPRESS_PHP_MEMORY
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
 display_errors = Off
 display_startup_errors = Off
@@ -76,7 +76,7 @@ variables_order = \"GPCS\"
 request_order = \"GP\"
 register_argc_argv = Off
 auto_globals_jit = On
-post_max_size = ${WORDPRESS_UPLOAD_LIMIT:-128M}
+post_max_size = $WORDPRESS_UPLOAD_LIMIT
 auto_prepend_file =
 auto_append_file =
 default_mimetype = \"text/html\"
@@ -85,17 +85,20 @@ doc_root =
 user_dir =
 enable_dl = Off
 file_uploads = On
-upload_max_filesize = ${WORDPRESS_UPLOAD_LIMIT:-128M}
+upload_max_filesize = $WORDPRESS_UPLOAD_LIMIT
 max_file_uploads = 20
 allow_url_fopen = On
 allow_url_include = Off
 default_socket_timeout = 60
+upload_tmp_dir = /tmp
+sendmail_path = 
 
 [CLI Server]
 cli_server.color = On
 
 [Date]
-date.timezone = ${TZ:-America/Los_Angeles}
+date.timezone = $TZ
+
 [filter]
 
 [iconv]
@@ -223,7 +226,7 @@ opcache.max_accelerated_files=10000
 opcache.max_wasted_percentage=10
 opcache.memory_consumption=256
 opcache.save_comments=1
-opcache.revalidate_freq=60
+opcache.revalidate_freq=0
 opcache.validate_timestamps=1
 opcache.consistency_checks=0
 
