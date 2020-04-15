@@ -19,6 +19,13 @@ sed -i "s|wordpress-.*.-informational|wordpress-${DEMYX_WP_VERSION}-informationa
 sed -i "s|bedrock-.*.-informational|bedrock-${DEMYX_BEDROCK_VERSION}-informational|g" README.md
 sed -i "s|wp--cli-.*.-informational|wp--cli-${DEMYX_WPCLI_VERSION}-informational|g" README.md
 
+# Echo version to file
+echo "DEMYX_ALPINE_VERSION=$DEMYX_ALPINE_VERSION
+DEMYX_PHP_VERSION=$DEMYX_PHP_VERSION
+DEMYX_WP_VERSION=$DEMYX_WP_VERSION
+DEMYX_BEDROCK_VERSION=$DEMYX_BEDROCK_VERSION
+DEMYX_WPCLI_VERSION=$DEMYX_WPCLI_VERSION" > VERSION
+
 # Push back to GitHub
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
