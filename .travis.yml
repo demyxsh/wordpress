@@ -10,26 +10,24 @@ services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.24.1 DEMYX_USERNAME=demyx DEMYX_REPOSITORY=wordpress
+  - DEMYX_USERNAME=demyx DEMYX_REPOSITORY=wordpress
 
 before_install:
-  - sudo apt-get install jq
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
   - docker pull alpine
+  - docker pull demyx/nginx
   - docker pull demyx/mariadb
-  - docker pull traefik
+  - docker pull demyx/utilities
+  - docker network create demyx
 
 script:
   - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY" tag-latest
   - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY":bedrock tag-bedrock
   - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY":cli tag-cli
-  - docker-compose up -d
+  - docker run -d --name=demyx_db --network=demyx -e MARIADB_DATABASE=demyx -e MARIADB_USERNAME=demyx -e MARIADB_PASSWORD=demyx -e MARIADB_ROOT_PASSWORD=demyx demyx/mariadb
+  - docker run -d --name="$DEMYX_REPOSITORY" --network=demyx -v demyx_wp:/demyx -e WORDPRESS_DB_HOST=demyx_db -e WORDPRESS_DB_NAME=demyx -e WORDPRESS_DB_USER=demyx -e WORDPRESS_DB_PASSWORD=demyx demyx/"$DEMYX_REPOSITORY"
   - sleep 5
-  - docker run --rm --volumes-from demyx_wp --network container:demyx_wp demyx/"$DEMYX_REPOSITORY":cli core install --url=http://domain.tld --title=demyx --admin_user=demyx --admin_password=demyx --admin_email=info@domain.tld --skip-email
-  - docker run --rm --volumes-from demyx_wp --network container:demyx_wp demyx/"$DEMYX_REPOSITORY":cli core is-installed
+  - docker run --network=demyx --volumes-from="$DEMYX_REPOSITORY" --workdir=/demyx demyx/"$DEMYX_REPOSITORY":cli core install --url=http://localhost --title=demyx --admin_user=demyx --admin_password=demyx --admin_email=info@domain.tld --skip-email
+  - docker run -dit --name=demyx_nx --network=demyx -v demyx_wp:/demyx -e WORDPRESS=true -e WORDPRESS_CONTAINER="$DEMYX_REPOSITORY" -e WORDPRESS_CONTAINER_PORT=9000 -e NGINX_DOMAIN=localhost demyx/nginx
 
 after_success:
   - echo "$DEMYX_PASSWORD" | docker login -u "$DEMYX_USERNAME" --password-stdin
