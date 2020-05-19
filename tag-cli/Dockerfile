@@ -21,14 +21,16 @@ RUN set -ex; \
     install -d -m 0755 -o demyx -g demyx "$WORDPRESS_CONFIG"; \
     install -d -m 0755 -o demyx -g demyx "$WORDPRESS_LOG"
 
-# Install package(s) and php extensions
+# Install php extensions
 RUN set -ex; \
     wget https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -qO /usr/local/bin/install-php-extensions; \
     chmod uga+x /usr/local/bin/install-php-extensions; \
     sync; \
-    install-php-extensions exif gd imagick mysqli opcache pdo_mysql ssh2 sockets zip; \
-    \
-    apk add --no-cache tzdata
+    install-php-extensions exif gd imagick mysqli opcache pdo_mysql ssh2 sockets zip
+
+# Install packages
+RUN set -ex; \
+    apk add --no-cache mariadb-client tzdata
 
 # Install wp-cli
 RUN set -ex; \

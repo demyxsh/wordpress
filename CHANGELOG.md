@@ -1,6 +1,10 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-05-18
+### Added
+- mariadb-client was added so wp-cli can use mysqldump
+
 ## 2020-04-15
 ### Added
 - Created src directory for main file(s)
