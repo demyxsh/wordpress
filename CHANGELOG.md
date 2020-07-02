@@ -1,6 +1,13 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-07-01
+### Added
+- 3 new environment variables: WORDPRESS_PHP_EMERGENCY_RESTART_THRESHOLD, WORDPRESS_PHP_EMERGENCY_RESTART_INTERVAL, WORDPRESS_PHP_PROCESS_CONTROL_TIMEOUT
+### Changed
+- Alphabetized keys in docker-compose.yml
+- Updated README example
+
 ## 2020-05-18
 ### Added
 - mariadb-client was added so wp-cli can use mysqldump
