@@ -25,6 +25,11 @@ pm.max_requests             = $WORDPRESS_PHP_PM_MAX_REQUESTS
 chdir                       = $WORDPRESS_ROOT
 catch_workers_output        = yes
 php_admin_value[error_log]  = /var/log/demyx/${WORDPRESS_DOMAIN}.error.log
+
+[global]
+emergency_restart_threshold = $WORDPRESS_PHP_EMERGENCY_RESTART_THRESHOLD
+emergency_restart_interval  = $WORDPRESS_PHP_EMERGENCY_RESTART_INTERVAL
+process_control_timeout     = $WORDPRESS_PHP_PROCESS_CONTROL_TIMEOUT
 " > "$WORDPRESS_CONFIG"/www.conf
 
 # Generate docker.conf
