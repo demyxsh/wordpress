@@ -9,7 +9,7 @@ WORDPRESS_DB_USER="${WORDPRESS_DB_USER:-}"
 WORDPRESS_DB_PASSWORD="${WORDPRESS_DB_PASSWORD:-}"
 WORDPRESS_DB_HOST="${WORDPRESS_DB_HOST:-}"
 
-if [[ ! -d "$WORDPRESS_ROOT"/wp-admin ]]; then
+if [[ ! -d "$WORDPRESS_ROOT"/wp-content ]]; then
     echo "WordPress is missing, installing now."
     cp -r "$WORDPRESS_CONFIG"/wordpress/* "$WORDPRESS_ROOT"
 

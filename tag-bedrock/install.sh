@@ -10,12 +10,16 @@ WORDPRESS_DB_NAME="${WORDPRESS_DB_NAME:-}"
 WORDPRESS_DB_USER="${WORDPRESS_DB_USER:-}"
 WORDPRESS_DB_PASSWORD="${WORDPRESS_DB_PASSWORD:-}"
 WORDPRESS_DB_HOST="${WORDPRESS_DB_HOST:-}"
+WORDPRESS_INSTALL_CHECK="$([[ -f "$WORDPRESS_ROOT"/.env ]] && grep example.com "$WORDPRESS_ROOT"/.env || true)"
 
-if [[ ! -f "$WORDPRESS_ROOT"/.env ]]; then
+if [[ -n "$WORDPRESS_INSTALL_CHECK" || ! -f "$WORDPRESS_ROOT"/.env ]]; then
     echo "[demyx] installing Bedrock..."
-    tar -xzf "$WORDPRESS_CONFIG"/bedrock.tgz -C "$WORDPRESS_CONFIG"
-    cp -r "$WORDPRESS_CONFIG"/bedrock/. "$WORDPRESS_ROOT"
-    rm -rf "$WORDPRESS_CONFIG"/bedrock
+    
+    if [[ ! -f "$WORDPRESS_ROOT"/.env ]]; then
+        tar -xzf "$WORDPRESS_CONFIG"/bedrock.tgz -C "$WORDPRESS_CONFIG"
+        cp -r "$WORDPRESS_CONFIG"/bedrock/. "$WORDPRESS_ROOT"
+        rm -rf "$WORDPRESS_CONFIG"/bedrock
+    fi
 
     if [[ -n "$WORDPRESS_DB_NAME" && -n "$WORDPRESS_DB_USER" && -n "$WORDPRESS_DB_PASSWORD" && -n "$WORDPRESS_DB_HOST" && -n "$WORDPRESS_DOMAIN" ]]; then
         WORDPRESS_PROTO="http://$WORDPRESS_DOMAIN"

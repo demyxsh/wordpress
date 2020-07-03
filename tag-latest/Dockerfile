@@ -51,8 +51,10 @@ RUN set -ex; \
 RUN set -ex; \
     wget https://wordpress.org/latest.tar.gz -qO /latest.tar.gz; \
     tar -xzf /latest.tar.gz -C "$WORDPRESS_CONFIG"; \
+    cp -r "$WORDPRESS_CONFIG"/wordpress/* "$WORDPRESS_ROOT"; \
     rm -f /latest.tar.gz; \
-    chown -R demyx:demyx "$WORDPRESS_CONFIG"
+    chown -R demyx:demyx "$WORDPRESS_CONFIG"; \
+    chown -R demyx:demyx "$WORDPRESS_ROOT"
 
 # Copy source
 COPY --chown=demyx:demyx src "$WORDPRESS_CONFIG"

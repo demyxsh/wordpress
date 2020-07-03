@@ -9,7 +9,7 @@ LABEL sh.demyx.registry     https://hub.docker.com/u/demyx
 USER root
 
 # Default bedrock to production
-ENV WORDPRESS_BEDROCK_MODE production
+ENV WORDPRESS_BEDROCK_MODE=production
 
 # Packages
 RUN set -ex; \
@@ -18,7 +18,8 @@ RUN set -ex; \
 # Composer
 RUN set -ex; \
     wget https://getcomposer.org/installer -qO /tmp/composer-setup.php; \
-    php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer; \
+    rm -rf /tmp/*
 
 # Bedrock
 RUN set -ex; \
@@ -34,9 +35,14 @@ RUN set -ex; \
     \
     composer clearcache; \
     \
-    tar -czf ${WORDPRESS_CONFIG}/bedrock.tgz -C ${WORDPRESS_CONFIG} bedrock; \
+    tar -czf ${WORDPRESS_CONFIG}/bedrock.tgz -C $WORDPRESS_CONFIG bedrock; \
     \
-    rm -rf ${WORDPRESS_CONFIG}/bedrock" -s /bin/sh demyx
+    rm -rf ${WORDPRESS_CONFIG}/bedrock" -s /bin/sh demyx; \
+    \
+    tar -xzf "$WORDPRESS_CONFIG"/bedrock.tgz -C "$WORDPRESS_CONFIG"; \
+    rm -rf "$WORDPRESS_ROOT"; \
+    mv "$WORDPRESS_CONFIG"/bedrock "$WORDPRESS_ROOT"; \
+    chown -R demyx:demyx "$WORDPRESS_ROOT"
 
 # Override WordPress installer
 COPY install.sh /usr/local/bin/demyx-install
