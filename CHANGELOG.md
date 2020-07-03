@@ -1,6 +1,10 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-07-02
+### Changed
+- Populate /demyx directory with WordPress/Bedrock files
+
 ## 2020-07-01
 ### Added
 - 3 new environment variables: WORDPRESS_PHP_EMERGENCY_RESTART_THRESHOLD, WORDPRESS_PHP_EMERGENCY_RESTART_INTERVAL, WORDPRESS_PHP_PROCESS_CONTROL_TIMEOUT
