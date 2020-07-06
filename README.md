@@ -128,7 +128,7 @@ services:
     restart: unless-stopped
     volumes:
       - demyx_wp:/demyx
-      - demyx_wp_log:/var/log/demyx
+      - demyx_log:/var/log/demyx
   demyx_socket:
     container_name: demyx_socket
     environment:
@@ -192,7 +192,7 @@ services:
     restart: unless-stopped
     volumes:
       - demyx_wp:/demyx
-      - demyx_wp_log:/var/log/demyx
+      - demyx_log:/var/log/demyx
 version: "3.7"
 volumes:
   demyx_db:
