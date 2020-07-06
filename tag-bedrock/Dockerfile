@@ -25,6 +25,7 @@ RUN set -ex; \
 RUN set -ex; \
     # Remove WordPress
     rm -rf "$WORDPRESS_CONFIG"/wordpress; \
+    rm -rf "$WORDPRESS_ROOT"/*; \
     \
     su -c "composer create-project roots/bedrock ${WORDPRESS_CONFIG}/bedrock" -s /bin/sh demyx; \
     \
@@ -33,15 +34,9 @@ RUN set -ex; \
     \
     su -c "cd ${WORDPRESS_CONFIG}/bedrock && composer update; \
     \
-    composer clearcache; \
+    composer clearcache" -s /bin/sh demyx; \
     \
-    tar -czf ${WORDPRESS_CONFIG}/bedrock.tgz -C $WORDPRESS_CONFIG bedrock; \
-    \
-    rm -rf ${WORDPRESS_CONFIG}/bedrock" -s /bin/sh demyx; \
-    \
-    tar -xzf "$WORDPRESS_CONFIG"/bedrock.tgz -C "$WORDPRESS_CONFIG"; \
-    rm -rf "$WORDPRESS_ROOT"; \
-    mv "$WORDPRESS_CONFIG"/bedrock "$WORDPRESS_ROOT"; \
+    cp -r "$WORDPRESS_CONFIG"/bedrock/. "$WORDPRESS_ROOT"; \
     chown -R demyx:demyx "$WORDPRESS_ROOT"
 
 # Override WordPress installer
