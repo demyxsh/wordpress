@@ -1,6 +1,14 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-07-05
+### Added
+- bash
+### Changed
+- Use cp instead of mv when creating wp-config.php
+- Update logic when installing WordPress
+- Various misc updates
+
 ## 2020-07-02
 ### Changed
 - Populate /demyx directory with WordPress/Bedrock files
