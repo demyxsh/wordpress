@@ -45,7 +45,7 @@ RUN set -ex; \
 
 # Main packages
 RUN set -ex; \
-    apk add --no-cache ed dumb-init tzdata
+    apk add --no-cache bash ed dumb-init tzdata
 
 # Download latest WordPress
 RUN set -ex; \
