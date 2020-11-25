@@ -1,4 +1,4 @@
-FROM php:fpm-alpine
+FROM php:7-fpm-alpine
 
 LABEL sh.demyx.image        demyx/wordpress:cli
 LABEL sh.demyx.maintainer   Demyx <info@demyx.sh>
@@ -7,38 +7,53 @@ LABEL sh.demyx.github       https://github.com/demyxco
 LABEL sh.demyx.registry     https://hub.docker.com/u/demyx
 
 # Set default variables
-ENV WORDPRESS_ROOT          /demyx
-ENV WORDPRESS_CONFIG        /etc/demyx
-ENV WORDPRESS_LOG           /var/log/demyx
+ENV DEMYX                   /demyx
+ENV DEMYX_CONFIG            /etc/demyx
+ENV DEMYX_LOG               /var/log/demyx
 ENV TZ                      America/Los_Angeles
+# Support for old variables
+ENV WORDPRESS_ROOT          "$DEMYX"
+ENV WORDPRESS_CONFIG        "$DEMYX_CONFIG"
+ENV WORDPRESS_LOG           "$DEMYX_LOG"
 
 # Configure Demyx
 RUN set -ex; \
-    addgroup -g 1000 -S demyx; \
-    adduser -u 1000 -D -S -G demyx demyx; \
+    /usr/sbin/addgroup -g 1000 -S demyx; \
+    /usr/sbin/adduser -u 1000 -D -S -G demyx demyx; \
     \
-    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_ROOT"; \
-    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_CONFIG"; \
-    install -d -m 0755 -o demyx -g demyx "$WORDPRESS_LOG"
+    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX"; \
+    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX_CONFIG"; \
+    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX_LOG"
 
 # Install php extensions
 RUN set -ex; \
-    wget https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -qO /usr/local/bin/install-php-extensions; \
-    chmod uga+x /usr/local/bin/install-php-extensions; \
-    sync; \
-    install-php-extensions exif gd imagick mysqli opcache pdo_mysql ssh2 sockets zip
+    /usr/bin/wget https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -qO /usr/local/bin/install-php-extensions; \
+    /bin/chmod uga+x /usr/local/bin/install-php-extensions; \
+    /bin/sync; \
+    /usr/local/bin/install-php-extensions \
+        exif \
+        gd \
+        imagick \
+        mysqli \
+        opcache \
+        pdo_mysql \
+        ssh2 \
+        sockets \
+        zip
 
-# Install packages
+# Packages
 RUN set -ex; \
-    apk add --no-cache mariadb-client tzdata
+    /sbin/apk add --update --no-cache \
+        mariadb-client \
+        tzdata
 
 # Install wp-cli
 RUN set -ex; \
-    wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
-    chmod +x /usr/local/bin/wp
+    /usr/bin/wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
+    /bin/chmod +x /usr/local/bin/wp
 
-WORKDIR "$WORDPRESS_ROOT"
+WORKDIR "$DEMYX"
 
 USER demyx
 
-ENTRYPOINT ["wp"]
+ENTRYPOINT ["/usr/local/bin/wp"]

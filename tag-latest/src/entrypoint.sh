@@ -1,13 +1,13 @@
-#!/usr/bin/dumb-init /bin/sh
+#!/bin/bash
 # Demyx
 # https://demyx.sh
 set -euo pipefail
 
 # Install WordPress
-demyx-install
+/usr/local/bin/demyx-install
 
 # Generate configs
-demyx-config
+/usr/local/bin/demyx-config
 
 # Run php-fpm in the foreground
-php-fpm -F
+/usr/local/sbin/php-fpm -F

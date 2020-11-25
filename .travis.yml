@@ -23,11 +23,11 @@ script:
   - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY" tag-latest
   - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY":bedrock tag-bedrock
   - docker build --no-cache -t demyx/"$DEMYX_REPOSITORY":cli tag-cli
-  - docker run -d --name=demyx_db --network=demyx -e MARIADB_DATABASE=demyx -e MARIADB_USERNAME=demyx -e MARIADB_PASSWORD=demyx -e MARIADB_ROOT_PASSWORD=demyx demyx/mariadb
-  - docker run -d --name="$DEMYX_REPOSITORY" --network=demyx -v demyx_wp:/demyx -e WORDPRESS_DB_HOST=demyx_db -e WORDPRESS_DB_NAME=demyx -e WORDPRESS_DB_USER=demyx -e WORDPRESS_DB_PASSWORD=demyx demyx/"$DEMYX_REPOSITORY"
+  - docker run -d --name=demyx_db --network=demyx -e DEMYX_DATABASE=demyx -e DEMYX_USERNAME=demyx -e DEMYX_PASSWORD=demyx -e DEMYX_ROOT_PASSWORD=demyx demyx/mariadb
+  - docker run -d --name="$DEMYX_REPOSITORY" --network=demyx -v demyx_wp:/demyx -e DEMYX_DB_HOST=demyx_db -e DEMYX_DB_NAME=demyx -e DEMYX_DB_USER=demyx -e DEMYX_DB_PASSWORD=demyx demyx/"$DEMYX_REPOSITORY"
   - sleep 5
   - docker run --network=demyx --volumes-from="$DEMYX_REPOSITORY" --workdir=/demyx demyx/"$DEMYX_REPOSITORY":cli core install --url=http://localhost --title=demyx --admin_user=demyx --admin_password=demyx --admin_email=info@domain.tld --skip-email
-  - docker run -dit --name=demyx_nx --network=demyx -v demyx_wp:/demyx -e WORDPRESS=true -e WORDPRESS_CONTAINER="$DEMYX_REPOSITORY" -e WORDPRESS_CONTAINER_PORT=9000 -e NGINX_DOMAIN=localhost demyx/nginx
+  - docker run -dit --name=demyx_nx --network=demyx -v demyx_wp:/demyx -e DEMYX_WORDPRESS=true -e DEMYX_WORDPRESS_CONTAINER="$DEMYX_REPOSITORY" -e DEMYX_WORDPRESS_CONTAINER_PORT=9000 -e DEMYX_DOMAIN=localhost demyx/nginx
 
 after_success:
   - echo "$DEMYX_PASSWORD" | docker login -u "$DEMYX_USERNAME" --password-stdin

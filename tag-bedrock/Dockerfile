@@ -1,52 +1,57 @@
 FROM demyx/wordpress
 
-LABEL sh.demyx.image        demyx/wordpress:bedrock
-LABEL sh.demyx.maintainer   Demyx <info@demyx.sh>
-LABEL sh.demyx.url          https://demyx.sh
-LABEL sh.demyx.github       https://github.com/demyxco
-LABEL sh.demyx.registry     https://hub.docker.com/u/demyx
+LABEL sh.demyx.image            demyx/wordpress:bedrock
+LABEL sh.demyx.maintainer       Demyx <info@demyx.sh>
+LABEL sh.demyx.url              https://demyx.sh
+LABEL sh.demyx.github           https://github.com/demyxco
+LABEL sh.demyx.registry         https://hub.docker.com/u/demyx
 
 USER root
 
 # Default bedrock to production
-ENV WORDPRESS_BEDROCK_MODE=production
+ENV DEMYX_BEDROCK_MODE          production
+ENV DEMYX_SSL                   false
+# Support for old variables
+ENV WORDPRESS_BEDROCK_MODE      "$DEMYX_BEDROCK_MODE"
 
 # Packages
 RUN set -ex; \
-    apk add --update --no-cache git
+    /sbin/apk add --update --no-cache \
+        git
 
 # Composer
 RUN set -ex; \
-    wget https://getcomposer.org/installer -qO /tmp/composer-setup.php; \
-    php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer; \
-    rm -rf /tmp/*
+    /usr/bin/curl -sL https://getcomposer.org/installer -o /tmp/composer-setup.php; \
+    /usr/local/bin/php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer; \
+    \
+    /bin/rm -rf /tmp/*
 
 # Bedrock
 RUN set -ex; \
     # Remove WordPress
-    rm -rf "$WORDPRESS_CONFIG"/wordpress; \
-    rm -rf "$WORDPRESS_ROOT"/*; \
+    /bin/rm -rf "$DEMYX_CONFIG"/wordpress; \
+    /bin/rm -rf "$DEMYX"/*; \
     \
-    su -c "composer create-project roots/bedrock ${WORDPRESS_CONFIG}/bedrock" -s /bin/sh demyx; \
+    /bin/su -c "/usr/local/bin/composer create-project roots/bedrock ${DEMYX_CONFIG}/bedrock" -s /bin/sh demyx; \
     \
     # Upgrade WordPress to latest version
-    sed -i 's|"roots/wordpress": .*|"roots/wordpress": ">5",|g' "$WORDPRESS_CONFIG"/bedrock/composer.json; \
+    /bin/sed -i 's|"roots/wordpress": .*|"roots/wordpress": ">5",|g' "$DEMYX_CONFIG"/bedrock/composer.json; \
     \
-    su -c "cd ${WORDPRESS_CONFIG}/bedrock && composer update; \
+    /bin/su -c "cd ${DEMYX_CONFIG}/bedrock && /usr/local/bin/composer update; \
     \
-    composer clearcache" -s /bin/sh demyx; \
+    /usr/local/bin/composer clearcache" -s /bin/sh demyx; \
     \
-    cp -r "$WORDPRESS_CONFIG"/bedrock/. "$WORDPRESS_ROOT"; \
-    chown -R demyx:demyx "$WORDPRESS_ROOT"
+    /bin/cp -r "$DEMYX_CONFIG"/bedrock/. "$DEMYX"; \
+    /bin/chown -R demyx:demyx "$DEMYX"
 
 # Override WordPress installer
 COPY install.sh /usr/local/bin/demyx-install
 
 # Finalize
 RUN set -ex; \
-    chmod +x /usr/local/bin/demyx-install; \
+    /bin/chmod +x /usr/local/bin/demyx-install; \
     \
     # Reset permissions
-    chown -R root:root /usr/local/bin
+    /bin/chown -R root:root /usr/local/bin
 
 USER demyx

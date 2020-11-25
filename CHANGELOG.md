@@ -1,6 +1,17 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-11-24
+### Changed
+- Alphabetized
+- Fixed PHP version to 7.x
+- Misc updates
+- Rename variables and support old ones
+- ShellCheck approved
+- Update Dockerfile RUN commands
+- Use -E flag for sudo to keep environment variables
+- Use full paths to binaries/scripts
+
 ## 2020-07-05
 ### Added
 - bash
