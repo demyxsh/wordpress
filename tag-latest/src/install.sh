@@ -19,7 +19,7 @@ if [[ ! -f "$DEMYX"/wp-config.php ]]; then
     /bin/cp "$DEMYX"/wp-config-sample.php "$DEMYX_WP_CONFIG"
 fi
 
-if [[ -n "$(/bin/grep database_name_here "$DEMYX_WP_CONFIG" || true)" && "$DEMYX_DB_NAME" && "$DEMYX_DB_USER" && "$DEMYX_DB_PASSWORD" && "$DEMYX_DB_HOST" ]]; then
+if [[ -n "$(/bin/grep database_name_here "$DEMYX_WP_CONFIG" || true)" ]]; then
     /bin/echo "[demyx] Configuring wp-config.php ..."
     /bin/sed -i "s|database_name_here|${DEMYX_DB_NAME}|g" "$DEMYX_WP_CONFIG"
     /bin/sed -i "s|username_here|${DEMYX_DB_USER}|g" "$DEMYX_WP_CONFIG"

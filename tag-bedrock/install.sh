@@ -25,7 +25,7 @@ if [[ ! -f "$DEMYX_ENV" ]]; then
     /bin/cp "$DEMYX_CONFIG"/bedrock/.env "$DEMYX"
 fi
 
-if [[ -n "$(/bin/grep example.com "$DEMYX_ENV" || true)" && -n "$DEMYX_DB_NAME" && -n "$DEMYX_DB_USER" && -n "$DEMYX_DB_PASSWORD" && -n "$DEMYX_DB_HOST" && -n "$DEMYX_DOMAIN" ]]; then
+if [[ -n "$(/bin/grep example.com "$DEMYX_ENV" || true)" ]]; then
     /bin/echo "[demyx] Configuring Bedrock .env file ..."
     /bin/sed -i "s|WP_HOME=.*|WP_HOME=$DEMYX_PROTO|g" "$DEMYX_ENV"
     /bin/sed -i "s|database_name|$DEMYX_DB_NAME|g" "$DEMYX_ENV"
