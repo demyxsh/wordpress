@@ -1,6 +1,13 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-11-30
+### Changed
+- Misc updates
+- Rearrange RUN commands
+- Update WordPress RUN commands
+- Update if statement for the installer
+
 ## 2020-11-24
 ### Changed
 - Alphabetized
