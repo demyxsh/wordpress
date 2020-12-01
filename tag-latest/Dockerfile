@@ -70,12 +70,13 @@ RUN set -ex; \
 
 # WordPress
 RUN set -ex; \
-    /usr/bin/wget https://wordpress.org/latest.tar.gz -qO /latest.tar.gz; \
-    /usr/bin/tar -xzf /latest.tar.gz -C "$DEMYX_CONFIG"; \
-    /bin/cp -r "$DEMYX_CONFIG"/wordpress/* "$DEMYX"; \
-    /bin/rm -f /latest.tar.gz; \
-    /bin/chown -R demyx:demyx "$DEMYX_CONFIG"; \
-    /bin/chown -R demyx:demyx "$DEMYX"
+    /bin/su -c "/usr/bin/wget https://wordpress.org/latest.tar.gz -qO /tmp/latest.tar.gz; \
+        \
+        /usr/bin/tar -xzf /tmp/latest.tar.gz -C /tmp; \
+        \
+        /bin/cp -r /tmp/wordpress/* ${DEMYX}; \
+        \
+        /usr/bin/tar -czf ${DEMYX_CONFIG}/wordpress.tgz -C /tmp/wordpress ." -s /bin/sh
 
 # Imports
 COPY --chown=demyx:demyx src "$DEMYX_CONFIG"
