@@ -36,6 +36,13 @@ ENV WORDPRESS_ROOT                      "$DEMYX"
 ENV WORDPRESS_CONFIG                    "$DEMYX_CONFIG"
 ENV WORDPRESS_LOG                       "$DEMYX_LOG"
 
+# Packages
+RUN set -ex; \
+    /sbin/apk add --update --no-cache \
+        bash \
+        ed \
+        tzdata
+
 # Configure Demyx
 RUN set -ex; \
     /usr/sbin/addgroup -g 1000 -S demyx; \
@@ -60,13 +67,6 @@ RUN set -ex; \
         ssh2 \
         sockets \
         zip
-
-# Packages
-RUN set -ex; \
-    /sbin/apk add --update --no-cache \
-        bash \
-        ed \
-        tzdata
 
 # WordPress
 RUN set -ex; \
