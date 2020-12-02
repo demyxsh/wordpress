@@ -22,36 +22,38 @@ RUN set -ex; \
 # Composer
 RUN set -ex; \
     /usr/bin/curl -sL https://getcomposer.org/installer -o /tmp/composer-setup.php; \
-    /usr/local/bin/php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer; \
-    \
-    /bin/rm -rf /tmp/*
+    /usr/local/bin/php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # Bedrock
 RUN set -ex; \
     # Remove WordPress
-    /bin/rm -rf "$DEMYX_CONFIG"/wordpress; \
-    /bin/rm -rf "$DEMYX"/*; \
+    /bin/rm -f "$DEMYX_CONFIG"/wordpress.tgz; \
     \
-    /bin/su -c "/usr/local/bin/composer create-project roots/bedrock ${DEMYX_CONFIG}/bedrock" -s /bin/sh demyx; \
-    \
-    # Upgrade WordPress to latest version
-    /bin/sed -i 's|"roots/wordpress": .*|"roots/wordpress": ">5",|g' "$DEMYX_CONFIG"/bedrock/composer.json; \
-    \
-    /bin/su -c "cd ${DEMYX_CONFIG}/bedrock && /usr/local/bin/composer update; \
-    \
-    /usr/local/bin/composer clearcache" -s /bin/sh demyx; \
-    \
-    /bin/cp -r "$DEMYX_CONFIG"/bedrock/. "$DEMYX"; \
-    /bin/chown -R demyx:demyx "$DEMYX"
+    # Configure Bedrock
+    /bin/su -c "/usr/local/bin/composer create-project roots/bedrock /tmp/bedrock; \
+        \
+        /bin/sed -i 's|\"roots/wordpress\": .*|\"roots/wordpress\": \">1\",|g' /tmp/bedrock/composer.json; \
+        \
+        cd /tmp/bedrock && /usr/local/bin/composer update; \
+        \
+        /usr/local/bin/composer clearcache; \
+        \
+        /bin/cp -r /tmp/bedrock/. ${DEMYX}; \
+        \
+        /usr/bin/tar -czf ${DEMYX_CONFIG}/bedrock.tgz -C /tmp/bedrock ." -s /bin/sh demyx
 
 # Override WordPress installer
 COPY install.sh /usr/local/bin/demyx-install
 
 # Finalize
 RUN set -ex; \
+    # demyx-install
     /bin/chmod +x /usr/local/bin/demyx-install; \
     \
     # Reset permissions
-    /bin/chown -R root:root /usr/local/bin
+    /bin/chown -R root:root /usr/local/bin; \
+    \
+    # Clear /tmp
+    /bin/rm -rf /tmp/*
 
 USER demyx

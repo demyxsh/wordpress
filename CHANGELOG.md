@@ -1,6 +1,14 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-12-02
+### Changed
+- Misc changes
+- Rearrange wp-cli RUN commands
+- Update Bedrock RUN commands
+- Update finalize RUN commands
+- Update install.sh scripts
+
 ## 2020-11-30
 ### Changed
 - Misc updates

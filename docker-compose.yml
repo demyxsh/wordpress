@@ -79,7 +79,6 @@ services:
       - TZ=America/Los_Angeles
     image: demyx/nginx
     labels:
-      # WordPress https://domain.tld
       - "traefik.enable=true"
       - "traefik.http.middlewares.demyx-nx-redirect.redirectregex.permanent=true"
       - "traefik.http.middlewares.demyx-nx-redirect.redirectregex.regex=^https?:\/\/(?:www\\.)?(.+)"
@@ -89,7 +88,7 @@ services:
       - "traefik.http.routers.demyx-nx-http.rule=Host(`domain.tld`) || Host(`www.domain.tld`)"
       - "traefik.http.routers.demyx-nx-http.service=demyx-nx-http-port"
       - "traefik.http.routers.demyx-nx-https.entrypoints=https"
-      - "traefik.http.routers.demyx-nx-https.rule=Host(`domain.tld`) || Host(`www.domain.tld`)"
+      - "traefik.http.routers.demyx-nx-https.rule=Host(`domain.tld`) || Host(`www.domain.tld`)" # WordPress https://domain.tld
       - "traefik.http.routers.demyx-nx-https.service=demyx-nx-https-port"
       - "traefik.http.routers.demyx-nx-https.tls.certresolver=demyx"
       - "traefik.http.services.demyx-nx-http-port.loadbalancer.server.port=80"
@@ -125,7 +124,6 @@ services:
       - TRAEFIK_PROVIDERS_DOCKER_ENDPOINT=tcp://demyx_socket:2375
     image: demyx/traefik
     labels:
-      # Traefik https://traefik.domain.tld
       - "traefik.enable=true"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=demyx:$$apr1$$L91z3CIR$$m/BKZcnQGBP.Uo2cJm8I0/" # Password: demyx
       - "traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https"
@@ -135,7 +133,7 @@ services:
       - "traefik.http.routers.traefik-http.service=traefik-http-port"
       - "traefik.http.routers.traefik-https.entrypoints=https"
       - "traefik.http.routers.traefik-https.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik-https.rule=Host(`traefik.domain.tld`)"
+      - "traefik.http.routers.traefik-https.rule=Host(`traefik.domain.tld`)" # Traefik https://traefik.domain.tld
       - "traefik.http.routers.traefik-https.service=api@internal"
       - "traefik.http.routers.traefik-https.service=traefik-https-port"
       - "traefik.http.routers.traefik-https.tls.certresolver=demyx"

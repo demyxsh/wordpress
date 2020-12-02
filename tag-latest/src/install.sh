@@ -11,12 +11,12 @@ set -euo pipefail
 
 if [[ ! -d "$DEMYX"/wp-content ]]; then
     /bin/echo "[demyx] WordPress is missing, copying files now ..."
-    /bin/cp -r "$DEMYX_CONFIG"/wordpress/* "$DEMYX"
+    /usr/bin/tar -xzf "$DEMYX_CONFIG"/wordpress.tgz -C "$DEMYX"
 fi
 
 if [[ ! -f "$DEMYX"/wp-config.php ]]; then
     /bin/echo "[demyx] Generating wp-config.php ..."
-    /bin/cp "$DEMYX"/wp-config-sample.php "$DEMYX_WP_CONFIG"
+    /bin/mv "$DEMYX"/wp-config-sample.php "$DEMYX_WP_CONFIG"
 fi
 
 if [[ -n "$(/bin/grep database_name_here "$DEMYX_WP_CONFIG" || true)" ]]; then
@@ -24,7 +24,7 @@ if [[ -n "$(/bin/grep database_name_here "$DEMYX_WP_CONFIG" || true)" ]]; then
     /bin/sed -i "s|database_name_here|${DEMYX_DB_NAME}|g" "$DEMYX_WP_CONFIG"
     /bin/sed -i "s|username_here|${DEMYX_DB_USER}|g" "$DEMYX_WP_CONFIG"
     /bin/sed -i "s|password_here|${DEMYX_DB_PASSWORD}|g" "$DEMYX_WP_CONFIG"
-    /bin/sed -i "s|localhost|${DEMYX_DB_HOST}|g" "$DEMYX_WP_CONFIG" 
+    /bin/sed -i "s|localhost|${DEMYX_DB_HOST}|g" "$DEMYX_WP_CONFIG"
     SALT="$(/usr/bin/wget -qO- https://api.wordpress.org/secret-key/1.1/salt/)"
     /usr/bin/printf '%s\n' "g/put your unique phrase here/d" a "$SALT" . w | /bin/ed -s "$DEMYX_WP_CONFIG"
     /bin/sed -i "s|\$table_prefix = 'wp_';|\$table_prefix = 'wp_';\n\n\/\/ If we're behind a proxy server and using HTTPS, we need to alert Wordpress of that fact\n\/\/ see also http:\/\/codex.wordpress.org\/Administration_Over_SSL#Using_a_Reverse_Proxy\nif (isset($\_SERVER['HTTP_X_FORWARDED_PROTO']) \&\& $\_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {\n\t$\_SERVER['HTTPS'] = 'on';\n}\n|g" "$DEMYX_WP_CONFIG"

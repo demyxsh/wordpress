@@ -17,12 +17,7 @@ DEMYX_PROTO="http://$DEMYX_DOMAIN"
 
 if [[ ! -d "$DEMYX"/web ]]; then
     /bin/echo "[demyx] Bedrock is missing, copying files now ..."
-    /bin/cp -r "$DEMYX_CONFIG"/bedrock/. "$DEMYX"
-fi
-
-if [[ ! -f "$DEMYX_ENV" ]]; then
-    /bin/echo "[demyx] Generating Bedrock .env file ..."
-    /bin/cp "$DEMYX_CONFIG"/bedrock/.env "$DEMYX"
+    /usr/bin/tar -xzf "$DEMYX_CONFIG"/bedrock.tgz -C "$DEMYX"
 fi
 
 if [[ -n "$(/bin/grep example.com "$DEMYX_ENV" || true)" ]]; then

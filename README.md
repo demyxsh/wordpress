@@ -27,7 +27,7 @@ TIMEZONE | America/Los_Angeles
 - Ports 80 and 443 must be open when using Traefik
 - TLS/SSL enabled by default
 - Install the [Nginx Helper](https://wordpress.org/plugins/nginx-helper/) plugin if DEMYX_CACHE is true
-- To generate htpasswd: `docker run -it --rm demyx/utilities "htpasswd -nb demyx demyx"`
+- To generate htpasswd: `docker run -it --rm demyx/utilities htpasswd -nb demyx demyx`
 - DEMYX_BASIC_AUTH must have double dollar signs ($$)
 - Set DEMYX_WORDPRESS env to true to use a WordPress nginx.conf
 - DEMYX_WORDPRESS_CONTAINER env must match the container name in your docker-compose.yml
