@@ -1,6 +1,12 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-12-04
+### Changed
+- Put entrypoint back to an array
+- Rename wp-config-sample.php before
+- Misc update
+
 ## 2020-12-02
 ### Changed
 - Misc changes
