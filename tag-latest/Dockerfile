@@ -80,6 +80,8 @@ RUN set -ex; \
         \
         /usr/bin/tar -xzf /tmp/latest.tar.gz -C /tmp; \
         \
+        /bin/mv /tmp/wordpress/wp-config-sample.php /tmp/wordpress/wp-config.php; \
+        \
         /bin/cp -r /tmp/wordpress/* ${DEMYX}; \
         \
         /usr/bin/tar -czf ${DEMYX_CONFIG}/wordpress.tgz -C /tmp/wordpress ." -s /bin/sh
