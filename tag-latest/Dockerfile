@@ -121,4 +121,4 @@ WORKDIR "$DEMYX"
 
 USER demyx
 
-ENTRYPOINT /usr/local/bin/demyx-entrypoint
+ENTRYPOINT ["/usr/local/bin/demyx-entrypoint"]

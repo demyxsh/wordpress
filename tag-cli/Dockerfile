@@ -62,4 +62,4 @@ WORKDIR "$DEMYX"
 
 USER demyx
 
-ENTRYPOINT /usr/local/bin/wp
+ENTRYPOINT ["/usr/local/bin/wp"]
