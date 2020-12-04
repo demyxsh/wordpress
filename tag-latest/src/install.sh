@@ -9,14 +9,9 @@ set -euo pipefail
 [[ -n "${WORDPRESS_DB_PASSWORD:-}" ]] && DEMYX_DB_PASSWORD="$WORDPRESS_DB_PASSWORD"
 [[ -n "${WORDPRESS_DB_USER:-}" ]] && DEMYX_DB_USER="$WORDPRESS_DB_USER"
 
-if [[ ! -d "$DEMYX"/wp-content ]]; then
+if [[ ! -d "$DEMYX"/wp-admin ]]; then
     /bin/echo "[demyx] WordPress is missing, copying files now ..."
     /usr/bin/tar -xzf "$DEMYX_CONFIG"/wordpress.tgz -C "$DEMYX"
-fi
-
-if [[ ! -f "$DEMYX"/wp-config.php ]]; then
-    /bin/echo "[demyx] Generating wp-config.php ..."
-    /bin/mv "$DEMYX"/wp-config-sample.php "$DEMYX_WP_CONFIG"
 fi
 
 if [[ -n "$(/bin/grep database_name_here "$DEMYX_WP_CONFIG" || true)" ]]; then
