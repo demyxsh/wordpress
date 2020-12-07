@@ -2,6 +2,7 @@
 # https://demyx.sh
 #
 # This docker-compose.yml is designed for VPS use with SSL/TLS first.
+# Traefik requires no additional configurations and is ready to go.
 # Be sure to change all the domain.tld domains and credentials before running docker-compose up -d.
 #
 networks:
@@ -79,7 +80,6 @@ services:
       - TZ=America/Los_Angeles
     image: demyx/nginx
     labels:
-      # WordPress https://domain.tld
       - "traefik.enable=true"
       - "traefik.http.middlewares.demyx-nx-redirect.redirectregex.permanent=true"
       - "traefik.http.middlewares.demyx-nx-redirect.redirectregex.regex=^https?:\/\/(?:www\\.)?(.+)"
@@ -89,7 +89,7 @@ services:
       - "traefik.http.routers.demyx-nx-http.rule=Host(`domain.tld`) || Host(`www.domain.tld`)"
       - "traefik.http.routers.demyx-nx-http.service=demyx-nx-http-port"
       - "traefik.http.routers.demyx-nx-https.entrypoints=https"
-      - "traefik.http.routers.demyx-nx-https.rule=Host(`domain.tld`) || Host(`www.domain.tld`)"
+      - "traefik.http.routers.demyx-nx-https.rule=Host(`domain.tld`) || Host(`www.domain.tld`)" # WordPress https://domain.tld
       - "traefik.http.routers.demyx-nx-https.service=demyx-nx-https-port"
       - "traefik.http.routers.demyx-nx-https.tls.certresolver=demyx"
       - "traefik.http.services.demyx-nx-http-port.loadbalancer.server.port=80"
@@ -98,8 +98,8 @@ services:
       - demyx
     restart: unless-stopped
     volumes:
-      - demyx_wp:/demyx
       - demyx_log:/var/log/demyx
+      - demyx_wp:/demyx
   demyx_socket:
     container_name: demyx_socket
     environment:
@@ -125,22 +125,21 @@ services:
       - TRAEFIK_PROVIDERS_DOCKER_ENDPOINT=tcp://demyx_socket:2375
     image: demyx/traefik
     labels:
-      # Traefik https://traefik.domain.tld
       - "traefik.enable=true"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=demyx:$$apr1$$L91z3CIR$$m/BKZcnQGBP.Uo2cJm8I0/" # Password: demyx
-      - "traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.traefik-http.entrypoints=http"
-      - "traefik.http.routers.traefik-http.middlewares=traefik-redirect"
-      - "traefik.http.routers.traefik-http.rule=Host(`traefik.domain.tld`)"
-      - "traefik.http.routers.traefik-http.service=traefik-http-port"
-      - "traefik.http.routers.traefik-https.entrypoints=https"
-      - "traefik.http.routers.traefik-https.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik-https.rule=Host(`traefik.domain.tld`)"
-      - "traefik.http.routers.traefik-https.service=api@internal"
-      - "traefik.http.routers.traefik-https.service=traefik-https-port"
-      - "traefik.http.routers.traefik-https.tls.certresolver=demyx"
-      - "traefik.http.services.traefik-http-port.loadbalancer.server.port=8080"
-      - "traefik.http.services.traefik-https-port.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.demyx-traefik-auth.basicauth.users=demyx:$$apr1$$L91z3CIR$$m/BKZcnQGBP.Uo2cJm8I0/" # Basic auth password: demyx
+      - "traefik.http.middlewares.demyx-traefik-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.demyx-traefik-http.entrypoints=http"
+      - "traefik.http.routers.demyx-traefik-http.middlewares=demyx-traefik-redirect"
+      - "traefik.http.routers.demyx-traefik-http.rule=Host(`traefik.domain.tld`)"
+      - "traefik.http.routers.demyx-traefik-http.service=demyx-traefik-http-port"
+      - "traefik.http.routers.demyx-traefik-https.entrypoints=https"
+      - "traefik.http.routers.demyx-traefik-https.middlewares=demyx-traefik-auth"
+      - "traefik.http.routers.demyx-traefik-https.rule=Host(`traefik.domain.tld`)" # Traefik dashboard https://traefik.domain.tld
+      - "traefik.http.routers.demyx-traefik-https.service=api@internal"
+      - "traefik.http.routers.demyx-traefik-https.service=demyx-traefik-https-port"
+      - "traefik.http.routers.demyx-traefik-https.tls.certresolver=demyx"
+      - "traefik.http.services.demyx-traefik-http-port.loadbalancer.server.port=8080"
+      - "traefik.http.services.demyx-traefik-https-port.loadbalancer.server.port=8080"
     networks:
       - demyx
       - demyx_socket
@@ -187,8 +186,8 @@ services:
       - demyx
     restart: unless-stopped
     volumes:
-      - demyx_wp:/demyx
       - demyx_log:/var/log/demyx
+      - demyx_wp:/demyx
 version: "2.4"
 volumes:
   demyx_db:

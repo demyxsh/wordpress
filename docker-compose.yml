@@ -2,6 +2,7 @@
 # https://demyx.sh
 #
 # This docker-compose.yml is designed for VPS use with SSL/TLS first.
+# Traefik requires no additional configurations and is ready to go.
 # Be sure to change all the domain.tld domains and credentials before running docker-compose up -d.
 #
 networks:
@@ -97,8 +98,8 @@ services:
       - demyx
     restart: unless-stopped
     volumes:
-      - demyx_wp:/demyx
       - demyx_log:/var/log/demyx
+      - demyx_wp:/demyx
   demyx_socket:
     container_name: demyx_socket
     environment:
@@ -133,7 +134,7 @@ services:
       - "traefik.http.routers.traefik-http.service=traefik-http-port"
       - "traefik.http.routers.traefik-https.entrypoints=https"
       - "traefik.http.routers.traefik-https.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik-https.rule=Host(`traefik.domain.tld`)" # Traefik https://traefik.domain.tld
+      - "traefik.http.routers.traefik-https.rule=Host(`traefik.domain.tld`)" # https://traefik.domain.tld
       - "traefik.http.routers.traefik-https.service=api@internal"
       - "traefik.http.routers.traefik-https.service=traefik-https-port"
       - "traefik.http.routers.traefik-https.tls.certresolver=demyx"

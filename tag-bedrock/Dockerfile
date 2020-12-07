@@ -21,13 +21,14 @@ RUN set -ex; \
 
 # Composer
 RUN set -ex; \
-    /usr/bin/curl -sL https://getcomposer.org/installer -o /tmp/composer-setup.php; \
+    /bin/su -c "/usr/bin/curl -sL https://getcomposer.org/installer -o /tmp/composer-setup.php" -s /bin/sh demyx; \
     /usr/local/bin/php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # Bedrock
 RUN set -ex; \
     # Remove WordPress
     /bin/rm -f "$DEMYX_CONFIG"/wordpress.tgz; \
+    /bin/rm -rf "$DEMYX"/*; \
     \
     # Configure Bedrock
     /bin/su -c "/usr/local/bin/composer create-project roots/bedrock /tmp/bedrock; \

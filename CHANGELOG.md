@@ -1,6 +1,16 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-12-06
+### Changed
+- Missing user for su command
+- Misc updates to docker-compose.yml
+- tag-bedrock
+    - Get composer as demyx user
+    - Remove all content in DEMYX directory before installing Bedrock
+- tag-latest
+    - Change comment
+
 ## 2020-12-04
 ### Changed
 - Put entrypoint back to an array

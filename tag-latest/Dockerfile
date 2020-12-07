@@ -84,7 +84,7 @@ RUN set -ex; \
         \
         /bin/cp -r /tmp/wordpress/* ${DEMYX}; \
         \
-        /usr/bin/tar -czf ${DEMYX_CONFIG}/wordpress.tgz -C /tmp/wordpress ." -s /bin/sh
+        /usr/bin/tar -czf ${DEMYX_CONFIG}/wordpress.tgz -C /tmp/wordpress ." -s /bin/sh demyx
 
 # Imports
 COPY --chown=demyx:demyx src "$DEMYX_CONFIG"
@@ -111,7 +111,7 @@ RUN set -ex; \
     /bin/cp "$DEMYX_CONFIG"/entrypoint.sh /usr/local/bin/demyx-entrypoint; \
     /bin/chmod +x /usr/local/bin/demyx-entrypoint; \
     \
-    # Reset permissions
+    # Set ownership
     /bin/chown -R root:root /usr/local/bin; \
     \
     # Clear /tmp
