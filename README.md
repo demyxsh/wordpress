@@ -2,7 +2,7 @@
 [![Build Status](https://img.shields.io/travis/demyxco/wordpress?style=flat)](https://travis-ci.org/demyxco/wordpress)
 [![Docker Pulls](https://img.shields.io/docker/pulls/demyx/wordpress?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Architecture](https://img.shields.io/badge/linux-amd64-important?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![Alpine](https://img.shields.io/badge/alpine-3.12.2-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![Alpine](https://img.shields.io/badge/alpine-3.12.3-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![PHP](https://img.shields.io/badge/php-7.4.13-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![WordPress](https://img.shields.io/badge/wordpress-5.6-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Bedrock](https://img.shields.io/badge/bedrock--informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
