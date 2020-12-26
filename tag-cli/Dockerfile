@@ -19,6 +19,7 @@ ENV WORDPRESS_LOG           "$DEMYX_LOG"
 # Packages
 RUN set -ex; \
     /sbin/apk add --update --no-cache \
+        bash \
         mariadb-client \
         tzdata
 

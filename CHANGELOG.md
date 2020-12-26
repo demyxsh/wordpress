@@ -1,6 +1,11 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2020-12-25
+### Changed
+- tag-cli
+    - Missing bash package
+
 ## 2020-12-06
 ### Changed
 - Missing user for su command
