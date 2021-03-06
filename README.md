@@ -3,7 +3,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/demyx/wordpress?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Architecture](https://img.shields.io/badge/linux-amd64-important?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Alpine](https://img.shields.io/badge/alpine-3.13.2-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![PHP](https://img.shields.io/badge/php-7.4.15-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![PHP](https://img.shields.io/badge/php-7.4.16-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![WordPress](https://img.shields.io/badge/wordpress-5.6.2-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Bedrock](https://img.shields.io/badge/bedrock--informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![wp-cli](https://img.shields.io/badge/wp--cli-2.4.0-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
