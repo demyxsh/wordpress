@@ -1,6 +1,9 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2021-07-14
+- Use latest distro [c55d74d](https://github.com/demyxco/wordpress/commit/c55d74d7ed09fc958ccbf972b17d5c647b025480)
+
 ## 2020-12-25
 ### Changed
 - tag-cli
