@@ -1,0 +1,7 @@
+{
+  "alpine": "init",
+  "wordpress": "init",
+  "bedrock": "init",
+  "cli": "init",
+  "php": "init"
+}

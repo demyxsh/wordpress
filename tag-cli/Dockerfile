@@ -3,7 +3,7 @@ FROM php:7-fpm-alpine
 LABEL sh.demyx.image        demyx/wordpress:cli
 LABEL sh.demyx.maintainer   Demyx <info@demyx.sh>
 LABEL sh.demyx.url          https://demyx.sh
-LABEL sh.demyx.github       https://github.com/demyxco
+LABEL sh.demyx.github       https://github.com/demyxsh
 LABEL sh.demyx.registry     https://hub.docker.com/u/demyx
 
 # Set default variables

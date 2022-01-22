@@ -1,12 +1,17 @@
 # wordpress
-[![Build Status](https://img.shields.io/travis/demyxco/wordpress?style=flat)](https://travis-ci.org/demyxco/wordpress)
+[![demyxsh/wordpress](https://github.com/demyxsh/wordpress/actions/workflows/main.yml/badge.svg)](https://github.com/demyxsh/wordpress/actions/workflows/main.yml)
+[![Code Size](https://img.shields.io/github/languages/code-size/demyxsh/wordpress?style=flat&color=blue)](https://github.com/demyxsh/wordpress)
+[![Repository Size](https://img.shields.io/github/repo-size/demyxsh/wordpress?style=flat&color=blue)](https://github.com/demyxsh/wordpress)
+[![Watches](https://img.shields.io/github/watchers/demyxsh/wordpress?style=flat&color=blue)](https://github.com/demyxsh/wordpress)
+[![Stars](https://img.shields.io/github/stars/demyxsh/wordpress?style=flat&color=blue)](https://github.com/demyxsh/wordpress)
+[![Forks](https://img.shields.io/github/forks/demyxsh/wordpress?style=flat&color=blue)](https://github.com/demyxsh/wordpress)
 [![Docker Pulls](https://img.shields.io/docker/pulls/demyx/wordpress?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Architecture](https://img.shields.io/badge/linux-amd64-important?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![Alpine](https://img.shields.io/badge/alpine-3.13.2-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![PHP](https://img.shields.io/badge/php-7.4.16-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![WordPress](https://img.shields.io/badge/wordpress-5.7-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![Bedrock](https://img.shields.io/badge/bedrock--informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
-[![wp-cli](https://img.shields.io/badge/wp--cli-2.4.0-informational?style=flat&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![Alpine](https://img.shields.io/badge/dynamic/json?url=https://github.com/demyxsh/wordpress/raw/master/version.json&label=alpine&query=$.alpine&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![WordPress](https://img.shields.io/badge/dynamic/json?url=https://github.com/demyxsh/wordpress/raw/master/version.json&label=wordpress&query=$.wordpress&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![Bedrock](https://img.shields.io/badge/dynamic/json?url=https://github.com/demyxsh/wordpress/raw/master/version.json&label=bedrock&query=$.bedrock&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![wp-cli](https://img.shields.io/badge/dynamic/json?url=https://github.com/demyxsh/wordpress/raw/master/version.json&label=wp-cli&query=$.wp_cli&color=blue)](https://hub.docker.com/r/demyx/wordpress)
+[![PHP](https://img.shields.io/badge/dynamic/json?url=https://github.com/demyxsh/wordpress/raw/master/version.json&label=php&query=$.php&color=blue)](https://hub.docker.com/r/demyx/wordpress)
 [![Buy Me A Coffee](https://img.shields.io/badge/buy_me_coffee-$5-informational?style=flat&color=blue)](https://www.buymeacoffee.com/VXqkQK5tb)
 [![Become a Patron!](https://img.shields.io/badge/become%20a%20patron-$5-informational?style=flat&color=blue)](https://www.patreon.com/bePatron?u=23406156)
 
@@ -21,6 +26,12 @@ WORKDIR | /demyx
 CONFIG | /etc/demyx
 ENTRYPOINT | /usr/local/bin/demyx-entrypoint
 TIMEZONE | America/Los_Angeles
+
+## NOTICE
+This repository has been moved to the organization [demyxsh](https://github.com/demyxsh); please update the remote URL.
+```
+git remote set-url origin git@github.com:demyxsh/wordpress.git
+```
 
 ## Usage
 - Configured for remote VPS
@@ -234,7 +245,7 @@ volumes:
 ```
 
 ## Extensions
-*A few php extensions added based on the recommendations from [johnbillion/ext](https://github.com/johnbillion/ext). For automatic setup, see my repo: [github.com/demyxco](https://github.com/demyxco/demyx).
+*A few php extensions added based on the recommendations from [johnbillion/ext](https://github.com/johnbillion/ext). For automatic setup, see my repo: [github.com/demyxsh](https://github.com/demyxsh/demyx).
 
 Extension | Installed
 ------------- | -------------
@@ -265,12 +276,6 @@ xmlreader | 1
 zlib | 1
 
 ## Updates & Support
-[![Code Size](https://img.shields.io/github/languages/code-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-[![Repository Size](https://img.shields.io/github/repo-size/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-[![Watches](https://img.shields.io/github/watchers/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-[![Stars](https://img.shields.io/github/stars/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-[![Forks](https://img.shields.io/github/forks/demyxco/wordpress?style=flat&color=blue)](https://github.com/demyxco/wordpress)
-
 - Auto built weekly on Saturdays (America/Los_Angeles)
 - Rolling release updates
-- For support: [#demyx](https://webchat.freenode.net/?channel=#demyx)
+- For support: [#demyx](https://web.libera.chat/?channel=#demyx)
