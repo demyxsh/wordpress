@@ -58,7 +58,7 @@ jobs:
           docker run -d \
             --name=demyx_nx \
             --network=demyx \
-            -v demyx_wp:/demyx \
+            -v ${{ env.DEMYX_REPOSITORY }}:/demyx \
             -e DEMYX_WORDPRESS=true \
             -e DEMYX_WORDPRESS_CONTAINER=${{ env.DEMYX_REPOSITORY }} \
             -e DEMYX_WORDPRESS_CONTAINER_PORT=9000 \
@@ -111,7 +111,7 @@ jobs:
           docker run -d \
             --name=demyx_nx_bedrock \
             --network=demyx \
-            -v demyx_wp:/demyx \
+            -v ${{ env.DEMYX_REPOSITORY }}_bedrock:/demyx \
             -e DEMYX_WORDPRESS=true \
             -e DEMYX_WORDPRESS_CONTAINER=${{ env.DEMYX_REPOSITORY }}_bedrock \
             -e DEMYX_WORDPRESS_CONTAINER_PORT=9000 \
