@@ -2,6 +2,6 @@
   "alpine": "init",
   "wordpress": "init",
   "bedrock": "init",
-  "cli": "init",
+  "wp_cli": "init",
   "php": "init"
 }
