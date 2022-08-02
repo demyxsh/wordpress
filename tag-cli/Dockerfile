@@ -38,21 +38,41 @@ RUN set -ex; \
     echo 'PS1="$(whoami)@\h:\w \$ "' > /home/demyx/.bashrc; \
     echo 'PS1="$(whoami)@\h:\w \$ "' > /root/.bashrc
 
-# Install php extensions
+# Install PHP and friends
 RUN set -ex; \
-    /usr/bin/wget https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -qO /usr/local/bin/install-php-extensions; \
-    /bin/chmod uga+x /usr/local/bin/install-php-extensions; \
-    /bin/sync; \
-    /usr/local/bin/install-php-extensions \
-        exif \
-        gd \
-        imagick \
-        mysqli \
-        opcache \
-        pdo_mysql \
-        ssh2 \
-        sockets \
-        zip
+    apk add --no-cache --update \
+    \
+    php8 \
+    php8-bcmath \
+    php8-ctype \
+    php8-curl \
+    php8-dom \
+    php8-exif \
+    php8-fileinfo \
+    php8-fpm \
+    php8-ftp \
+    php8-gd \
+    php8-iconv \
+    php8-json \
+    php8-mbstring \
+    php8-mysqli \
+    php8-opcache \
+    php8-openssl \
+    php8-pecl-imagick \
+    php8-pecl-ssh2 \
+    php8-phar \
+    php8-posix \
+    php8-session \
+    php8-simplexml \
+    php8-soap \
+    php8-sodium \
+    php8-sockets \
+    php8-tokenizer \
+    php8-xml \
+    php8-xmlreader \
+    php8-xmlwriter \
+    php8-zip \
+    php8-zlib
 
 # Install wp-cli
 RUN set -ex; \
