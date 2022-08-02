@@ -42,6 +42,7 @@ RUN set -ex; \
     /sbin/apk add --update --no-cache \
         bash \
         ed \
+    mysql-client \
         tzdata
 
 # Configure Demyx
