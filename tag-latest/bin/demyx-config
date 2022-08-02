@@ -27,7 +27,7 @@ if [[ "$DEMYX_OPCACHE" = off || "$DEMYX_OPCACHE" = false ]]; then
 fi
 
 # Generate www.conf
-/bin/echo "[${DEMYX_DOMAIN:-www}]
+echo "[${DEMYX_DOMAIN:-www}]
 catch_workers_output        = yes
 chdir                       = $DEMYX
 listen                      = 9000
@@ -47,7 +47,7 @@ process_control_timeout     = $DEMYX_PROCESS_CONTROL_TIMEOUT
 " > "$DEMYX_CONFIG"/www.conf
 
 # Generate docker.conf
-/bin/echo "[global]
+echo "[global]
 error_log = /proc/self/fd/2
 
 ; https://github.com/docker-library/php/pull/725#issuecomment-443540114
@@ -65,7 +65,7 @@ decorate_workers_output = no
 " > "$DEMYX_CONFIG"/docker.conf
 
 # Generate php.ini
-/bin/echo "[Assertion]
+echo "[Assertion]
 zend.assertions = -1
 
 [CLI Server]
