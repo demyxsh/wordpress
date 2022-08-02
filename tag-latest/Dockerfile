@@ -147,25 +147,13 @@ COPY --chown=demyx:demyx src "$DEMYX_CONFIG"
 
 # Finalize
 RUN set -ex; \
-    # Remove php-fpm configs
-    /bin/rm -f /usr/local/etc/php-fpm.d/*; \
-    \
-    # Use our php-fpm configs
-    /bin/ln -s "$DEMYX_CONFIG"/php.ini /usr/local/etc/php/php.ini; \
-    /bin/ln -s "$DEMYX_CONFIG"/www.conf /usr/local/etc/php-fpm.d/www.conf; \
-    /bin/ln -s "$DEMYX_CONFIG"/docker.conf /usr/local/etc/php-fpm.d/docker.conf; \
-    \
-    # demyx-config
-    /bin/cp "$DEMYX_CONFIG"/config.sh /usr/local/bin/demyx-config; \
-    /bin/chmod +x /usr/local/bin/demyx-config; \
-    \
-    # demyx-install
-    /bin/cp "$DEMYX_CONFIG"/install.sh /usr/local/bin/demyx-install; \
-    /bin/chmod +x /usr/local/bin/demyx-install; \
-    \
-    # demyx-entrypoint
-    /bin/cp "$DEMYX_CONFIG"/entrypoint.sh /usr/local/bin/demyx-entrypoint; \
-    /bin/chmod +x /usr/local/bin/demyx-entrypoint; \
+    # Configure PHP8*
+    ln -sf "$DEMYX_CONFIG"/php.ini /etc/php8/php.ini; \
+    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php8/php-fpm.d/www.conf; \
+    ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php8/php-fpm.d/docker.conf; \
+    ln -sf "$DEMYX_CONFIG"/php.ini /etc/php81/php.ini; \
+    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php81/php-fpm.d/www.conf; \
+    ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php81/php-fpm.d/docker.conf; \
     \
     # Set ownership
     /bin/chown -R root:root /usr/local/bin; \
