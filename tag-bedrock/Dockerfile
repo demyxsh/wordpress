@@ -16,45 +16,41 @@ ENV WORDPRESS_BEDROCK_MODE      "$DEMYX_BEDROCK_MODE"
 
 # Packages
 RUN set -ex; \
-    /sbin/apk add --update --no-cache \
-        git
+    apk add --update --no-cache git
 
 # Composer
 RUN set -ex; \
-    /bin/su -c "/usr/bin/curl -sL https://getcomposer.org/installer -o /tmp/composer-setup.php" -s /bin/sh demyx; \
-    /usr/local/bin/php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    su -c "wget https://getcomposer.org/installer -qO /tmp/composer-setup.php" -s /bin/sh demyx; \
+    php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # Bedrock
 RUN set -ex; \
     # Remove WordPress
-    /bin/rm -f "$DEMYX_CONFIG"/wordpress.tgz; \
-    /bin/rm -rf "$DEMYX"/*; \
+    rm -f "$DEMYX_CONFIG"/wordpress.tgz; \
+    rm -rf "$DEMYX"/*; \
     \
     # Configure Bedrock
-    /bin/su -c "/usr/local/bin/composer create-project roots/bedrock /tmp/bedrock; \
+    su -c "composer create-project roots/bedrock /tmp/bedrock; \
         \
-        /bin/sed -i 's|\"roots/wordpress\": .*|\"roots/wordpress\": \">1\",|g' /tmp/bedrock/composer.json; \
+        sed -i 's|\"roots/wordpress\": .*|\"roots/wordpress\": \">1\",|g' /tmp/bedrock/composer.json; \
         \
-        cd /tmp/bedrock && /usr/local/bin/composer update; \
+        cd /tmp/bedrock && composer update; \
         \
-        /usr/local/bin/composer clearcache; \
+        composer clearcache; \
         \
-        /bin/cp -r /tmp/bedrock/. ${DEMYX}; \
+        cp -r /tmp/bedrock/. ${DEMYX}; \
         \
-        /usr/bin/tar -czf ${DEMYX_CONFIG}/bedrock.tgz -C /tmp/bedrock ." -s /bin/sh demyx
+        tar -czf ${DEMYX_CONFIG}/bedrock.tgz -C /tmp/bedrock ." -s /bin/sh demyx
 
 # Override WordPress installer
 COPY install.sh /usr/local/bin/demyx-install
 
 # Finalize
 RUN set -ex; \
-    # demyx-install
-    /bin/chmod +x /usr/local/bin/demyx-install; \
-    \
     # Reset permissions
-    /bin/chown -R root:root /usr/local/bin; \
+    chown -R root:root /usr/local/bin; \
     \
     # Clear /tmp
-    /bin/rm -rf /tmp/*
+    rm -rf /tmp/*
 
 USER demyx
