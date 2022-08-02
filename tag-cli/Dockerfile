@@ -20,7 +20,7 @@ ENV WORDPRESS_LOG           "$DEMYX_LOG"
 RUN set -ex; \
     apk add --update --no-cache \
         bash \
-        mariadb-client \
+        mysql-client \
         tzdata
 
 # Configure Demyx
