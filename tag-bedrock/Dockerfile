@@ -43,7 +43,7 @@ RUN set -ex; \
         tar -czf ${DEMYX_CONFIG}/bedrock.tgz -C /tmp/bedrock ." -s /bin/sh demyx
 
 # Override WordPress installer
-COPY install.sh /usr/local/bin/demyx-install
+COPY bin /usr/local/bin
 
 # Finalize
 RUN set -ex; \
