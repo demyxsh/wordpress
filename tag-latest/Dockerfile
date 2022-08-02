@@ -30,7 +30,7 @@ ENV DEMYX_PM_PROCESS_IDLE_TIMEOUT       3s
 ENV DEMYX_PM_START_SERVERS              5
 ENV DEMYX_PROCESS_CONTROL_TIMEOUT       10s
 ENV DEMYX_UPLOAD_LIMIT                  128M
-ENV DEMYX_WP_CONFIG                     "$DEMYX"/wp-config.php
+ENV DEMYX_WP_CONFIG                     "${DEMYX}/wp-config.php"
 ENV TZ                                  America/Los_Angeles
 # Support for old variables
 ENV WORDPRESS_ROOT                      "$DEMYX"
@@ -39,26 +39,27 @@ ENV WORDPRESS_LOG                       "$DEMYX_LOG"
 
 # Packages
 RUN set -ex; \
-    /sbin/apk add --update --no-cache \
-        bash \
-        ed \
+    apk add --update --no-cache \
+    \
+    bash \
+    ed \
     mysql-client \
-        tzdata
+    tzdata
 
 # Configure Demyx
 RUN set -ex; \
     # Create demyx user
-    /usr/sbin/addgroup -g 1000 -S demyx; \
-    /usr/sbin/adduser -u 1000 -D -S -G demyx demyx; \
+    addgroup -g 1000 -S demyx; \
+    adduser -u 1000 -D -S -G demyx demyx; \
     \
     # Create demyx directories
-    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX"; \
-    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX_CONFIG"; \
-    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX_LOG"; \
+    install -d -m 0755 -o demyx -g demyx "$DEMYX"; \
+    install -d -m 0755 -o demyx -g demyx "$DEMYX_CONFIG"; \
+    install -d -m 0755 -o demyx -g demyx "$DEMYX_LOG"; \
     \
     # Update .bashrc
-    /bin/echo 'PS1="$(whoami)@\h:\w \$ "' > /home/demyx/.bashrc; \
-    /bin/echo 'PS1="$(whoami)@\h:\w \$ "' > /root/.bashrc
+    echo 'PS1="$(whoami)@\h:\w \$ "' > /home/demyx/.bashrc; \
+    echo 'PS1="$(whoami)@\h:\w \$ "' > /root/.bashrc
 
 # Install PHP and friends
 RUN set -ex; \
@@ -130,20 +131,21 @@ RUN set -ex; \
 
 # WordPress
 RUN set -ex; \
-    /bin/su -c "/usr/bin/wget https://wordpress.org/latest.tar.gz -qO /tmp/latest.tar.gz; \
-        \
-        /usr/bin/tar -xzf /tmp/latest.tar.gz -C /tmp; \
-        \
-        /bin/mv /tmp/wordpress/wp-config-sample.php /tmp/wordpress/wp-config.php; \
-        \
-        /bin/cp -r /tmp/wordpress/* ${DEMYX}; \
-        \
+    su -c "wget https://wordpress.org/latest.tar.gz -qO /tmp/latest.tar.gz; \
+    \
+    tar -xzf /tmp/latest.tar.gz -C /tmp; \
+    \
+    mv /tmp/wordpress/wp-config-sample.php /tmp/wordpress/wp-config.php; \
+    \
+    cp -r /tmp/wordpress/* ${DEMYX}; \
+    \
+    tar -czf ${DEMYX_CONFIG}/wordpress.tgz -C /tmp/wordpress ." -s /bin/sh demyx; \
     \
     wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
     chmod +x /usr/local/bin/wp
 
 # Imports
-COPY --chown=demyx:demyx src "$DEMYX_CONFIG"
+COPY bin /usr/local/bin
 
 # Finalize
 RUN set -ex; \
@@ -156,10 +158,10 @@ RUN set -ex; \
     ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php81/php-fpm.d/docker.conf; \
     \
     # Set ownership
-    /bin/chown -R root:root /usr/local/bin; \
+    chown -R root:root /usr/local/bin; \
     \
     # Clear /tmp
-    /bin/rm -rf /tmp/*
+    rm -rf /tmp/*
 
 EXPOSE 9000
 
@@ -167,4 +169,4 @@ WORKDIR "$DEMYX"
 
 USER demyx
 
-ENTRYPOINT ["/usr/local/bin/demyx-entrypoint"]
+ENTRYPOINT ["demyx-entrypoint"]

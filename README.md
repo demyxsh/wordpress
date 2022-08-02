@@ -214,6 +214,7 @@ services:
       - DEMYX_MAX_EXECUTION_TIME=300
       - DEMYX_MEMORY=256M
       - DEMYX_OPCACHE=true
+      - DEMYX_PHP=8.0
       - DEMYX_PM=ondemand
       - DEMYX_PM_MAX_CHILDREN=25
       - DEMYX_PM_MAX_REQUESTS=25000
@@ -249,7 +250,6 @@ volumes:
 
 Extension | Installed
 ------------- | -------------
-ssh2 | 1
 curl | 1
 date | 1
 dom | 1
@@ -269,9 +269,10 @@ pcre | 1
 posix | 1
 SimpleXML | 1
 sockets | 1
-SPL | 1    
+SPL | 1
+ssh2 | 1
 tokenizer | 1
-xml | 1    
+xml | 1
 xmlreader | 1
 zlib | 1
 

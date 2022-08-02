@@ -168,6 +168,7 @@ services:
       - DEMYX_MAX_EXECUTION_TIME=300
       - DEMYX_MEMORY=256M
       - DEMYX_OPCACHE=true
+      - DEMYX_PHP=8.0
       - DEMYX_PM=ondemand
       - DEMYX_PM_MAX_CHILDREN=25
       - DEMYX_PM_MAX_REQUESTS=25000
