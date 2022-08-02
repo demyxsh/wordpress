@@ -18,7 +18,7 @@ ENV WORDPRESS_LOG           "$DEMYX_LOG"
 
 # Packages
 RUN set -ex; \
-    /sbin/apk add --update --no-cache \
+    apk add --update --no-cache \
         bash \
         mariadb-client \
         tzdata
@@ -26,17 +26,17 @@ RUN set -ex; \
 # Configure Demyx
 RUN set -ex; \
     # Create demyx user
-    /usr/sbin/addgroup -g 1000 -S demyx; \
-    /usr/sbin/adduser -u 1000 -D -S -G demyx demyx; \
+    addgroup -g 1000 -S demyx; \
+    adduser -u 1000 -D -S -G demyx demyx; \
     \
     # Create demyx directories
-    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX"; \
-    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX_CONFIG"; \
-    /usr/bin/install -d -m 0755 -o demyx -g demyx "$DEMYX_LOG"; \
+    install -d -m 0755 -o demyx -g demyx "$DEMYX"; \
+    install -d -m 0755 -o demyx -g demyx "$DEMYX_CONFIG"; \
+    install -d -m 0755 -o demyx -g demyx "$DEMYX_LOG"; \
     \
     # Update .bashrc
-    /bin/echo 'PS1="$(whoami)@\h:\w \$ "' > /home/demyx/.bashrc; \
-    /bin/echo 'PS1="$(whoami)@\h:\w \$ "' > /root/.bashrc
+    echo 'PS1="$(whoami)@\h:\w \$ "' > /home/demyx/.bashrc; \
+    echo 'PS1="$(whoami)@\h:\w \$ "' > /root/.bashrc
 
 # Install php extensions
 RUN set -ex; \
@@ -56,11 +56,11 @@ RUN set -ex; \
 
 # Install wp-cli
 RUN set -ex; \
-    /usr/bin/wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
-    /bin/chmod +x /usr/local/bin/wp
+    wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
+    chmod +x /usr/local/bin/wp
 
 WORKDIR "$DEMYX"
 
 USER demyx
 
-ENTRYPOINT ["/usr/local/bin/wp"]
+ENTRYPOINT ["wp"]
