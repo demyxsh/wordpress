@@ -1,4 +1,4 @@
-FROM php:7-fpm-alpine
+FROM alpine
 
 LABEL sh.demyx.image        demyx/wordpress:cli
 LABEL sh.demyx.maintainer   Demyx <info@demyx.sh>
