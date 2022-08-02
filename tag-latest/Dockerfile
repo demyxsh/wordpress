@@ -60,21 +60,73 @@ RUN set -ex; \
     /bin/echo 'PS1="$(whoami)@\h:\w \$ "' > /home/demyx/.bashrc; \
     /bin/echo 'PS1="$(whoami)@\h:\w \$ "' > /root/.bashrc
 
-# Install php extensions
+# Install PHP and friends
 RUN set -ex; \
-    /usr/bin/wget https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -qO /usr/local/bin/install-php-extensions; \
-    /bin/chmod uga+x /usr/local/bin/install-php-extensions; \
-    /bin/sync; \
-    /usr/local/bin/install-php-extensions \
-        exif \
-        gd \
-        imagick \
-        mysqli \
-        opcache \
-        pdo_mysql \
-        ssh2 \
-        sockets \
-        zip
+    apk add --no-cache --update \
+    \
+    php8 \
+    php8-bcmath \
+    php8-ctype \
+    php8-curl \
+    php8-dom \
+    php8-exif \
+    php8-fileinfo \
+    php8-fpm \
+    php8-ftp \
+    php8-gd \
+    php8-iconv \
+    php8-json \
+    php8-mbstring \
+    php8-mysqli \
+    php8-opcache \
+    php8-openssl \
+    php8-pecl-imagick \
+    php8-pecl-ssh2 \
+    php8-phar \
+    php8-posix \
+    php8-session \
+    php8-simplexml \
+    php8-soap \
+    php8-sodium \
+    php8-sockets \
+    php8-tokenizer \
+    php8-xml \
+    php8-xmlreader \
+    php8-xmlwriter \
+    php8-zip \
+    php8-zlib \
+    \
+    php81 \
+    php81-bcmath \
+    php81-ctype \
+    php81-curl \
+    php81-dom \
+    php81-exif \
+    php81-fileinfo \
+    php81-fpm \
+    php81-ftp \
+    php81-gd \
+    php81-iconv \
+    php81-json \
+    php81-mbstring \
+    php81-mysqli \
+    php81-opcache \
+    php81-openssl \
+    php81-pecl-imagick \
+    php81-pecl-ssh2 \
+    php81-phar \
+    php81-posix \
+    php81-session \
+    php81-simplexml \
+    php81-soap \
+    php81-sodium \
+    php81-sockets \
+    php81-tokenizer \
+    php81-xml \
+    php81-xmlreader \
+    php81-xmlwriter \
+    php81-zip \
+    php81-zlib
 
 # WordPress
 RUN set -ex; \
