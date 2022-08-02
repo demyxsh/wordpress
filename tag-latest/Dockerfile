@@ -138,7 +138,9 @@ RUN set -ex; \
         \
         /bin/cp -r /tmp/wordpress/* ${DEMYX}; \
         \
-        /usr/bin/tar -czf ${DEMYX_CONFIG}/wordpress.tgz -C /tmp/wordpress ." -s /bin/sh demyx
+    \
+    wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
+    chmod +x /usr/local/bin/wp
 
 # Imports
 COPY --chown=demyx:demyx src "$DEMYX_CONFIG"
