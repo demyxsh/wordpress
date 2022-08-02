@@ -12,6 +12,13 @@ Entries before tag-* affects all tags.
 - Use upstream alpine [fdf0256](https://github.com/demyxsh/wordpress/commit/fdf0256e81b32142ee29e359f2d9cc243cbd6f50)
 - Archive php7.4 files [ec1ab2a](https://github.com/demyxsh/wordpress/commit/ec1ab2ab23333c28d38fd9b311a186e7ea86b8ab)
 - Rename scripts and make it executable [dc23f66](https://github.com/demyxsh/wordpress/commit/dc23f6692c13bd36782c5823ef3c365fb77a3992)
+- tag-bedrock - copy new bin directory [4f37412](https://github.com/demyxsh/wordpress/commit/4f3741277fed52647b715c9509916a45e599a1b9)
+- tag-bedrock - remove full paths [371669e](https://github.com/demyxsh/wordpress/commit/371669e12e88430e6d833fd3a0aa63ad0a957033)
+- tag-bedrock - add new variable DEMYX_PHP [2224bf5](https://github.com/demyxsh/wordpress/commit/2224bf5f7519128c08b794fd74609c8619824f83)
+- tag-bedrock - move and rename [0dac5c7](https://github.com/demyxsh/wordpress/commit/0dac5c7f1253138ac0419a448b1070093a7790dd)
+- tag-cli - install php and friends from package manager [2bdcd4a](https://github.com/demyxsh/wordpress/commit/2bdcd4a1fc786e9c3b5c6e8bc812f488b8794fbe)
+- tag-cli - use alpine upstream [23383fb](https://github.com/demyxsh/wordpress/commit/23383fb15fdc87899bf2213c71b479ae47a1b4e7)
+- tag-cli - remove full paths [187dcb0](https://github.com/demyxsh/wordpress/commit/187dcb074c43e5a7dd980f409f4e9d78fae82631)
 
 ## 2021-07-14
 - Use latest distro [c55d74d](https://github.com/demyxco/wordpress/commit/c55d74d7ed09fc958ccbf972b17d5c647b025480)
