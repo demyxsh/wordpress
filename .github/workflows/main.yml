@@ -29,6 +29,7 @@ jobs:
           docker build -t demyx/${{ env.DEMYX_REPOSITORY }} tag-latest
           docker build -t demyx/${{ env.DEMYX_REPOSITORY }}:bedrock tag-bedrock
           docker build -t demyx/${{ env.DEMYX_REPOSITORY }}:cli tag-cli
+          docker build -t demyx/${{ env.DEMYX_REPOSITORY }}:7.4 tag-7.4
       - name: Test
         id: test
         shell: 'script -q -e -c "bash {0}"'
@@ -175,3 +176,4 @@ jobs:
           docker push demyx/${{ env.DEMYX_REPOSITORY }}
           docker push demyx/${{ env.DEMYX_REPOSITORY }}:cli
           docker push demyx/${{ env.DEMYX_REPOSITORY }}:bedrock
+          docker push demyx/${{ env.DEMYX_REPOSITORY }}:7.4
