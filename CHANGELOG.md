@@ -19,6 +19,7 @@ Entries before tag-* affects all tags.
 - tag-cli - install php and friends from package manager [2bdcd4a](https://github.com/demyxsh/wordpress/commit/2bdcd4a1fc786e9c3b5c6e8bc812f488b8794fbe)
 - tag-cli - use alpine upstream [23383fb](https://github.com/demyxsh/wordpress/commit/23383fb15fdc87899bf2213c71b479ae47a1b4e7)
 - tag-cli - remove full paths [187dcb0](https://github.com/demyxsh/wordpress/commit/187dcb074c43e5a7dd980f409f4e9d78fae82631)
+- tag-cli - replace package [0e5c496](https://github.com/demyxsh/wordpress/commit/0e5c496c0de6f1fd9781d951bb7c8ffad1c76881)
 
 ## 2021-07-14
 - Use latest distro [c55d74d](https://github.com/demyxco/wordpress/commit/c55d74d7ed09fc958ccbf972b17d5c647b025480)
