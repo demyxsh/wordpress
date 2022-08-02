@@ -20,6 +20,7 @@ ENV DEMYX_LOG                           /var/log/demyx
 ENV DEMYX_MAX_EXECUTION_TIME            300
 ENV DEMYX_MEMORY                        256M
 ENV DEMYX_OPCACHE                       true
+ENV DEMYX_PHP                           8.0
 ENV DEMYX_PM                            ondemand
 ENV DEMYX_PM_MAX_CHILDREN               25
 ENV DEMYX_PM_MAX_REQUESTS               25000
