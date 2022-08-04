@@ -124,7 +124,7 @@ jobs:
           docker run \
             --network=demyx \
             --volumes-from=${{ env.DEMYX_REPOSITORY }}_bedrock \
-            --workdir=/demyx \
+            --workdir=/demyx/web \
             demyx/wordpress:cli core install \
               --url=http://localhost \
               --title=demyx \

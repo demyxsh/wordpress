@@ -180,7 +180,7 @@ services:
       - DEMYX_PROCESS_CONTROL_TIMEOUT=10s
       - DEMYX_SSL=true
       - DEMYX_UPLOAD_LIMIT=128M
-      - DEMYX_WP_CONFIG=/demyx/wp-config.php
+      - DEMYX_WP_CONFIG=/demyx/web/wp-config.php
       - TZ=America/Los_Angeles
     image: demyx/wordpress:bedrock
     networks:
