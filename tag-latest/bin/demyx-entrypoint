@@ -11,7 +11,7 @@ demyx-config
 
 # Run php-fpm in the foreground
 case "$DEMYX_PHP" in
-    8.0)
+    8|8.0)
         DEMYX_PHP=8
     ;;
     8.1)
