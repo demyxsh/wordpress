@@ -1,6 +1,10 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2022-08-05
+- Misc updates [613f7e8](https://github.com/demyxsh/wordpress/commit/613f7e81da21d4bb3e46a1b28d348ed1f5f75d59)
+- Add 8 as a case option [6403f6b](https://github.com/demyxsh/wordpress/commit/6403f6bd3349ad4c1bf0079aec6908201a89e2c9)
+
 ## 2022-08-01
 - Misc updates [e5db3aa](https://github.com/demyxsh/wordpress/commit/e5db3aa72191d376abfc3f4234d49e81355a7ab8)
 - Build and push 7.4 tag [c14ec90](https://github.com/demyxsh/wordpress/commit/c14ec901326fe26e184297ef5b7c4f48cce2ad6a)
