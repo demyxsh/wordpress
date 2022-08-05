@@ -9,7 +9,7 @@ demyx-install
 # Generate configs
 demyx-config
 
-# Run php-fpm in the foreground
+# Default to php version 8 if user inputs an incorrect version
 case "$DEMYX_PHP" in
     8|8.0)
         DEMYX_PHP=8
@@ -22,4 +22,5 @@ case "$DEMYX_PHP" in
     ;;
 esac
 
+# Run php-fpm in the foreground
 php-fpm"$DEMYX_PHP" -F
