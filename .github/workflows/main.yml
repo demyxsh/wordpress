@@ -25,7 +25,6 @@ jobs:
           docker pull alpine
           docker pull demyx/nginx
           docker pull demyx/mariadb
-          docker pull demyx/utilities
           docker build -t demyx/${{ env.DEMYX_REPOSITORY }} tag-latest
           docker build -t demyx/${{ env.DEMYX_REPOSITORY }}:bedrock tag-bedrock
           docker build -t demyx/${{ env.DEMYX_REPOSITORY }}:cli tag-cli
@@ -68,17 +67,13 @@ jobs:
 
           sleep 5
 
-          docker run \
-            --network=demyx \
-            --volumes-from=${{ env.DEMYX_REPOSITORY }} \
-            --workdir=/demyx \
-            demyx/wordpress:cli core install \
-              --url=http://localhost \
-              --title=demyx \
-              --admin_user=demyx \
-              --admin_password=demyx \
+          docker exec ${{ env.DEMYX_REPOSITORY }} wp core install \
               --admin_email=info@domain.tld \
-              --skip-email
+              --admin_password=demyx \
+              --admin_user=demyx \
+              --skip-email \
+              --title=demyx \
+              --url=http://localhost
 
           sleep 5
 
@@ -113,6 +108,7 @@ jobs:
             --name=demyx_nx_bedrock \
             --network=demyx \
             -v ${{ env.DEMYX_REPOSITORY }}_bedrock:/demyx \
+            -e DEMYX_BEDROCK=true \
             -e DEMYX_WORDPRESS=true \
             -e DEMYX_WORDPRESS_CONTAINER=${{ env.DEMYX_REPOSITORY }}_bedrock \
             -e DEMYX_WORDPRESS_CONTAINER_PORT=9000 \
@@ -121,17 +117,13 @@ jobs:
 
           sleep 5
 
-          docker run \
-            --network=demyx \
-            --volumes-from=${{ env.DEMYX_REPOSITORY }}_bedrock \
-            --workdir=/demyx/web \
-            demyx/wordpress:cli core install \
-              --url=http://localhost \
-              --title=demyx \
-              --admin_user=demyx \
-              --admin_password=demyx \
+          docker exec ${{ env.DEMYX_REPOSITORY }}_bedrock wp core install \
               --admin_email=info@domain.tld \
-              --skip-email
+              --admin_password=demyx \
+              --admin_user=demyx \
+              --skip-email \
+              --title=demyx \
+              --url=http://localhost
 
           sleep 5
 

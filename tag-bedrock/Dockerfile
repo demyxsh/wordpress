@@ -26,8 +26,9 @@ RUN set -ex; \
 
 # Bedrock
 RUN set -ex; \
-    # Remove WordPress
+    # Remove old files
     rm -f "$DEMYX_CONFIG"/wordpress.tgz; \
+    rm -f /usr/local/bin/demyx-install; \
     rm -rf "$DEMYX"/*; \
     \
     # Configure Bedrock
