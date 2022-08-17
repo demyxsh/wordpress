@@ -36,9 +36,7 @@ RUN set -ex; \
         \
         sed -i 's|\"roots/wordpress\": .*|\"roots/wordpress\": \">1\",|g' /tmp/bedrock/composer.json; \
         \
-        cd /tmp/bedrock && composer update; \
-        \
-        composer clearcache; \
+        cd /tmp/bedrock && composer require roots/acorn; \
         \
         cp -r /tmp/bedrock/. ${DEMYX}; \
         \
