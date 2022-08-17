@@ -1,6 +1,9 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2022-08-16
+- Remove composer commands and add roots/acorn [1cfa14f](https://github.com/demyxsh/wordpress/commit/1cfa14fddc30c2b55d4e22ec565245478136e3a8)
+
 ## 2022-08-05
 - Misc updates [613f7e8](https://github.com/demyxsh/wordpress/commit/613f7e81da21d4bb3e46a1b28d348ed1f5f75d59)
 - Add 8 as a case option [6403f6b](https://github.com/demyxsh/wordpress/commit/6403f6bd3349ad4c1bf0079aec6908201a89e2c9)
