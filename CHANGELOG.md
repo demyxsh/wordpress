@@ -1,6 +1,16 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2022-11-01
+- Misc updates [b4d150f](https://github.com/demyxsh/wordpress/commit/b4d150f9145ec1873745747db4965d85a733f01d)
+- Add new environment variables [0a67805](https://github.com/demyxsh/wordpress/commit/0a67805a45c8f3817450da56a4956705e1c4138e)
+- Add new executables [87d8884](https://github.com/demyxsh/wordpress/commit/87d8884be032b88bffa4a4f904333951ddb7f1d1)
+- Use new function formatting and add/update commands/functions [6ebf874](https://github.com/demyxsh/wordpress/commit/6ebf874291531b272da8cd31ff98456d8cf3bd8f)
+- Add new environment variables [a8b1f65](https://github.com/demyxsh/wordpress/commit/a8b1f6541ecf3589edc91daf09f5cdc2c4ca1034)
+- Disable SSL by default [df4b4f3](https://github.com/demyxsh/wordpress/commit/df4b4f3c97d2e47c7c46cc5edf2abb45f3a7bb39)
+- Update depends_on keys [bb5daca](https://github.com/demyxsh/wordpress/commit/bb5daca8a0bd4b7dda6e598f516516924523fe0a)
+- Update comment descriptions [3c99930](https://github.com/demyxsh/wordpress/commit/3c99930b3f5eb9fe789f970570e7156ea9083988)
+
 ## 2022-08-16
 - Remove composer commands and add roots/acorn [1cfa14f](https://github.com/demyxsh/wordpress/commit/1cfa14fddc30c2b55d4e22ec565245478136e3a8)
 
