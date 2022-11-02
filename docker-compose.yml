@@ -199,8 +199,8 @@ services:
       - demyx
     restart: unless-stopped
     volumes:
-      - demyx_wp:/demyx
       - demyx_log:/var/log/demyx
+      - demyx_wp:/demyx
 version: "2.4"
 volumes:
   demyx_db:

@@ -17,7 +17,7 @@ ENV WORDPRESS_BEDROCK_MODE      "$DEMYX_BEDROCK_MODE"
 
 # Packages
 RUN set -ex; \
-    apk add --update --no-cache git
+    apk add --update --no-cache ed git
 
 # Composer
 RUN set -ex; \

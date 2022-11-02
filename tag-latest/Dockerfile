@@ -53,8 +53,10 @@ RUN set -ex; \
     apk add --update --no-cache \
     \
     bash \
-    ed \
-    mysql-client \
+    logrotate \
+    mariadb-client \
+    sed \
+    sudo \
     tzdata
 
 # Configure Demyx
@@ -167,6 +169,9 @@ RUN set -ex; \
     ln -sf "$DEMYX_CONFIG"/php.ini /etc/php81/php.ini; \
     ln -sf "$DEMYX_CONFIG"/www.conf /etc/php81/php-fpm.d/www.conf; \
     ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php81/php-fpm.d/docker.conf; \
+    \
+    # Configure sudo
+    echo "demyx ALL=(ALL) NOPASSWD:SETENV: /usr/local/bin/demyx-sudo" > /etc/sudoers.d/demyx; \
     \
     # Set ownership
     chown -R root:root /usr/local/bin; \
