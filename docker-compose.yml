@@ -1,9 +1,9 @@
 # Demyx
 # https://demyx.sh
 #
-# This docker-compose.yml is designed for VPS use with SSL/TLS first.
-# Traefik requires no additional configurations and is ready to go.
 # Be sure to change all the domain.tld domains and credentials before running docker-compose up -d.
+# For SSL: have a remote server, uncomment all the labels, and set DEMYX_PROTO=https.
+# Give it at least 5-10 seconds for Lets Encrypt to provision SSL certificates.
 #
 networks:
   demyx:
