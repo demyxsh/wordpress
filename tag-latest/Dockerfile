@@ -9,17 +9,24 @@ LABEL sh.demyx.registry                 https://hub.docker.com/u/demyx
 # Set default variables
 ENV DEMYX                               /demyx
 ENV DEMYX_CONFIG                        /etc/demyx
+ENV DEMYX_CRON                          true
+ENV DEMYX_CRON_WP_INTERVAL              "*/15 * * * *"
+ENV DEMYX_CRON_LOGROTATE_INTERVAL       "0 0 * * 0"
 ENV DEMYX_DB_HOST                       localhost
 ENV DEMYX_DB_NAME                       demyx
 ENV DEMYX_DB_PASSWORD                   demyx
-ENV DEMYX_DB_USER                       demyx
-ENV DEMYX_DOMAIN                        localhost
+ENV DEMYX_DB_USERNAME                   demyx
+ENV DEMYX_DOMAIN                        domain.tld
 ENV DEMYX_EMERGENCY_RESTART_INTERVAL    1m
 ENV DEMYX_EMERGENCY_RESTART_THRESHOLD   5
 ENV DEMYX_LOG                           /var/log/demyx
+ENV DEMYX_LOGROTATE                     weekly
+ENV DEMYX_LOGROTATE_INTERVAL            52
 ENV DEMYX_MAX_EXECUTION_TIME            300
 ENV DEMYX_MEMORY                        256M
 ENV DEMYX_OPCACHE                       true
+ENV DEMYX_OPCACHE_ENABLE                1
+ENV DEMYX_OPCACHE_ENABLE_CLI            1
 ENV DEMYX_PHP                           8.0
 ENV DEMYX_PM                            ondemand
 ENV DEMYX_PM_MAX_CHILDREN               25
@@ -29,8 +36,12 @@ ENV DEMYX_PM_MIN_SPARE_SERVERS          5
 ENV DEMYX_PM_PROCESS_IDLE_TIMEOUT       3s
 ENV DEMYX_PM_START_SERVERS              5
 ENV DEMYX_PROCESS_CONTROL_TIMEOUT       10s
+ENV DEMYX_PROTO                         http
 ENV DEMYX_UPLOAD_LIMIT                  128M
 ENV DEMYX_WP_CONFIG                     "${DEMYX}/wp-config.php"
+ENV DEMYX_WP_EMAIL                      info@domain.tld
+ENV DEMYX_WP_PASSWORD                   demyx
+ENV DEMYX_WP_USERNAME                   demyx
 ENV TZ                                  America/Los_Angeles
 # Support for old variables
 ENV WORDPRESS_ROOT                      "$DEMYX"
