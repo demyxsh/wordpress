@@ -1,0 +1,57 @@
+#!/bin/bash
+# Demyx
+# https://demyx.sh
+set -euo pipefail
+#
+#	Main.
+#
+demyx_sudo() {
+	local DEMYX_SUDO="${1:-}"
+
+	case "$DEMYX_SUDO" in
+		cron)
+			demyx_sudo_cron
+		;;
+		logrotate)
+			demyx_sudo_logrotate
+		;;
+	esac
+
+}
+#
+#	Cron.
+#
+demyx_sudo_cron() {
+	local DEMYX_SUDO_CRON=
+	DEMYX_SUDO_CRON="$(pgrep crond || true)"
+
+    echo "$DEMYX_CRON_WP_INTERVAL /usr/local/bin/demyx-cron wp" > /etc/crontabs/demyx; \
+    echo "$DEMYX_CRON_LOGROTATE_INTERVAL /usr/bin/sudo -E /usr/local/bin/demyx-sudo logrotate" >> /etc/crontabs/demyx; \
+
+	[[ "$DEMYX_CRON" = true && -z "$DEMYX_SUDO_CRON" ]] && crond
+}
+#
+#	Logs.
+#
+demyx_sudo_logrotate() {
+	DEMYX_SUDO_LOGROTATE="$DEMYX_CONFIG"/logrotate.conf
+
+	if [[ ! -f "$DEMYX_SUDO_LOGROTATE" ]]; then
+		echo "${DEMYX_LOG}/*.log {
+    $DEMYX_LOGROTATE
+    missingok
+    copytruncate
+    rotate $DEMYX_LOGROTATE_INTERVAL
+    notifempty
+    sharedscripts
+}
+    	" > "$DEMYX_SUDO_LOGROTATE"
+		chown root:root "$DEMYX_SUDO_LOGROTATE"
+	fi
+
+	logrotate "$DEMYX_SUDO_LOGROTATE"
+}
+#
+#	Init.
+#
+demyx_sudo "$@"
