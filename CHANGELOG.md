@@ -2,6 +2,7 @@
 Entries before tag-* affects all tags. 
 
 ## 2022-11-01
+- Rename environment variable [9e6423f](https://github.com/demyxsh/wordpress/commit/9e6423f77e4cdbf15fd5bf2c5a672e53118be328)
 - Misc updates [b4d150f](https://github.com/demyxsh/wordpress/commit/b4d150f9145ec1873745747db4965d85a733f01d)
 - Add new environment variables [0a67805](https://github.com/demyxsh/wordpress/commit/0a67805a45c8f3817450da56a4956705e1c4138e)
 - Add new executables [87d8884](https://github.com/demyxsh/wordpress/commit/87d8884be032b88bffa4a4f904333951ddb7f1d1)
