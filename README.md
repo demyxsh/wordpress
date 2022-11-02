@@ -205,6 +205,9 @@ services:
     environment:
       - DEMYX=/demyx
       - DEMYX_CONFIG=/etc/demyx
+      - DEMYX_CRON=true
+      - DEMYX_CRON_WP_INTERVAL="*/15 * * * *"
+      - DEMYX_CRON_LOGROTATE_INTERVAL="0 0 * * 0"
       - DEMYX_DB_HOST=demyx_db
       - DEMYX_DB_NAME=demyx
       - DEMYX_DB_PASSWORD=demyx
@@ -213,9 +216,13 @@ services:
       - DEMYX_EMERGENCY_RESTART_INTERVAL=1m
       - DEMYX_EMERGENCY_RESTART_THRESHOLD=5
       - DEMYX_LOG=/var/log/demyx
+      - DEMYX_LOGROTATE=weekly
+      - DEMYX_LOGROTATE_INTERVAL=52
       - DEMYX_MAX_EXECUTION_TIME=300
       - DEMYX_MEMORY=256M
       - DEMYX_OPCACHE=true
+      - DEMYX_OPCACHE_ENABLE=1
+      - DEMYX_OPCACHE_ENABLE_CLI=1
       - DEMYX_PHP=8.0
       - DEMYX_PM=ondemand
       - DEMYX_PM_MAX_CHILDREN=25
@@ -228,6 +235,9 @@ services:
       - DEMYX_PROTO=http
       - DEMYX_UPLOAD_LIMIT=128M
       - DEMYX_WP_CONFIG=/demyx/wp-config.php
+      - DEMYX_WP_EMAIL=info@domain.tld
+      - DEMYX_WP_PASSWORD=demyx
+      - DEMYX_WP_USERNAME=demyx
       - TZ=America/Los_Angeles
     image: demyx/wordpress
     networks:
