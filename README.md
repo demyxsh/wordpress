@@ -104,7 +104,7 @@ services:
   demyx_nx:
     container_name: demyx_nx
     depends_on:
-      - demyx_wp
+      - demyx_db
     environment:
       - DEMYX=/demyx
       - DEMYX_BASIC_AUTH=false
@@ -199,7 +199,7 @@ services:
   demyx_wp:
     container_name: demyx_wp
     depends_on:
-      - demyx_db
+      - demyx_nx
     environment:
       - DEMYX=/demyx
       - DEMYX_CONFIG=/etc/demyx
