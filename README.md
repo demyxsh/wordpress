@@ -36,7 +36,6 @@ git remote set-url origin git@github.com:demyxsh/wordpress.git
 ## Usage
 - Configured for remote VPS
 - Ports 80 and 443 must be open when using Traefik
-- TLS/SSL enabled by default
 - Install the [Nginx Helper](https://wordpress.org/plugins/nginx-helper/) plugin if DEMYX_CACHE is true
 - To generate htpasswd: `docker run -it --rm demyx/utilities htpasswd -nb demyx demyx`
 - DEMYX_BASIC_AUTH must have double dollar signs ($$)
@@ -127,19 +126,19 @@ services:
     image: demyx/nginx
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.demyx-nx-redirect.redirectregex.permanent=true"
-      - "traefik.http.middlewares.demyx-nx-redirect.redirectregex.regex=^https?:\/\/(?:www\\.)?(.+)"
-      - "traefik.http.middlewares.demyx-nx-redirect.redirectregex.replacement=https://$${1}"
+      #- "traefik.http.middlewares.demyx-nx-redirect.redirectregex.permanent=true"
+      #- "traefik.http.middlewares.demyx-nx-redirect.redirectregex.regex=^https?:\/\/(?:www\\.)?(.+)"
+      #- "traefik.http.middlewares.demyx-nx-redirect.redirectregex.replacement=https://$${1}"
       - "traefik.http.routers.demyx-nx-http.entrypoints=http"
-      - "traefik.http.routers.demyx-nx-http.middlewares=demyx-nx-redirect"
+      #- "traefik.http.routers.demyx-nx-http.middlewares=demyx-nx-redirect"
       - "traefik.http.routers.demyx-nx-http.rule=Host(`domain.tld`) || Host(`www.domain.tld`)"
       - "traefik.http.routers.demyx-nx-http.service=demyx-nx-http-port"
-      - "traefik.http.routers.demyx-nx-https.entrypoints=https"
-      - "traefik.http.routers.demyx-nx-https.rule=Host(`domain.tld`) || Host(`www.domain.tld`)" # WordPress https://domain.tld
-      - "traefik.http.routers.demyx-nx-https.service=demyx-nx-https-port"
-      - "traefik.http.routers.demyx-nx-https.tls.certresolver=demyx"
+      #- "traefik.http.routers.demyx-nx-https.entrypoints=https"
+      #- "traefik.http.routers.demyx-nx-https.rule=Host(`domain.tld`) || Host(`www.domain.tld`)" # WordPress https://domain.tld
+      #- "traefik.http.routers.demyx-nx-https.service=demyx-nx-https-port"
+      #- "traefik.http.routers.demyx-nx-https.tls.certresolver=demyx"
       - "traefik.http.services.demyx-nx-http-port.loadbalancer.server.port=80"
-      - "traefik.http.services.demyx-nx-https-port.loadbalancer.server.port=80"
+      #- "traefik.http.services.demyx-nx-https-port.loadbalancer.server.port=80"
     networks:
       - demyx
     restart: unless-stopped
@@ -172,20 +171,23 @@ services:
     image: demyx/traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.demyx-traefik-auth.basicauth.users=demyx:$$apr1$$L91z3CIR$$m/BKZcnQGBP.Uo2cJm8I0/" # Basic auth password: demyx
-      - "traefik.http.middlewares.demyx-traefik-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.demyx-traefik-http.entrypoints=http"
-      - "traefik.http.routers.demyx-traefik-http.middlewares=demyx-traefik-redirect"
-      - "traefik.http.routers.demyx-traefik-http.rule=Host(`traefik.domain.tld`)"
-      - "traefik.http.routers.demyx-traefik-http.service=demyx-traefik-http-port"
-      - "traefik.http.routers.demyx-traefik-https.entrypoints=https"
-      - "traefik.http.routers.demyx-traefik-https.middlewares=demyx-traefik-auth"
-      - "traefik.http.routers.demyx-traefik-https.rule=Host(`traefik.domain.tld`)" # Traefik dashboard https://traefik.domain.tld
-      - "traefik.http.routers.demyx-traefik-https.service=api@internal"
-      - "traefik.http.routers.demyx-traefik-https.service=demyx-traefik-https-port"
-      - "traefik.http.routers.demyx-traefik-https.tls.certresolver=demyx"
-      - "traefik.http.services.demyx-traefik-http-port.loadbalancer.server.port=8080"
-      - "traefik.http.services.demyx-traefik-https-port.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=demyx:$$apr1$$L91z3CIR$$m/BKZcnQGBP.Uo2cJm8I0/" # Password: demyx
+      #- "traefik.http.middlewares.traefik-auth-https.basicauth.users=demyx:$$apr1$$L91z3CIR$$m/BKZcnQGBP.Uo2cJm8I0/" # Password: demyx
+      #- "traefik.http.middlewares.traefik-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.traefik-http.entrypoints=http"
+      #- "traefik.http.routers.traefik-http.middlewares=traefik-redirect"
+      - "traefik.http.routers.traefik-http.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik-http.rule=Host(`traefik.domain.tld`)"
+      - "traefik.http.routers.traefik-http.service=api@internal"
+      - "traefik.http.routers.traefik-http.service=traefik-http-port"
+      #- "traefik.http.routers.traefik-https.entrypoints=https"
+      #- "traefik.http.routers.traefik-https.middlewares=traefik-auth-https"
+      #- "traefik.http.routers.traefik-https.rule=Host(`traefik.domain.tld`)" # https://traefik.domain.tld
+      #- "traefik.http.routers.traefik-https.service=api@internal"
+      #- "traefik.http.routers.traefik-https.service=traefik-https-port"
+      #- "traefik.http.routers.traefik-https.tls.certresolver=demyx"
+      - "traefik.http.services.traefik-http-port.loadbalancer.server.port=8080"
+      #- "traefik.http.services.traefik-https-port.loadbalancer.server.port=8080"
     networks:
       - demyx
       - demyx_socket
@@ -223,6 +225,7 @@ services:
       - DEMYX_PM_PROCESS_IDLE_TIMEOUT=3s
       - DEMYX_PM_START_SERVERS=5
       - DEMYX_PROCESS_CONTROL_TIMEOUT=10s
+      - DEMYX_PROTO=http
       - DEMYX_UPLOAD_LIMIT=128M
       - DEMYX_WP_CONFIG=/demyx/wp-config.php
       - TZ=America/Los_Angeles
