@@ -16,7 +16,6 @@ demyx_sudo() {
 			demyx_sudo_logrotate
 		;;
 	esac
-
 }
 #
 #	Cron.
@@ -25,8 +24,10 @@ demyx_sudo_cron() {
 	local DEMYX_SUDO_CRON=
 	DEMYX_SUDO_CRON="$(pgrep crond || true)"
 
-    echo "$DEMYX_CRON_WP_INTERVAL /usr/local/bin/demyx-cron wp" > /etc/crontabs/demyx; \
-    echo "$DEMYX_CRON_LOGROTATE_INTERVAL /usr/bin/sudo -E /usr/local/bin/demyx-sudo logrotate" >> /etc/crontabs/demyx; \
+	{
+		echo "$DEMYX_CRON_WP_INTERVAL /usr/local/bin/demyx-cron wp"
+		echo "$DEMYX_CRON_LOGROTATE_INTERVAL /usr/bin/sudo -E /usr/local/bin/demyx-sudo logrotate"
+	} | sed 's|"||g' > /etc/crontabs/demyx
 
 	[[ "$DEMYX_CRON" = true && -z "$DEMYX_SUDO_CRON" ]] && crond
 }
