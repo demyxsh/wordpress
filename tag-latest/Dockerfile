@@ -10,8 +10,8 @@ LABEL sh.demyx.registry                 https://hub.docker.com/u/demyx
 ENV DEMYX                               /demyx
 ENV DEMYX_CONFIG                        /etc/demyx
 ENV DEMYX_CRON                          true
-ENV DEMYX_CRON_WP_INTERVAL              "*/15 * * * *"
-ENV DEMYX_CRON_LOGROTATE_INTERVAL       "0 0 * * 0"
+ENV DEMYX_CRON_WP_INTERVAL              "*/5 * * * *"
+ENV DEMYX_CRON_LOGROTATE_INTERVAL       "0 0 * * *"
 ENV DEMYX_DB_HOST                       localhost
 ENV DEMYX_DB_NAME                       demyx
 ENV DEMYX_DB_PASSWORD                   demyx

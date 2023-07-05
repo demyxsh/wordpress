@@ -161,8 +161,8 @@ services:
       - DEMYX=/demyx
       - DEMYX_CONFIG=/etc/demyx
       - DEMYX_CRON=true
-      - DEMYX_CRON_WP_INTERVAL="*/15 * * * *"
-      - DEMYX_CRON_LOGROTATE_INTERVAL="0 0 * * 0"
+      - DEMYX_CRON_WP_INTERVAL="*/5 * * * *"
+      - DEMYX_CRON_LOGROTATE_INTERVAL="0 0 * * *"
       - DEMYX_DB_HOST=demyx_db
       - DEMYX_DB_NAME=demyx
       - DEMYX_DB_PASSWORD=demyx
