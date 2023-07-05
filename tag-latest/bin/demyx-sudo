@@ -35,6 +35,7 @@ demyx_sudo_cron() {
 #	Logs.
 #
 demyx_sudo_logrotate() {
+	local DEMYX_SUDO_LOGROTATE=
 	DEMYX_SUDO_LOGROTATE="$DEMYX_CONFIG"/logrotate.conf
 
 	if [[ ! -f "$DEMYX_SUDO_LOGROTATE" ]]; then
