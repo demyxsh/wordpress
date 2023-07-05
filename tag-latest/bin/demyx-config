@@ -66,15 +66,14 @@ demyx_config_demyx() {
         sed -i "s|<?php.*|<?php\n\
 // Demyx\n\
 // https://demyx.sh\n\
-if ( file_exists( getenv( 'DEMYX' ) . '/demyx.php' ) ) {\n\
-    require_once getenv( 'DEMYX' ) . '/demyx.php';\n\
+if ( file_exists( getenv( 'DEMYX_CONFIG' ) . '/demyx.php' ) ) {\n\
+    include_once getenv( 'DEMYX_CONFIG' ) . '/demyx.php';\n\
 }\n\
 \n|g" "$DEMYX_WP_CONFIG"
     fi
 
     echo "<?php
 /**
-DO NOT EDIT! AUTOMATICALLY GENERATED!
 Demyx customizations for wp-config.php.
 
 @package  Demyx
@@ -103,7 +102,7 @@ define( 'WP_SITEURL', \$demyx_url );
 
 // Disable WordPress cron.
 define( 'DISABLE_WP_CRON', true );
-    " > "$DEMYX"/demyx.php
+    " > "$DEMYX_CONFIG"/demyx.php
 }
 #
 #   docker.conf
