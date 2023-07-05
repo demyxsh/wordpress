@@ -35,6 +35,12 @@ demyx_config() {
         demyx_config_demyx
     fi
 
+    # WP-CLI login
+    if [[ ! -f "$DEMYX"/wp-content/mu-plugins/wp-cli-login-server.php ]]; then
+        [[ ! -d "$DEMYX"/wp-content/mu-plugins ]] && mkdir -p "$DEMYX"/wp-content/mu-plugins
+        ln -s "$DEMYX_CONFIG"/wp-cli-login-server.php "$DEMYX"/wp-content/mu-plugins
+    fi
+
     demyx_config_docker
     demyx_config_php
     demyx_config_proxy
