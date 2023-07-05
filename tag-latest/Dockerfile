@@ -20,8 +20,7 @@ ENV DEMYX_DOMAIN                        domain.tld
 ENV DEMYX_EMERGENCY_RESTART_INTERVAL    1m
 ENV DEMYX_EMERGENCY_RESTART_THRESHOLD   5
 ENV DEMYX_LOG                           /var/log/demyx
-ENV DEMYX_LOGROTATE                     weekly
-ENV DEMYX_LOGROTATE_INTERVAL            52
+ENV DEMYX_LOGROTATE_SIZE                10M
 ENV DEMYX_MAX_EXECUTION_TIME            300
 ENV DEMYX_MEMORY                        256M
 ENV DEMYX_OPCACHE                       true
