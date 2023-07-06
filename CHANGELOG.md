@@ -1,6 +1,8 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2023-07-05
+
 ## 2022-11-01
 - Put inside braces and sed out the double quotes [6027aaf](https://github.com/demyxsh/wordpress/commit/6027aafae705388614ae223c7232fe21ab686a16)
 - Rename environment variable [9e6423f](https://github.com/demyxsh/wordpress/commit/9e6423f77e4cdbf15fd5bf2c5a672e53118be328)

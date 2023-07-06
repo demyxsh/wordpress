@@ -95,6 +95,7 @@ RUN set -ex; \
     php8-mysqli \
     php8-opcache \
     php8-openssl \
+    php8-pdo \
     php8-pecl-imagick \
     php8-pecl-ssh2 \
     php8-phar \
@@ -127,6 +128,7 @@ RUN set -ex; \
     php81-mysqli \
     php81-opcache \
     php81-openssl \
+    php81-pdo \
     php81-pecl-imagick \
     php81-pecl-ssh2 \
     php81-phar \
