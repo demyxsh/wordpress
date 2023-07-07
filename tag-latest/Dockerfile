@@ -90,6 +90,7 @@ RUN set -ex; \
     php8-ftp \
     php8-gd \
     php8-iconv \
+    php8-intl \
     php8-json \
     php8-mbstring \
     php8-mysqli \
@@ -124,6 +125,7 @@ RUN set -ex; \
     php81-ftp \
     php81-gd \
     php81-iconv \
+    php81-intl \
     php81-json \
     php81-mbstring \
     php81-mysqli \
