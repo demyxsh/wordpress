@@ -10,8 +10,8 @@ LABEL sh.demyx.registry                 https://hub.docker.com/u/demyx
 ENV DEMYX                               /demyx
 ENV DEMYX_CONFIG                        /etc/demyx
 ENV DEMYX_CRON                          true
-ENV DEMYX_CRON_WP_INTERVAL              "*/5 * * * *"
 ENV DEMYX_CRON_LOGROTATE_INTERVAL       "0 0 * * *"
+ENV DEMYX_CRON_WP_INTERVAL              "*/5 * * * *"
 ENV DEMYX_DB_HOST                       localhost
 ENV DEMYX_DB_NAME                       demyx
 ENV DEMYX_DB_PASSWORD                   demyx
@@ -96,6 +96,7 @@ RUN set -ex; \
     php8-opcache \
     php8-openssl \
     php8-pdo \
+    php8-pdo_mysql \
     php8-pecl-imagick \
     php8-pecl-ssh2 \
     php8-phar \
@@ -129,6 +130,7 @@ RUN set -ex; \
     php81-opcache \
     php81-openssl \
     php81-pdo \
+    php81-pdo_mysql \
     php81-pecl-imagick \
     php81-pecl-ssh2 \
     php81-phar \
