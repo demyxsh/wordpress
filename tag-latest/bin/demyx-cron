@@ -14,7 +14,7 @@ demyx_cron() {
 		wp)
 			demyx_cron_wp
 		;;
-	esac	
+	esac
 }
 #
 #	Events.
@@ -23,7 +23,7 @@ demyx_cron_wp() {
 	local DEMYX_CRON_WP=
 	local DEMYX_CRON_WP_PATH="$DEMYX"
 	[[ -n "${DEMYX_BEDROCK_MODE:-}" ]] && DEMYX_CRON_WP_PATH="$DEMYX"/web/wp
-	
+
 	DEMYX_CRON_WP="$(wp core is-installed --path="$DEMYX_CRON_WP_PATH" 2>&1 || true)"
 
 	if [[ "$DEMYX_CRON_WP" != *"Error"* ]]; then
