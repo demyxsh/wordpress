@@ -35,12 +35,6 @@ demyx_config() {
         demyx_config_demyx
     fi
 
-    # WP-CLI login
-    if [[ ! -f "$DEMYX"/wp-content/mu-plugins/wp-cli-login-server.php ]]; then
-        [[ ! -d "$DEMYX"/wp-content/mu-plugins ]] && mkdir -p "$DEMYX"/wp-content/mu-plugins
-        ln -s "$DEMYX_CONFIG"/wp-cli-login-server.php "$DEMYX"/wp-content/mu-plugins
-    fi
-
     demyx_config_docker
     demyx_config_php
     demyx_config_proxy
@@ -54,6 +48,7 @@ demyx_config_bedrock() {
     local DEMYX_CONFIG_BEDROCK_HOME="http://$DEMYX_DOMAIN"
     [[ "${DEMYX_SSL:-}" = true ]] && DEMYX_CONFIG_BEDROCK_HOME="https://$DEMYX_DOMAIN"
     [[ -f "$DEMYX_CONFIG_BEDROCK_ENV" ]] && sed -i "s|WP_HOME=.*|WP_HOME=$DEMYX_CONFIG_BEDROCK_HOME|g" "$DEMYX_CONFIG_BEDROCK_ENV"
+    [[ ! -f "$DEMYX"/web/app/mu-plugins/wp-cli-login-server.php ]] && ln -s "$DEMYX_CONFIG"/wp-cli-login-server.php "$DEMYX"/web/app/mu-plugins/wp-cli-login-server.php
 }
 #
 #   demyx.php
@@ -61,6 +56,11 @@ demyx_config_bedrock() {
 demyx_config_demyx() {
     local DEMYX_CONFIG_RC=
     DEMYX_CONFIG_RC="$(grep "demyx.php" "$DEMYX_WP_CONFIG" || true)"
+
+    if [[ ! -f "$DEMYX"/wp-content/mu-plugins/wp-cli-login-server.php ]]; then
+        [[ ! -d "$DEMYX"/wp-content/mu-plugins ]] && mkdir -p "$DEMYX"/wp-content/mu-plugins
+        ln -s "$DEMYX_CONFIG"/wp-cli-login-server.php "$DEMYX"/wp-content/mu-plugins
+    fi
 
     if [[ -z "$DEMYX_CONFIG_RC" ]]; then
         sed -i "s|<?php.*|<?php\n\
