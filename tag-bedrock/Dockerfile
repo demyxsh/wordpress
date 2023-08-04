@@ -9,6 +9,7 @@ LABEL sh.demyx.registry         https://hub.docker.com/u/demyx
 USER root
 
 # Default bedrock to production
+ENV DEMYX_BEDROCK               true
 ENV DEMYX_BEDROCK_MODE          production
 ENV DEMYX_SSL                   false
 ENV DEMYX_WP_CONFIG             "${DEMYX}/web/wp-config.php"

@@ -190,6 +190,7 @@ services:
       - DEMYX_PM_START_SERVERS=5
       - DEMYX_PROCESS_CONTROL_TIMEOUT=10s
       - DEMYX_SSL=false
+      - DEMYX_PROTO=http
       - DEMYX_UPLOAD_LIMIT=128M
       - DEMYX_WP_CONFIG=/demyx/web/wp-config.php
       - DEMYX_WP_EMAIL=info@domain.tld
