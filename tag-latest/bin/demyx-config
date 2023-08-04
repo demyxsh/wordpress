@@ -44,11 +44,36 @@ demyx_config() {
 #   Configure Bedrock.
 #
 demyx_config_bedrock() {
+    local DEMYX_CONFIG_BEDROCK_CONFIG_RC=
+    DEMYX_CONFIG_BEDROCK_CONFIG_RC="$(grep "demyx.php" "$DEMYX_WP_CONFIG" || true)"
     local DEMYX_CONFIG_BEDROCK_ENV="$DEMYX"/.env
     local DEMYX_CONFIG_BEDROCK_HOME="http://$DEMYX_DOMAIN"
     [[ "${DEMYX_SSL:-}" = true ]] && DEMYX_CONFIG_BEDROCK_HOME="https://$DEMYX_DOMAIN"
     [[ -f "$DEMYX_CONFIG_BEDROCK_ENV" ]] && sed -i "s|WP_HOME=.*|WP_HOME=$DEMYX_CONFIG_BEDROCK_HOME|g" "$DEMYX_CONFIG_BEDROCK_ENV"
     [[ ! -f "$DEMYX"/web/app/mu-plugins/wp-cli-login-server.php ]] && ln -s "$DEMYX_CONFIG"/wp-cli-login-server.php "$DEMYX"/web/app/mu-plugins/wp-cli-login-server.php
+
+    if [[ -z "$DEMYX_CONFIG_BEDROCK_CONFIG_RC" ]]; then
+        sed -i "s|<?php.*|<?php\n\
+// Demyx\n\
+// https://demyx.sh\n\
+if ( file_exists( getenv( 'DEMYX_CONFIG' ) . '/demyx.php' ) ) {\n\
+    include_once getenv( 'DEMYX_CONFIG' ) . '/demyx.php';\n\
+}\n\
+\n|g" "$DEMYX_WP_CONFIG"
+    fi
+
+    echo "<?php
+/**
+Demyx customizations for wp-config.php.
+
+@package  Demyx
+@version  1.0.0
+@author   Demyx <info@demyx.sh>
+@link     https://demyx.sh
+ */
+
+// Coming Soon™
+    " > "$DEMYX_CONFIG"/demyx.php
 }
 #
 #   demyx.php
