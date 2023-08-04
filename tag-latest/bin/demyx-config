@@ -29,7 +29,7 @@ demyx_config() {
         DEMYX_OPCACHE_ENABLE_CLI=0
     fi
 
-    if [[ -n "${DEMYX_BEDROCK_MODE:-}" ]]; then
+    if [[ "${DEMYX_BEDROCK:-}" = true ]]; then
         demyx_config_bedrock
     else
         demyx_config_demyx
