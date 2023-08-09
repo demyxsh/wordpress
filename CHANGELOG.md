@@ -1,7 +1,38 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
-## 2023-07-05
+## 2023-08-04
+- Use the missing variable [258bd4c](https://github.com/demyxsh/wordpress/commit/258bd4ceecebc7e48508ad80b73fb7a8aea78d53)
+- Coming soon [a27988f](https://github.com/demyxsh/wordpress/commit/a27988f189e5fcd71f312d3043f31e0e083f4c01)
+- If statement must be true [1026524](https://github.com/demyxsh/wordpress/commit/1026524806f613aa6fae55316debfc8e9e958a97)
+- Add missing variable [7195db4](https://github.com/demyxsh/wordpress/commit/7195db477609a7edc58d918069372da8390e3924)
+- Add login support for Bedrock [358e348](https://github.com/demyxsh/wordpress/commit/358e34891e4c7685d15fe63001330cf23da07d37)
+- Update variable [351a287](https://github.com/demyxsh/wordpress/commit/351a2876511cfc59e3b297173979461eb6267f91)
+- Add intl php extension [405d707](https://github.com/demyxsh/wordpress/commit/405d707e43e13c36f315c0a6c0c04f700c65888f)
+- Remove whitespaces [1f545ba](https://github.com/demyxsh/wordpress/commit/1f545ba47015b6a99d45c1df236f964491d19200)
+- Switch variable orders [85d4734](https://github.com/demyxsh/wordpress/commit/85d473422dadb56e64c86b27c791a79b0b489fd9)
+- Add pdo extension [e8c1b9f](https://github.com/demyxsh/wordpress/commit/e8c1b9f11bed57416e43d9bd531410e30a3c0e68)
+- Misc updates [b4ba686](https://github.com/demyxsh/wordpress/commit/b4ba686bb09ff4ce1dc73175d6b7ffb85335d413)
+- Misc updates [be7f20f](https://github.com/demyxsh/wordpress/commit/be7f20f2b0b3433f85033fed7fe60dcb1dadef1f)
+- Downgrade to 3.16 for now [2e5911b](https://github.com/demyxsh/wordpress/commit/2e5911bfacf59a660c511bd321aa6f8245942049)
+- Add wp-cli login package [e090a42](https://github.com/demyxsh/wordpress/commit/e090a42ac2d68eedf2f43bef9fcaea91f5b3981c)
+- Update log rotate variables [e0ac957](https://github.com/demyxsh/wordpress/commit/e0ac9574c2b00e79dbfe6aa50260dbbef30dda2e)
+- Add new logrotate variable [efa1543](https://github.com/demyxsh/wordpress/commit/efa1543f43937011d3335a73e0e204921192ddf7)
+- Update cron intervals [d40b366](https://github.com/demyxsh/wordpress/commit/d40b366ab1cfadc37f55927503b97598d60e910e)
+- Put inside braces and sed out the double quotes [d60ab56](https://github.com/demyxsh/wordpress/commit/d60ab568edd4e83f897b8d843d52c3802e0f326d)
+- Put inside braces and sed out the double quotes [6027aaf](https://github.com/demyxsh/wordpress/commit/6027aafae705388614ae223c7232fe21ab686a16)
+- 2022-11-02 [6fc4064](https://github.com/demyxsh/wordpress/commit/6fc4064669f454d2353ae5a20f6cd46db15f1855)
+- Rename environment variable [9e6423f](https://github.com/demyxsh/wordpress/commit/9e6423f77e4cdbf15fd5bf2c5a672e53118be328)
+- 2022-11-01 [b50bdc9](https://github.com/demyxsh/wordpress/commit/b50bdc9e935861c7c4e8ebd7cd390a04d77d8eee)
+- Merge branch 'master' of github.com:demyxsh/wordpress [2882b3e](https://github.com/demyxsh/wordpress/commit/2882b3e86edf5e6f006cd8f11589b3641ecd5ff0)
+- Misc updates [b4d150f](https://github.com/demyxsh/wordpress/commit/b4d150f9145ec1873745747db4965d85a733f01d)
+- Add new environment variables [0a67805](https://github.com/demyxsh/wordpress/commit/0a67805a45c8f3817450da56a4956705e1c4138e)
+- Add new executables [87d8884](https://github.com/demyxsh/wordpress/commit/87d8884be032b88bffa4a4f904333951ddb7f1d1)
+- Use new function formatting and add/update commands/functions [6ebf874](https://github.com/demyxsh/wordpress/commit/6ebf874291531b272da8cd31ff98456d8cf3bd8f)
+- Add new environment variables [a8b1f65](https://github.com/demyxsh/wordpress/commit/a8b1f6541ecf3589edc91daf09f5cdc2c4ca1034)
+- Disable SSL by default [df4b4f3](https://github.com/demyxsh/wordpress/commit/df4b4f3c97d2e47c7c46cc5edf2abb45f3a7bb39)
+- Update depends_on keys [bb5daca](https://github.com/demyxsh/wordpress/commit/bb5daca8a0bd4b7dda6e598f516516924523fe0a)
+- Update comment descriptions [3c99930](https://github.com/demyxsh/wordpress/commit/3c99930b3f5eb9fe789f970570e7156ea9083988)
 
 ## 2022-11-01
 - Put inside braces and sed out the double quotes [6027aaf](https://github.com/demyxsh/wordpress/commit/6027aafae705388614ae223c7232fe21ab686a16)
