@@ -2,6 +2,7 @@
 Entries before tag-* affects all tags. 
 
 ## 2023-08-23
+- Update test commands [0a5970a](https://github.com/demyxsh/wordpress/commit/0a5970a33881071cb51b72be9ebdd837d40bd18f)
 - Misc updates [bc28efa](https://github.com/demyxsh/wordpress/commit/bc28efaf185754d3ddf9600a4491ca8e6a1b968a)
 - Add --log flag for logrotate [2bb38c5](https://github.com/demyxsh/wordpress/commit/2bb38c584f84d07c9946371657ed5d98e99ac8f0)
 - Misc updates [17f7b30](https://github.com/demyxsh/wordpress/commit/17f7b30cac117fba5a14b7bbae9dc127bbef3c6a)
