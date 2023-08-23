@@ -1,7 +1,11 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
-## 2023-08-04
+## 2023-08-23
+- Misc updates [bc28efa](https://github.com/demyxsh/wordpress/commit/bc28efaf185754d3ddf9600a4491ca8e6a1b968a)
+- Add --log flag for logrotate [2bb38c5](https://github.com/demyxsh/wordpress/commit/2bb38c584f84d07c9946371657ed5d98e99ac8f0)
+- Misc updates [17f7b30](https://github.com/demyxsh/wordpress/commit/17f7b30cac117fba5a14b7bbae9dc127bbef3c6a)
+- Change value to 7 [db83766](https://github.com/demyxsh/wordpress/commit/db83766ff5b05120ee8cebd0209b611361a02b94)
 - Use the missing variable [258bd4c](https://github.com/demyxsh/wordpress/commit/258bd4ceecebc7e48508ad80b73fb7a8aea78d53)
 - Coming soon [a27988f](https://github.com/demyxsh/wordpress/commit/a27988f189e5fcd71f312d3043f31e0e083f4c01)
 - If statement must be true [1026524](https://github.com/demyxsh/wordpress/commit/1026524806f613aa6fae55316debfc8e9e958a97)
