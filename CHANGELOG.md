@@ -2,6 +2,8 @@
 Entries before tag-* affects all tags. 
 
 ## 2023-08-23
+- Downgrade alpine version [321d348](https://github.com/demyxsh/wordpress/commit/321d348aa540719ed3f318fb975b954707e600ef)
+- Remove --update flag [dbbdc0b](https://github.com/demyxsh/wordpress/commit/dbbdc0bc6c60e7756bb1077f053777bddd4ce2eb)
 - Update test commands [0a5970a](https://github.com/demyxsh/wordpress/commit/0a5970a33881071cb51b72be9ebdd837d40bd18f)
 - Misc updates [bc28efa](https://github.com/demyxsh/wordpress/commit/bc28efaf185754d3ddf9600a4491ca8e6a1b968a)
 - Add --log flag for logrotate [2bb38c5](https://github.com/demyxsh/wordpress/commit/2bb38c584f84d07c9946371657ed5d98e99ac8f0)
