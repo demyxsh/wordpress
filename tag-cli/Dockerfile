@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.16
 
 LABEL sh.demyx.image        demyx/wordpress:cli
 LABEL sh.demyx.maintainer   Demyx <info@demyx.sh>
