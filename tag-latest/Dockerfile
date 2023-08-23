@@ -51,7 +51,7 @@ ENV WORDPRESS_LOG                       "$DEMYX_LOG"
 
 # Packages
 RUN set -ex; \
-    apk add --update --no-cache \
+    apk add --no-cache \
     \
     bash \
     logrotate \
@@ -77,7 +77,7 @@ RUN set -ex; \
 
 # Install PHP and friends
 RUN set -ex; \
-    apk add --no-cache --update \
+    apk add --no-cache \
     \
     php8 \
     php8-bcmath \

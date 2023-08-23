@@ -38,7 +38,7 @@ ENV WORDPRESS_LOG                       "$DEMYX_LOG"
 
 # Packages
 RUN set -ex; \
-    apk add --update --no-cache \
+    apk add --no-cache \
         bash \
         ed \
         tzdata
