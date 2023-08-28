@@ -1,6 +1,9 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2023-08-28
+- Update logrotate conf [8e9fcf5](https://github.com/demyxsh/wordpress/commit/8e9fcf5a70cc4a4cb62f53f348c9daac2e5c5048)
+
 ## 2023-08-23
 - Downgrade alpine version [321d348](https://github.com/demyxsh/wordpress/commit/321d348aa540719ed3f318fb975b954707e600ef)
 - Remove --update flag [dbbdc0b](https://github.com/demyxsh/wordpress/commit/dbbdc0bc6c60e7756bb1077f053777bddd4ce2eb)
