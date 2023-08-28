@@ -118,7 +118,7 @@ jobs:
           DEMYX_WORDPRESS_CLI_VERSION="$(docker run --rm demyx/${{ env.DEMYX_REPOSITORY }}:cli --version | awk -F '[ ]' '{print $2}')"
           DEMYX_WORDPRESS_PHP_VERSION="$(docker exec ${{ env.DEMYX_REPOSITORY }} php -v | grep cli | awk -F '[ ]' '{print $2}')"
           DEMYX_WORDPRESS_PHP_LATEST_VERSION="$(docker exec ${{ env.DEMYX_REPOSITORY }} php81 -v | grep cli | awk -F '[ ]' '{print $2}')"
-          DEMYX_JQ="$(jq ".alpine = \"$DEMYX_WORDPRESS_ALPINE_VERSION\" | .wordpress = \"$DEMYX_WORDPRESS_VERSION\" | .bedrock = \"$DEMYX_WORDPRESS_BEDROCK_VERSION\" | .wp_cli = \"$DEMYX_WORDPRESS_CLI_VERSION\" | .php = \"$DEMYX_WORDPRESS_PHP_VERSION\"" version.json)"
+          DEMYX_JQ="$(jq ".alpine = \"$DEMYX_WORDPRESS_ALPINE_VERSION\" | .wordpress = \"$DEMYX_WORDPRESS_VERSION\" | .bedrock = \"$DEMYX_WORDPRESS_BEDROCK_VERSION\" | .wp_cli = \"$DEMYX_WORDPRESS_CLI_VERSION\" | .php = \"$DEMYX_WORDPRESS_PHP_VERSION\" | .php81 = \"$DEMYX_WORDPRESS_PHP_LATEST_VERSION\"" version.json)"
 
           # Update versions
           echo "$DEMYX_JQ" > version.json
