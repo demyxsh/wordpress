@@ -1,6 +1,9 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2023-09-03
+- New variable DEMYX_CRON_TYPE [d14a318](https://github.com/demyxsh/wordpress/commit/d14a318461a46aa5e26a902649a55ca9a8d75874)
+
 ## 2023-08-28
 - Update logrotate conf [8e9fcf5](https://github.com/demyxsh/wordpress/commit/8e9fcf5a70cc4a4cb62f53f348c9daac2e5c5048)
 - Add php 8.1 [10a74f4](https://github.com/demyxsh/wordpress/commit/10a74f47d3f1c3de97573e40c180108bd486d0f6)
