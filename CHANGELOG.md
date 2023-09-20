@@ -1,6 +1,9 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2023-09-20
+- Define redis constants [466c42d](https://github.com/demyxsh/wordpress/commit/466c42d892228c03d0fdd241a3c8cfd08eb4e250)
+
 ## 2023-09-03
 - New variable DEMYX_CRON_TYPE [d14a318](https://github.com/demyxsh/wordpress/commit/d14a318461a46aa5e26a902649a55ca9a8d75874)
 
