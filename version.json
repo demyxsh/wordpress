@@ -1,6 +1,6 @@
 {
   "alpine": "3.16.7",
-  "wordpress": "6.3.2",
+  "wordpress": "6.4.1",
   "bedrock": "1.22.5",
   "wp_cli": "2.9.0",
   "php": "8.0.30",
