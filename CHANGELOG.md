@@ -2,7 +2,7 @@
 Entries before tag-* affects all tags. 
 
 ## 2023-11-14
-
+- Disable installation of default themes/plugins when upgrading [8979b99](https://github.com/demyxsh/wordpress/commit/8979b99bf43f07acd85a6ad95fe969e15c770feb)
 
 ## 2023-09-20
 - Define redis constants [466c42d](https://github.com/demyxsh/wordpress/commit/466c42d892228c03d0fdd241a3c8cfd08eb4e250)
