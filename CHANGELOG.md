@@ -1,6 +1,9 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2023-11-14
+
+
 ## 2023-09-20
 - Define redis constants [466c42d](https://github.com/demyxsh/wordpress/commit/466c42d892228c03d0fdd241a3c8cfd08eb4e250)
 
