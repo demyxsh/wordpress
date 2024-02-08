@@ -1,6 +1,15 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
+## 2024-02-07
+- Update php versions and set default to 8.1 [439b7c1](https://github.com/demyxsh/wordpress/commit/439b7c18b2e9efc2320435e8ef91eb928efd1bbe)
+- Add missing environment variable [dbb0a9d](https://github.com/demyxsh/wordpress/commit/dbb0a9de3fdc49987968acf8eae127fa966dffc8)
+- Include custom volume [a055290](https://github.com/demyxsh/wordpress/commit/a0552908bee497398a902cd11e44e40ad1673a4a)
+- New function to reset permissions at container start and hourly cron [3266dde](https://github.com/demyxsh/wordpress/commit/3266dde1eb11ab1f25023cc7cb248f8315a6f54f)
+- Put back wp-cli as the default wp cron [36489eb](https://github.com/demyxsh/wordpress/commit/36489eb36796c0eba0e590f448105236472fd8c1)
+- Remove unused variables [01e6253](https://github.com/demyxsh/wordpress/commit/01e6253f77c2fa28e48849d04444f4b27ffa190d)
+- Update Alpine to 3.18 [4d79110](https://github.com/demyxsh/wordpress/commit/4d791105d73b16dae1709d77b88034b6104a179d)
+
 ## 2023-11-14
 - Disable installation of default themes/plugins when upgrading [8979b99](https://github.com/demyxsh/wordpress/commit/8979b99bf43f07acd85a6ad95fe969e15c770feb)
 
