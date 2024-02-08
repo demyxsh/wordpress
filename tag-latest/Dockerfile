@@ -29,7 +29,7 @@ ENV DEMYX_MEMORY                        256M
 ENV DEMYX_OPCACHE                       true
 ENV DEMYX_OPCACHE_ENABLE                1
 ENV DEMYX_OPCACHE_ENABLE_CLI            1
-ENV DEMYX_PHP                           8.0
+ENV DEMYX_PHP                           8.1
 ENV DEMYX_PM                            ondemand
 ENV DEMYX_PM_MAX_CHILDREN               25
 ENV DEMYX_PM_MAX_REQUESTS               25000
@@ -80,75 +80,75 @@ RUN set -ex; \
 RUN set -ex; \
     apk add --no-cache \
     \
-    php8 \
-    php8-bcmath \
-    php8-ctype \
-    php8-curl \
-    php8-dom \
-    php8-exif \
-    php8-fileinfo \
-    php8-fpm \
-    php8-ftp \
-    php8-gd \
-    php8-iconv \
-    php8-intl \
-    php8-json \
-    php8-mbstring \
-    php8-mysqli \
-    php8-opcache \
-    php8-openssl \
-    php8-pdo \
-    php8-pdo_mysql \
-    php8-pecl-imagick \
-    php8-pecl-ssh2 \
-    php8-phar \
-    php8-posix \
-    php8-session \
-    php8-simplexml \
-    php8-soap \
-    php8-sodium \
-    php8-sockets \
-    php8-tokenizer \
-    php8-xml \
-    php8-xmlreader \
-    php8-xmlwriter \
-    php8-zip \
-    php8-zlib \
+    php"${DEMYX_PHP//./}" \
+    php"${DEMYX_PHP//./}"-bcmath \
+    php"${DEMYX_PHP//./}"-ctype \
+    php"${DEMYX_PHP//./}"-curl \
+    php"${DEMYX_PHP//./}"-dom \
+    php"${DEMYX_PHP//./}"-exif \
+    php"${DEMYX_PHP//./}"-fileinfo \
+    php"${DEMYX_PHP//./}"-fpm \
+    php"${DEMYX_PHP//./}"-ftp \
+    php"${DEMYX_PHP//./}"-gd \
+    php"${DEMYX_PHP//./}"-iconv \
+    php"${DEMYX_PHP//./}"-intl \
+    php"${DEMYX_PHP//./}"-json \
+    php"${DEMYX_PHP//./}"-mbstring \
+    php"${DEMYX_PHP//./}"-mysqli \
+    php"${DEMYX_PHP//./}"-opcache \
+    php"${DEMYX_PHP//./}"-openssl \
+    php"${DEMYX_PHP//./}"-pdo \
+    php"${DEMYX_PHP//./}"-pdo_mysql \
+    php"${DEMYX_PHP//./}"-pecl-imagick \
+    php"${DEMYX_PHP//./}"-pecl-ssh2 \
+    php"${DEMYX_PHP//./}"-phar \
+    php"${DEMYX_PHP//./}"-posix \
+    php"${DEMYX_PHP//./}"-session \
+    php"${DEMYX_PHP//./}"-simplexml \
+    php"${DEMYX_PHP//./}"-soap \
+    php"${DEMYX_PHP//./}"-sodium \
+    php"${DEMYX_PHP//./}"-sockets \
+    php"${DEMYX_PHP//./}"-tokenizer \
+    php"${DEMYX_PHP//./}"-xml \
+    php"${DEMYX_PHP//./}"-xmlreader \
+    php"${DEMYX_PHP//./}"-xmlwriter \
+    php"${DEMYX_PHP//./}"-zip \
+    php"${DEMYX_PHP//./}"-zlib \
     \
-    php81 \
-    php81-bcmath \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-exif \
-    php81-fileinfo \
-    php81-fpm \
-    php81-ftp \
-    php81-gd \
-    php81-iconv \
-    php81-intl \
-    php81-json \
-    php81-mbstring \
-    php81-mysqli \
-    php81-opcache \
-    php81-openssl \
-    php81-pdo \
-    php81-pdo_mysql \
-    php81-pecl-imagick \
-    php81-pecl-ssh2 \
-    php81-phar \
-    php81-posix \
-    php81-session \
-    php81-simplexml \
-    php81-soap \
-    php81-sodium \
-    php81-sockets \
-    php81-tokenizer \
-    php81-xml \
-    php81-xmlreader \
-    php81-xmlwriter \
-    php81-zip \
-    php81-zlib
+    php82 \
+    php82-bcmath \
+    php82-ctype \
+    php82-curl \
+    php82-dom \
+    php82-exif \
+    php82-fileinfo \
+    php82-fpm \
+    php82-ftp \
+    php82-gd \
+    php82-iconv \
+    php82-intl \
+    php82-json \
+    php82-mbstring \
+    php82-mysqli \
+    php82-opcache \
+    php82-openssl \
+    php82-pdo \
+    php82-pdo_mysql \
+    php82-pecl-imagick \
+    php82-pecl-ssh2 \
+    php82-phar \
+    php82-posix \
+    php82-session \
+    php82-simplexml \
+    php82-soap \
+    php82-sodium \
+    php82-sockets \
+    php82-tokenizer \
+    php82-xml \
+    php82-xmlreader \
+    php82-xmlwriter \
+    php82-zip \
+    php82-zlib
 
 # WordPress
 RUN set -ex; \
@@ -174,12 +174,12 @@ COPY bin /usr/local/bin
 # Finalize
 RUN set -ex; \
     # Configure PHP8*
-    ln -sf "$DEMYX_CONFIG"/php.ini /etc/php8/php.ini; \
-    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php8/php-fpm.d/www.conf; \
-    ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php8/php-fpm.d/docker.conf; \
-    ln -sf "$DEMYX_CONFIG"/php.ini /etc/php81/php.ini; \
-    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php81/php-fpm.d/www.conf; \
-    ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php81/php-fpm.d/docker.conf; \
+    ln -sf "$DEMYX_CONFIG"/php.ini /etc/php"${DEMYX_PHP//./}"/php.ini; \
+    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php"${DEMYX_PHP//./}"/php-fpm.d/www.conf; \
+    ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php"${DEMYX_PHP//./}"/php-fpm.d/docker.conf; \
+    ln -sf "$DEMYX_CONFIG"/php.ini /etc/php82/php.ini; \
+    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php82/php-fpm.d/www.conf; \
+    ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php82/php-fpm.d/docker.conf; \
     \
     # Configure sudo
     echo "demyx ALL=(ALL) NOPASSWD:SETENV: /usr/local/bin/demyx-sudo" > /etc/sudoers.d/demyx; \
