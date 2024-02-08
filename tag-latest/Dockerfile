@@ -8,6 +8,7 @@ LABEL sh.demyx.registry                 https://hub.docker.com/u/demyx
 
 # Set default variables
 ENV DEMYX                               /demyx
+ENV DEMYX_BEDROCK                       false
 ENV DEMYX_CONFIG                        /etc/demyx
 ENV DEMYX_CRON                          true
 ENV DEMYX_CRON_LOGROTATE_INTERVAL       "0 0 * * *"
