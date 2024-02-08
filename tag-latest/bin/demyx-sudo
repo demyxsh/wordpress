@@ -15,6 +15,9 @@ demyx_sudo() {
 		logrotate)
 			demyx_sudo_logrotate
 		;;
+		permissions)
+			demyx_sudo_permissions
+		;;
 	esac
 }
 #
@@ -27,6 +30,7 @@ demyx_sudo_cron() {
 	{
 		echo "$DEMYX_CRON_WP_INTERVAL /usr/local/bin/demyx-cron wp"
 		echo "$DEMYX_CRON_LOGROTATE_INTERVAL /usr/bin/sudo -E /usr/local/bin/demyx-sudo logrotate"
+		echo "0 * * * * /usr/bin/sudo -E /usr/local/bin/demyx-sudo permissions"
 	} | sed 's|"||g' > /etc/crontabs/demyx
 
 	[[ "$DEMYX_CRON" = true && -z "$DEMYX_SUDO_CRON" ]] && crond
@@ -53,6 +57,12 @@ demyx_sudo_logrotate() {
 	fi
 
 	logrotate --log="$DEMYX_LOG"/logrotate.log "$DEMYX_SUDO_LOGROTATE"
+}
+#
+#	Permissions.
+#
+demyx_sudo_permissions() {
+	chown -R demyx:demyx "$DEMYX" "$DEMYX_CONFIG" "$DEMYX_LOG"
 }
 #
 #	Init.
