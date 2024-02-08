@@ -2,6 +2,7 @@
 Entries before tag-* affects all tags. 
 
 ## 2024-02-07
+- Update description with shameless plug and support link [c7ea85f](https://github.com/demyxsh/wordpress/commit/c7ea85fbca165895d6969a524dee7880dbe3d964)
 - Update php versions and set default to 8.1 [439b7c1](https://github.com/demyxsh/wordpress/commit/439b7c18b2e9efc2320435e8ef91eb928efd1bbe)
 - Add missing environment variable [dbb0a9d](https://github.com/demyxsh/wordpress/commit/dbb0a9de3fdc49987968acf8eae127fa966dffc8)
 - Include custom volume [a055290](https://github.com/demyxsh/wordpress/commit/a0552908bee497398a902cd11e44e40ad1673a4a)
