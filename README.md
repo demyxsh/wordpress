@@ -122,7 +122,7 @@ services:
       - DEMYX_DOMAIN=domain.tld
       - DEMYX_LOG=/var/log/demyx
       - DEMYX_RATE_LIMIT=false
-      - DEMYX_UPLOAD_LIMIT=128M
+      - DEMYX_UPLOAD_LIMIT=256M
       - DEMYX_WHITELIST=false
       - DEMYX_WHITELIST_IP=false
       - DEMYX_WHITELIST_TYPE=false
@@ -243,7 +243,7 @@ services:
       - DEMYX_PM_START_SERVERS=5
       - DEMYX_PROCESS_CONTROL_TIMEOUT=10s
       - DEMYX_PROTO=http
-      - DEMYX_UPLOAD_LIMIT=128M
+      - DEMYX_UPLOAD_LIMIT=256M
       - DEMYX_WP_CONFIG=/demyx/wp-config.php
       - DEMYX_WP_EMAIL=info@domain.tld
       - DEMYX_WP_PASSWORD=demyx
