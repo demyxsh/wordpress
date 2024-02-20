@@ -33,10 +33,14 @@ demyx_sudo_cron() {
 		echo "0 * * * * /usr/bin/sudo -E /usr/local/bin/demyx-sudo permissions"
 
 		# User defined cron
-		[[ -f "$DEMYX_CONFIG"/custom/cron ]] && cat < "$DEMYX_CONFIG"/custom/cron
+		if [[ -f "$DEMYX_CONFIG"/custom/cron ]]; then
+			cat < "$DEMYX_CONFIG"/custom/cron
+		fi
 	} | sed 's|"||g' > /etc/crontabs/demyx
 
-	[[ "$DEMYX_CRON" = true && -z "$DEMYX_SUDO_CRON" ]] && crond
+	if [[ "$DEMYX_CRON" = true && -z "$DEMYX_SUDO_CRON" ]]; then
+		crond
+	fi
 }
 #
 #	Logs.
