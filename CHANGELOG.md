@@ -1,8 +1,16 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
-## 2024-02-07
+## 2024-02-20
+- Allow users to add custom cron [5e49a5f](https://github.com/demyxsh/wordpress/commit/5e49a5f274c79c30d43ce5826f368b6dfbe6696a)
+- Include missing create rule [20c3da2](https://github.com/demyxsh/wordpress/commit/20c3da2e70e2368ada271b7a7fde8758c8fa935d)
+- Update shameless plug [37624ca](https://github.com/demyxsh/wordpress/commit/37624ca00e4c23925b42dc8daf88ed2a47197176)
+- Double upload limit [7345b55](https://github.com/demyxsh/wordpress/commit/7345b5584c3a8d35282ced9fe15e4918cde89254)
+- Fix wrong link [fe94cdb](https://github.com/demyxsh/wordpress/commit/fe94cdbad4f014cec582e06cf1ead17ba998fbca)
+- 2024-02-07 [fee3b3f](https://github.com/demyxsh/wordpress/commit/fee3b3f6014c361bcc0bd7ee3dd47b470a068e6e)
 - Update description with shameless plug and support link [c7ea85f](https://github.com/demyxsh/wordpress/commit/c7ea85fbca165895d6969a524dee7880dbe3d964)
+- Merge branch 'master' of github.com:demyxsh/wordpress [82db408](https://github.com/demyxsh/wordpress/commit/82db4080f2c659e6c88f26fab7f37d7f7f9842cb)
+- 2024-02-07 [755e1b1](https://github.com/demyxsh/wordpress/commit/755e1b15a18c7df362e2af727c48e2a927167624)
 - Update php versions and set default to 8.1 [439b7c1](https://github.com/demyxsh/wordpress/commit/439b7c18b2e9efc2320435e8ef91eb928efd1bbe)
 - Add missing environment variable [dbb0a9d](https://github.com/demyxsh/wordpress/commit/dbb0a9de3fdc49987968acf8eae127fa966dffc8)
 - Include custom volume [a055290](https://github.com/demyxsh/wordpress/commit/a0552908bee497398a902cd11e44e40ad1673a4a)
