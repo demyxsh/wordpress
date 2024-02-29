@@ -1,8 +1,11 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
 
-## 2024-02-20
+## 2024-02-28
+- Fix reboot container crash [4fc7f78](https://github.com/demyxsh/wordpress/commit/4fc7f78baf3cd316bd3cc2e6695f29b7b75f71ce)
+- 2024-02-20 [58f1824](https://github.com/demyxsh/wordpress/commit/58f1824dc3d611f7b1ff83bbec7f654b78bcf868)
 - Remove shorthands because for some reason, it's now causing issues [c165974](https://github.com/demyxsh/wordpress/commit/c165974b2e6f0c5e8805fe602bf1b6a1040578aa)
+- 2024-02-20 [7adc1e1](https://github.com/demyxsh/wordpress/commit/7adc1e134169068c5f8dcb23c4ef524dc3b90fde)
 - Allow users to add custom cron [5e49a5f](https://github.com/demyxsh/wordpress/commit/5e49a5f274c79c30d43ce5826f368b6dfbe6696a)
 - Include missing create rule [20c3da2](https://github.com/demyxsh/wordpress/commit/20c3da2e70e2368ada271b7a7fde8758c8fa935d)
 - Update shameless plug [37624ca](https://github.com/demyxsh/wordpress/commit/37624ca00e4c23925b42dc8daf88ed2a47197176)
