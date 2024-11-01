@@ -10,11 +10,8 @@ USER root
 
 # Default bedrock to production
 ENV DEMYX_BEDROCK               true
-ENV DEMYX_BEDROCK_MODE          production
 ENV DEMYX_SSL                   false
 ENV DEMYX_WP_CONFIG             "${DEMYX}/web/wp-config.php"
-# Support for old variables
-ENV WORDPRESS_BEDROCK_MODE      "$DEMYX_BEDROCK_MODE"
 
 # Packages
 RUN set -ex; \
@@ -28,7 +25,6 @@ RUN set -ex; \
 # Bedrock
 RUN set -ex; \
     # Remove old files
-    rm -f "$DEMYX_CONFIG"/wordpress.tgz; \
     rm -f /usr/local/bin/demyx-install; \
     rm -rf "$DEMYX"/*; \
     \
