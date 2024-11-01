@@ -47,10 +47,6 @@ ENV DEMYX_WP_EMAIL                      info@domain.tld
 ENV DEMYX_WP_PASSWORD                   demyx
 ENV DEMYX_WP_USERNAME                   demyx
 ENV TZ                                  America/Los_Angeles
-# Support for old variables
-ENV WORDPRESS_ROOT                      "$DEMYX"
-ENV WORDPRESS_CONFIG                    "$DEMYX_CONFIG"
-ENV WORDPRESS_LOG                       "$DEMYX_LOG"
 
 # Packages
 RUN set -ex; \
