@@ -56,34 +56,11 @@ demyx_sudo_cron() {
 	fi
 }
 #
-#	Logs.
-#
-demyx_sudo_logrotate() {
-	local DEMYX_SUDO_LOGROTATE=
-	DEMYX_SUDO_LOGROTATE="$DEMYX_CONFIG"/logrotate.conf
-
-	if [[ ! -f "$DEMYX_SUDO_LOGROTATE" ]]; then
-		echo "${DEMYX_LOG}/*.log {
-	create
-	missingok
-	notifempty
-	$DEMYX_LOGROTATE
-	rotate $DEMYX_LOGROTATE_INTERVAL
-	compress
-	delaycompress
-	size $DEMYX_LOGROTATE_SIZE
-}
-    	" > "$DEMYX_SUDO_LOGROTATE"
-		chown root:root "$DEMYX_SUDO_LOGROTATE"
-	fi
-
-	logrotate --log="$DEMYX_LOG"/logrotate.log "$DEMYX_SUDO_LOGROTATE"
-}
-#
 #	Permissions.
 #
-demyx_sudo_permissions() {
-	chown -R demyx:demyx "$DEMYX" "$DEMYX_CONFIG" "$DEMYX_LOG"
+demyx_sudo_permission() {
+	chown -R demyx:demyx "${DEMYX}" "${DEMYX_CONFIG}" "${DEMYX_LOG}" &
+}
 }
 #
 #	Init.
