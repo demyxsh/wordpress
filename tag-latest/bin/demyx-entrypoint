@@ -12,24 +12,8 @@ demyx_entrypoint() {
     # Generate configs
     demyx-config
 
-    # Start crond
-    sudo -E demyx-sudo cron
-
-    # Set default php version
-    case "$DEMYX_PHP" in
-        8.2|82)
-            DEMYX_PHP=82
-        ;;
-        *)
-            DEMYX_PHP=81
-        ;;
-    esac
-
-    # Reset permissions
-    sudo -E demyx-sudo permissions
-
-    # Run php-fpm in the foreground
-    php-fpm"$DEMYX_PHP" -F
+    # Sudo
+    sudo -E demyx-sudo
 }
 #
 #   Init.
