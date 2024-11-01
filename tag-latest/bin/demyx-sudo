@@ -47,7 +47,9 @@ demyx_sudo_cron() {
 		if [[ -f "$DEMYX_CONFIG"/custom/cron ]]; then
 			cat < "$DEMYX_CONFIG"/custom/cron
 		fi
-	} | sed 's|"||g' > /etc/crontabs/demyx
+	} | sed 's|"||g' > /etc/crontab
+
+	crontab -u demyx /etc/crontab
 
 	if [[ "$DEMYX_CRON" = true && -z "$DEMYX_SUDO_CRON" ]]; then
 		crond
