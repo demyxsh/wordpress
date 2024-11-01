@@ -29,7 +29,7 @@ ENV DEMYX_MEMORY                        256M
 ENV DEMYX_OPCACHE                       true
 ENV DEMYX_OPCACHE_ENABLE                1
 ENV DEMYX_OPCACHE_ENABLE_CLI            1
-ENV DEMYX_PHP                           8.1
+ENV DEMYX_PHP                           8.2
 ENV DEMYX_PM                            ondemand
 ENV DEMYX_PM_MAX_CHILDREN               25
 ENV DEMYX_PM_MAX_REQUESTS               25000
@@ -115,40 +115,40 @@ RUN set -ex; \
     php"${DEMYX_PHP//./}"-zip \
     php"${DEMYX_PHP//./}"-zlib \
     \
-    php82 \
-    php82-bcmath \
-    php82-ctype \
-    php82-curl \
-    php82-dom \
-    php82-exif \
-    php82-fileinfo \
-    php82-fpm \
-    php82-ftp \
-    php82-gd \
-    php82-iconv \
-    php82-intl \
-    php82-json \
-    php82-mbstring \
-    php82-mysqli \
-    php82-opcache \
-    php82-openssl \
-    php82-pdo \
-    php82-pdo_mysql \
-    php82-pecl-imagick \
-    php82-pecl-ssh2 \
-    php82-phar \
-    php82-posix \
-    php82-session \
-    php82-simplexml \
-    php82-soap \
-    php82-sodium \
-    php82-sockets \
-    php82-tokenizer \
-    php82-xml \
-    php82-xmlreader \
-    php82-xmlwriter \
-    php82-zip \
-    php82-zlib
+    php83 \
+    php83-bcmath \
+    php83-ctype \
+    php83-curl \
+    php83-dom \
+    php83-exif \
+    php83-fileinfo \
+    php83-fpm \
+    php83-ftp \
+    php83-gd \
+    php83-iconv \
+    php83-intl \
+    php83-json \
+    php83-mbstring \
+    php83-mysqli \
+    php83-opcache \
+    php83-openssl \
+    php83-pdo \
+    php83-pdo_mysql \
+    php83-pecl-imagick \
+    php83-pecl-ssh2 \
+    php83-phar \
+    php83-posix \
+    php83-session \
+    php83-simplexml \
+    php83-soap \
+    php83-sodium \
+    php83-sockets \
+    php83-tokenizer \
+    php83-xml \
+    php83-xmlreader \
+    php83-xmlwriter \
+    php83-zip \
+    php83-zlib
 
 # WordPress
 RUN set -ex; \
