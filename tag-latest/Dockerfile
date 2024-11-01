@@ -31,8 +31,10 @@ ENV DEMYX_OPCACHE_ENABLE                1
 ENV DEMYX_OPCACHE_ENABLE_CLI            1
 ENV DEMYX_PHP                           8.2
 ENV DEMYX_PM                            ondemand
+ENV DEMYX_PM_AUTO                       true
+ENV DEMYX_PM_AUTO_AVERAGE               100000
 ENV DEMYX_PM_MAX_CHILDREN               25
-ENV DEMYX_PM_MAX_REQUESTS               25000
+ENV DEMYX_PM_MAX_REQUESTS               5000
 ENV DEMYX_PM_MAX_SPARE_SERVERS          20
 ENV DEMYX_PM_MIN_SPARE_SERVERS          5
 ENV DEMYX_PM_PROCESS_IDLE_TIMEOUT       3s
@@ -55,7 +57,6 @@ RUN set -ex; \
     apk add --no-cache \
     \
     bash \
-    logrotate \
     mariadb-client \
     sed \
     sudo \
@@ -152,16 +153,7 @@ RUN set -ex; \
 
 # WordPress
 RUN set -ex; \
-    su -c "wget https://wordpress.org/latest.tar.gz -qO /tmp/latest.tar.gz; \
-    \
-    tar -xzf /tmp/latest.tar.gz -C /tmp; \
-    \
-    mv /tmp/wordpress/wp-config-sample.php /tmp/wordpress/wp-config.php; \
-    \
-    cp -r /tmp/wordpress/* ${DEMYX}; \
-    \
-    tar -czf ${DEMYX_CONFIG}/wordpress.tgz -C /tmp/wordpress ." -s /bin/sh demyx; \
-    \
+    \    
     wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
     chmod +x /usr/local/bin/wp; \
     \
@@ -174,12 +166,12 @@ COPY bin /usr/local/bin
 # Finalize
 RUN set -ex; \
     # Configure PHP8*
-    ln -sf "$DEMYX_CONFIG"/php.ini /etc/php"${DEMYX_PHP//./}"/php.ini; \
     ln -sf "$DEMYX_CONFIG"/www.conf /etc/php"${DEMYX_PHP//./}"/php-fpm.d/www.conf; \
-    ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php"${DEMYX_PHP//./}"/php-fpm.d/docker.conf; \
-    ln -sf "$DEMYX_CONFIG"/php.ini /etc/php82/php.ini; \
-    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php82/php-fpm.d/www.conf; \
-    ln -sf "$DEMYX_CONFIG"/docker.conf /etc/php82/php-fpm.d/docker.conf; \
+    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${DEMYX_PHP//./}"/php-fpm.d/demyx.ini; \
+    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${DEMYX_PHP//./}"/conf.d/demyx.ini; \
+    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php83/php-fpm.d/www.conf; \
+    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php83/php-fpm.d/demyx.ini; \
+    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php83/conf.d/demyx.ini; \
     \
     # Configure sudo
     echo "demyx ALL=(ALL) NOPASSWD:SETENV: /usr/local/bin/demyx-sudo" > /etc/sudoers.d/demyx; \
@@ -197,3 +189,5 @@ WORKDIR "$DEMYX"
 USER demyx
 
 ENTRYPOINT ["demyx-entrypoint"]
+
+CMD ["php-fpm", "-F"]
