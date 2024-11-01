@@ -1,7 +1,7 @@
 #!/bin/bash
 # Demyx
 # https://demyx.sh
-set -euo pipefail
+set -eEuo pipefail
 #
 #   Main.
 #
@@ -19,3 +19,11 @@ demyx_entrypoint() {
 #   Init.
 #
 demyx_entrypoint
+#
+#   Exec.
+#
+if [[ -n "$(pgrep php-fpm || true)" ]]; then
+    pkill -USR2 php-fpm
+else
+    exec "$@"
+fi
