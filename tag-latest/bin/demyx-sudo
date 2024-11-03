@@ -41,7 +41,7 @@ demyx_sudo_cron() {
 		fi
 
 		# Permission
-		echo "0 0 * * * /usr/bin/sudo -E demyx-sudo permission"
+		echo "0 0 * * * /usr/bin/sudo -E /usr/local/bin/demyx-sudo permission"
 
 		# User defined cron
 		if [[ -f "$DEMYX_CONFIG"/custom/cron ]]; then
