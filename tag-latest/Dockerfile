@@ -12,7 +12,6 @@ ENV DEMYX                               /demyx
 ENV DEMYX_BEDROCK                       false
 ENV DEMYX_CONFIG                        /etc/demyx
 ENV DEMYX_CRON                          true
-ENV DEMYX_CRON_LOGROTATE_INTERVAL       "0 0 * * *"
 ENV DEMYX_CRON_WP_INTERVAL              "*/5 * * * *"
 ENV DEMYX_DB_HOST                       localhost
 ENV DEMYX_DB_NAME                       demyx
@@ -22,9 +21,6 @@ ENV DEMYX_DOMAIN                        domain.tld
 ENV DEMYX_EMERGENCY_RESTART_INTERVAL    1m
 ENV DEMYX_EMERGENCY_RESTART_THRESHOLD   5
 ENV DEMYX_LOG                           /var/log/demyx
-ENV DEMYX_LOGROTATE                     daily
-ENV DEMYX_LOGROTATE_INTERVAL            7
-ENV DEMYX_LOGROTATE_SIZE                10M
 ENV DEMYX_MAX_EXECUTION_TIME            300
 ENV DEMYX_MEMORY                        256M
 ENV DEMYX_OPCACHE                       true
