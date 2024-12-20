@@ -1,4 +1,5 @@
-FROM alpine:3.19
+ARG DEMYX_FROM=alpine:3.19
+FROM "${DEMYX_FROM}"
 
 LABEL sh.demyx.image                    demyx/wordpress
 LABEL sh.demyx.maintainer               Demyx <info@demyx.sh>
