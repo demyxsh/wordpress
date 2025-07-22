@@ -12,16 +12,12 @@ demyx_sudo() {
 		cron)
 			demyx_sudo_cron
 		;;
-		permission)
-			demyx_sudo_permission 
-		;;
 		php)
 			demyx_sudo_php
 		;;
 		*)
 			# Execute all sudo functions
 			demyx_sudo_cron
-			demyx_sudo_permission
 			demyx_sudo_php
 		;;
 	esac
@@ -34,14 +30,11 @@ demyx_sudo_cron() {
 	DEMYX_SUDO_CRON="$(pgrep crond || true)"
 
 	{
-		if [[ "${DEMYX_BEDROCK}" = true ]]; then
-			echo "${DEMYX_CRON_WP_INTERVAL} /usr/bin/php ${DEMYX}/web/wp/wp-cron.php"
-		else
-			echo "${DEMYX_CRON_WP_INTERVAL} /usr/bin/php ${DEMYX}/wp-cron.php"
-		fi
+		# WP cron
+		echo "${DEMYX_CRON_WP_INTERVAL} /usr/bin/sudo -E /usr/local/bin/demyx-cron wp"
 
-		# Permission
-		echo "0 0 * * * /usr/bin/sudo -E /usr/local/bin/demyx-sudo permission"
+		# ACL
+		echo "0 0 * * * /usr/bin/sudo -E /usr/local/bin/demyx-cron acl"
 
 		# User defined cron
 		if [[ -f "$DEMYX_CONFIG"/custom/cron ]]; then
@@ -54,12 +47,6 @@ demyx_sudo_cron() {
 	if [[ "$DEMYX_CRON" = true && -z "$DEMYX_SUDO_CRON" ]]; then
 		crond
 	fi
-}
-#
-#	Permissions.
-#
-demyx_sudo_permission() {
-	chown -R demyx:demyx "${DEMYX}" "${DEMYX_CONFIG}" "${DEMYX_LOG}" &
 }
 #
 #	PHP.

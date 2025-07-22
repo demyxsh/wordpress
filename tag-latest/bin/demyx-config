@@ -90,10 +90,14 @@ define( 'WP_REDIS_READ_TIMEOUT', 1 );
 
 // Disable installation of default themes/plugins when upgrading
 define( 'CORE_UPGRADE_SKIP_NEW_BUNDLED', true );
+        "
 
+        if [[ "${DEMYX_BEDROCK}" = false ]]; then
+            echo "
 // Mitigate DoS attack CVE with WordPress script concatenation
 define( 'CONCATENATE_SCRIPTS', false );
         "
+        fi
 
         } > "${DEMYX_CONFIG}/demyx.php"
     fi
@@ -158,12 +162,15 @@ demyx_config_www() {
     elif [[ ! -f "${DEMYX_CONFIG}/custom/wordpress/www.conf" ]]; then
         # Auto calc
         local DEMYX_CONFIG_WWW_BUFFER=
+        local DEMYX_CONFIG_WWW_DOCKER_MEMORY="${DEMYX_MEMORY//M/}"
         local DEMYX_CONFIG_WWW_MAX_MEMORY=
         local DEMYX_CONFIG_WWW_RAM=
         local DEMYX_CONFIG_WWW_MAX_CHILDREN=
         local DEMYX_CONFIG_WWW_MAX_SPARE_SERVERS
 
-        DEMYX_CONFIG_WWW_MAX_MEMORY="$(free | grep Mem | awk -F ' ' '{print $2}')"
+        #DEMYX_CONFIG_WWW_MAX_MEMORY="$(free | grep Mem | awk -F ' ' '{print $2}')"
+        [[ "${DEMYX_CONFIG_WWW_DOCKER_MEMORY}" -lt 512 ]] && DEMYX_CONFIG_WWW_DOCKER_MEMORY=512
+        DEMYX_CONFIG_WWW_MAX_MEMORY="$((DEMYX_CONFIG_WWW_DOCKER_MEMORY * 1024))"
         DEMYX_CONFIG_WWW_BUFFER="$(( "${DEMYX_CONFIG_WWW_MAX_MEMORY}" * 10 /100 ))"
         DEMYX_CONFIG_WWW_RAM="$(( "${DEMYX_CONFIG_WWW_MAX_MEMORY}" - "${DEMYX_CONFIG_WWW_BUFFER}" - "${DEMYX_CONFIG_WWW_BUFFER}" ))"
         DEMYX_CONFIG_WWW_MAX_CHILDREN="$(( "${DEMYX_CONFIG_WWW_RAM}" / "${DEMYX_PM_AVERAGE}" ))" # Average maybe
@@ -178,7 +185,7 @@ decorate_workers_output             = no
 chdir                               = ${DEMYX}
 listen                              = 9000
 php_admin_value[error_log]          = ${DEMYX_LOG}/${DEMYX_DOMAIN}.error.log
-pm                                  = dynamic
+pm                                  = ondemand
 pm.max_children                     = ${DEMYX_CONFIG_WWW_MAX_CHILDREN}
 pm.max_requests                     = ${DEMYX_PM_MAX_REQUESTS}
 pm.max_spare_servers                = ${DEMYX_CONFIG_WWW_MAX_SPARE_SERVERS}

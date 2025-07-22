@@ -1,5 +1,4 @@
-ARG DEMYX_FROM=alpine:3.19
-FROM "${DEMYX_FROM}"
+FROM alpine:3.19
 
 LABEL sh.demyx.image                    demyx/wordpress
 LABEL sh.demyx.maintainer               Demyx <info@demyx.sh>
@@ -26,7 +25,7 @@ ENV DEMYX_MEMORY                        256M
 ENV DEMYX_OPCACHE                       true
 ENV DEMYX_OPCACHE_ENABLE                1
 ENV DEMYX_OPCACHE_ENABLE_CLI            1
-ENV DEMYX_PHP                           8.2
+ENV DEMYX_PHP                           8.3
 ENV DEMYX_PM_AVERAGE                    100000
 ENV DEMYX_PM_MAX_REQUESTS               5000
 ENV DEMYX_PROCESS_CONTROL_TIMEOUT       10s
@@ -102,47 +101,51 @@ RUN set -ex; \
     php"${DEMYX_PHP//./}"-zip \
     php"${DEMYX_PHP//./}"-zlib \
     \
-    php83 \
-    php83-bcmath \
-    php83-ctype \
-    php83-curl \
-    php83-dom \
-    php83-exif \
-    php83-fileinfo \
-    php83-fpm \
-    php83-ftp \
-    php83-gd \
-    php83-iconv \
-    php83-intl \
-    php83-json \
-    php83-mbstring \
-    php83-mysqli \
-    php83-opcache \
-    php83-openssl \
-    php83-pdo \
-    php83-pdo_mysql \
-    php83-pecl-imagick \
-    php83-pecl-ssh2 \
-    php83-phar \
-    php83-posix \
-    php83-session \
-    php83-simplexml \
-    php83-soap \
-    php83-sodium \
-    php83-sockets \
-    php83-tokenizer \
-    php83-xml \
-    php83-xmlreader \
-    php83-xmlwriter \
-    php83-zip \
-    php83-zlib
+    php82 \
+    php82-bcmath \
+    php82-ctype \
+    php82-curl \
+    php82-dom \
+    php82-exif \
+    php82-fileinfo \
+    php82-fpm \
+    php82-ftp \
+    php82-gd \
+    php82-iconv \
+    php82-intl \
+    php82-json \
+    php82-mbstring \
+    php82-mysqli \
+    php82-opcache \
+    php82-openssl \
+    php82-pdo \
+    php82-pdo_mysql \
+    php82-pecl-imagick \
+    php82-pecl-ssh2 \
+    php82-phar \
+    php82-posix \
+    php82-session \
+    php82-simplexml \
+    php82-soap \
+    php82-sodium \
+    php82-sockets \
+    php82-tokenizer \
+    php82-xml \
+    php82-xmlreader \
+    php82-xmlwriter \
+    php82-zip \
+    php82-zlib
 
 # WordPress
 RUN set -ex; \
     \    
-    wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /usr/local/bin/wp; \
+    wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -qO /home/demyx/wp; \
+    chmod +x /home/demyx/wp; \
+    \
+    echo -e "#!/bin/bash\nexec php -d memory_limit=\"${DEMYX_MEMORY}\" /home/demyx/wp \"\$@\"" > /usr/local/bin/wp; \
     chmod +x /usr/local/bin/wp; \
     \
+    # Install wp-cli-login-command
     su -c "wp package install aaemnnosttv/wp-cli-login-command; \
         wget https://raw.githubusercontent.com/aaemnnosttv/wp-cli-login-command/master/plugin/wp-cli-login-server.php -qO ${DEMYX_CONFIG}/wp-cli-login-server.php" -s /bin/sh demyx
 
@@ -155,12 +158,12 @@ RUN set -ex; \
     ln -sf "$DEMYX_CONFIG"/www.conf /etc/php"${DEMYX_PHP//./}"/php-fpm.d/www.conf; \
     ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${DEMYX_PHP//./}"/php-fpm.d/demyx.ini; \
     ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${DEMYX_PHP//./}"/conf.d/demyx.ini; \
-    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php83/php-fpm.d/www.conf; \
-    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php83/php-fpm.d/demyx.ini; \
-    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php83/conf.d/demyx.ini; \
+    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php82/php-fpm.d/www.conf; \
+    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php82/php-fpm.d/demyx.ini; \
+    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php82/conf.d/demyx.ini; \
     \
     # Configure sudo
-    echo "demyx ALL=(ALL) NOPASSWD:SETENV: /usr/local/bin/demyx-sudo" > /etc/sudoers.d/demyx; \
+    echo "demyx ALL=(ALL) NOPASSWD:SETENV: /usr/local/bin/demyx-cron, /usr/local/bin/demyx-sudo" > /etc/sudoers.d/demyx; \
     \
     # Set ownership
     chown -R root:root /usr/local/bin; \

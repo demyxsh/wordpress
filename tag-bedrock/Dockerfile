@@ -1,5 +1,4 @@
-ARG DEMYX_FROM=demyx/wordpress
-FROM "${DEMYX_FROM}"
+FROM demyx/wordpress
 
 LABEL sh.demyx.image            demyx/wordpress:bedrock
 LABEL sh.demyx.maintainer       Demyx <info@demyx.sh>
