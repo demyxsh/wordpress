@@ -26,6 +26,7 @@ Entries before tag-* affects all tags.
 - Remove unused variables [96e2d06](https://github.com/demyxsh/wordpress/commit/96e2d060dffa9ac3cf5407d0e54ef53bbf8ff7ca)
 - Update Dockerfiles to use fixed base images and upgrade PHP version; modify cron and sudo scripts for improved functionality and memory management [4758de4](https://github.com/demyxsh/wordpress/commit/4758de46f8809785b3e210d8075cac59464aab45)
 - Update GitHub Actions workflow to use run ID in commit message for scheduled builds [a1d7be7](https://github.com/demyxsh/wordpress/commit/a1d7be759a053dddf8c231e279fc07a3ea90779a)
+- Refactor GitHub Actions workflow: comment out unused Docker build commands, increase sleep duration for container readiness, and adjust version retrieval commands for consistency with PHP versions. [4d549b4](https://github.com/demyxsh/wordpress/commit/4d549b4dd3056722f13f944ffb99a62505896b62)
 
 ## 2024-02-28
 - Fix reboot container crash [4fc7f78](https://github.com/demyxsh/wordpress/commit/4fc7f78baf3cd316bd3cc2e6695f29b7b75f71ce)
