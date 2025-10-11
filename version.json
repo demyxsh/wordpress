@@ -1,5 +1,5 @@
 {
-  "alpine": "3.19.8",
+  "alpine": "3.19.9",
   "wordpress": "6.8.3",
   "bedrock": "1.28.3",
   "wp_cli": "runtime",
