@@ -1,7 +1,7 @@
 {
   "alpine": "3.19.9",
-  "wordpress": "6.9",
-  "bedrock": "1.28.4",
+  "wordpress": "6.9.1",
+  "bedrock": "1.28.5",
   "wp_cli": "runtime",
   "php": "8.2.26",
   "php81": "8.3.14"
