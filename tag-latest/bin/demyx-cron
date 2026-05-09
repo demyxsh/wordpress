@@ -41,7 +41,7 @@ demyx_cron_wp() {
 
 	{
 		echo "[$(date +%F-%T)] ======================================="
-		php -d memory_limit="${DEMYX_MEMORY}" "${DEMYX_CRON_WP_PATH}/wp-cron.php"
+		wp --path="$DEMYX_CRON_WP_PATH" cron event run --due-now || true
 	} | tee -a "${DEMYX_LOG}/${DEMYX_DOMAIN}.cron.log"
 }
 #

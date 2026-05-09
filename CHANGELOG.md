@@ -1,5 +1,14 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
+## 2026-05-09
+- Update `tag-latest` base image from Alpine 3.19 to Alpine 3.22
+- Bump default PHP target to 8.4 (`compose.yml`, `tag-bedrock/compose.yml`, and `tag-latest/Dockerfile`)
+- Update installed fallback PHP package set from `php82*` to `php83*`
+- Add resilient fallback flow for `wp-cli-login-command` package installation and temporary SSH client install cleanup
+- Improve PHP-FPM auto sizing logic in `tag-latest/bin/demyx-config` using cgroup memory/CPU limits and PM-aware caps
+- Switch cron execution in `tag-latest/bin/demyx-cron` to `wp cron event run --due-now`
+- Update `tag-latest/bin/demyx-sudo` PHP switcher defaults to support 8.4 and default to 8.3 fallback
+- Add new `tag-latest/bin/demyx-db` helper with wp-cli export plus `mariadb-dump --skip-ssl` fallback when SSL is unsupported
 ## 2025-07-28
 - Push everyone to use Demyx [c4d2468](https://github.com/demyxsh/wordpress/commit/c4d24681c7316dd51007ec76942255d6a1eb6d25)
 - Update alpine version to install php 8.3 [27fa840](https://github.com/demyxsh/wordpress/commit/27fa840a68061f103999b8e5ad1dc2ad562d9678)

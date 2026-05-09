@@ -1,0 +1,91 @@
+#!/bin/bash
+# Demyx
+# https://demyx.sh
+set -eEuo pipefail
+#
+#   Main.
+#
+demyx_db() {
+    local DEMYX_DB_EXPORT="${1:-}"
+    local DEMYX_DB_PATH="$DEMYX"
+
+    [[ "${DEMYX_BEDROCK}" = true ]] && DEMYX_DB_PATH="$DEMYX"/web/wp
+    if [[ -z "${DEMYX_DB_EXPORT}" ]]; then
+        local DEMYX_DB_IDGEN
+        DEMYX_DB_IDGEN=()
+        for i in {a..z} {0..9}; do
+            DEMYX_DB_IDGEN[RANDOM]="$i"
+        done
+
+        local DEMYX_DB_ID
+        DEMYX_DB_ID="$(printf %s "${DEMYX_DB_IDGEN[@]::5}" $'\n')"
+
+        local DEMYX_DB_DOMAIN
+        DEMYX_DB_DOMAIN="${DEMYX_DOMAIN//[^a-z 0-9 A-Z]/_}"
+        DEMYX_DB_EXPORT="$DEMYX"/"${DEMYX_DB_DOMAIN}-$(date +%F)-${DEMYX_DB_ID}.sql"
+    fi
+
+    local DEMYX_DB_OUTPUT
+    DEMYX_DB_OUTPUT="$(mktemp)"
+
+    set +e
+    wp --path="$DEMYX_DB_PATH" db export "$DEMYX_DB_EXPORT" 2>"$DEMYX_DB_OUTPUT"
+    local DEMYX_DB_EXIT=$?
+    set -e
+
+    if (( DEMYX_DB_EXIT == 0 )); then
+        rm -f "$DEMYX_DB_OUTPUT"
+        return 0
+    fi
+
+    local DEMYX_DB_ERROR
+    DEMYX_DB_ERROR="$(cat "$DEMYX_DB_OUTPUT")"
+
+    if [[ "$DEMYX_DB_ERROR" != *"TLS/SSL error: SSL is required, but the server does not support it"* ]]; then
+        rm -f "$DEMYX_DB_OUTPUT"
+        echo "$DEMYX_DB_ERROR" >&2
+        return "$DEMYX_DB_EXIT"
+    fi
+
+    local DEMYX_DB_HOST
+    local DEMYX_DB_HOSTNAME
+    local DEMYX_DB_NAME
+    local DEMYX_DB_PASSWORD
+    local DEMYX_DB_PORT=
+    local DEMYX_DB_USERNAME
+
+    DEMYX_DB_NAME="$(sed -n "s/.*define([[:space:]]*['\"]DB_NAME['\"][[:space:]]*,[[:space:]]*['\"]\([^'\"]*\)['\"].*/\1/p" "$DEMYX_WP_CONFIG" | head -n 1)"
+    DEMYX_DB_USERNAME="$(sed -n "s/.*define([[:space:]]*['\"]DB_USER['\"][[:space:]]*,[[:space:]]*['\"]\([^'\"]*\)['\"].*/\1/p" "$DEMYX_WP_CONFIG" | head -n 1)"
+    DEMYX_DB_PASSWORD="$(sed -n "s/.*define([[:space:]]*['\"]DB_PASSWORD['\"][[:space:]]*,[[:space:]]*['\"]\([^'\"]*\)['\"].*/\1/p" "$DEMYX_WP_CONFIG" | head -n 1)"
+    DEMYX_DB_HOST="$(sed -n "s/.*define([[:space:]]*['\"]DB_HOST['\"][[:space:]]*,[[:space:]]*['\"]\([^'\"]*\)['\"].*/\1/p" "$DEMYX_WP_CONFIG" | head -n 1)"
+
+    DEMYX_DB_HOSTNAME="$DEMYX_DB_HOST"
+    if [[ "$DEMYX_DB_HOST" == *:* ]]; then
+        local DEMYX_DB_HOST_SPLIT_PORT
+        DEMYX_DB_HOST_SPLIT_PORT="${DEMYX_DB_HOST##*:}"
+        if [[ "$DEMYX_DB_HOST_SPLIT_PORT" =~ ^[0-9]+$ ]]; then
+            DEMYX_DB_HOSTNAME="${DEMYX_DB_HOST%:*}"
+            DEMYX_DB_PORT="$DEMYX_DB_HOST_SPLIT_PORT"
+        fi
+    fi
+
+    if [[ -z "$DEMYX_DB_HOST" || -z "$DEMYX_DB_USERNAME" || -z "$DEMYX_DB_NAME" ]]; then
+        rm -f "$DEMYX_DB_OUTPUT"
+        echo "$DEMYX_DB_ERROR" >&2
+        echo "[demyx] Failed parsing DB credentials from $DEMYX_WP_CONFIG" >&2
+        return "$DEMYX_DB_EXIT"
+    fi
+
+    rm -f "$DEMYX_DB_OUTPUT"
+
+    MYSQL_PWD="$DEMYX_DB_PASSWORD" mariadb-dump \
+        --skip-ssl \
+        --host="$DEMYX_DB_HOSTNAME" \
+        ${DEMYX_DB_PORT:+--port="$DEMYX_DB_PORT"} \
+        --user="$DEMYX_DB_USERNAME" \
+        "$DEMYX_DB_NAME" > "$DEMYX_DB_EXPORT"
+}
+#
+#   Init.
+#
+demyx_db "$@"

@@ -51,13 +51,16 @@ demyx_sudo_cron() {
 #
 #	PHP.
 #
-demyx_sudo_php() {
-	case "$DEMYX_PHP" in
+	demyx_sudo_php() {
+		case "$DEMYX_PHP" in
+        ""|8.4|84)
+            DEMYX_PHP=84
+        ;;
         8.3|83)
             DEMYX_PHP=83
         ;;
         *)
-            DEMYX_PHP=82
+            DEMYX_PHP=83
         ;;
     esac
 
