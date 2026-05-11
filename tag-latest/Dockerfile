@@ -162,6 +162,8 @@ COPY bin /usr/local/bin
 # Finalize
 RUN set -ex; \
     # Configure PHP8*
+    sed -i 's|^error_log = .*|error_log = /proc/self/fd/2|' /etc/php83/php-fpm.conf; \
+    sed -i 's|^error_log = .*|error_log = /proc/self/fd/2|' /etc/php84/php-fpm.conf; \
     ln -sf "$DEMYX_CONFIG"/www.conf /etc/php"${DEMYX_PHP//./}"/php-fpm.d/www.conf; \
     ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${DEMYX_PHP//./}"/php-fpm.d/demyx.ini; \
     ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${DEMYX_PHP//./}"/conf.d/demyx.ini; \

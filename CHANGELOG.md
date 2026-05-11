@@ -1,5 +1,8 @@
 # CHANGELOG
 Entries before tag-* affects all tags. 
+## 2026-05-11
+- Update `tag-latest/Dockerfile` to force `error_log = /proc/self/fd/2` in both `/etc/php83/php-fpm.conf` and `/etc/php84/php-fpm.conf`
+- Update `tag-latest/bin/demyx-sudo` PHP switcher to create `/var/log/php83/error.log` and set ownership to `demyx:demyx` so non-root PHP-FPM startup does not fail on default Alpine log path
 ## 2026-05-09
 - Update `tag-latest` base image from Alpine 3.19 to Alpine 3.22
 - Bump default PHP target to 8.4 (`compose.yml`, `tag-bedrock/compose.yml`, and `tag-latest/Dockerfile`)

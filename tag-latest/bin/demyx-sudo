@@ -51,7 +51,7 @@ demyx_sudo_cron() {
 #
 #	PHP.
 #
-	demyx_sudo_php() {
+demyx_sudo_php() {
 		case "$DEMYX_PHP" in
         ""|8.4|84)
             DEMYX_PHP=84
@@ -66,6 +66,12 @@ demyx_sudo_cron() {
 
 	ln -sf /usr/bin/php"${DEMYX_PHP}" /usr/bin/php
 	ln -sf /usr/sbin/php-fpm"${DEMYX_PHP}" /usr/sbin/php-fpm
+
+    # Alpine php-fpm package defaults to /var/log/php83/error.log in php-fpm.conf.
+    # Ensure that path is writable for non-root startup to prevent FPM init failure.
+    mkdir -p /var/log/php83
+    touch /var/log/php83/error.log
+    chown -R demyx:demyx /var/log/php83
 }
 #
 #	Init.
