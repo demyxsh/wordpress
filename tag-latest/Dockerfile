@@ -158,6 +158,7 @@ RUN set -ex; \
 
 # Imports
 COPY bin /usr/local/bin
+COPY --chown=demyx:demyx etc /etc/demyx
 
 # Finalize
 RUN set -ex; \

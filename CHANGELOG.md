@@ -1,5 +1,7 @@
 # CHANGELOG
-Entries before tag-* affects all tags. 
+Entries before tag-* affects all tags.
+## 2026-05-14
+- Added a cache purger script for the Super Page Cache plugin
 ## 2026-05-11
 - Update `tag-latest/Dockerfile` to force `error_log = /proc/self/fd/2` in both `/etc/php83/php-fpm.conf` and `/etc/php84/php-fpm.conf`
 - Update `tag-latest/bin/demyx-sudo` PHP switcher to create `/var/log/php83/error.log` and set ownership to `demyx:demyx` so non-root PHP-FPM startup does not fail on default Alpine log path
