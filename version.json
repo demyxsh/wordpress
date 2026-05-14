@@ -2,7 +2,7 @@
   "alpine": "3.22.4",
   "wordpress": "6.9.4",
   "bedrock": "1.30.1",
-  "wp_cli": "runtime",
-  "php": "",
+  "wp_cli": "2.12.0",
+  "php": "8.4",
   "php81": "8.4.16"
 }
