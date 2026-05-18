@@ -74,12 +74,68 @@ if (!isset($sw_cloudflare_pagecache) || !($sw_cloudflare_pagecache instanceof SW
     exit(3);
 }
 
-$purgeResult = $sw_cloudflare_pagecache->get_cache_controller()->purge_all(false, false);
+$purgeResult = null;
+$purgeMethodUsed = '';
 
-if ($purgeResult === true) {
-    fwrite(STDOUT, "Cache purged successfully.\n");
+// Super Page Cache v5.3.0+ API.
+if (class_exists('\SPC\Modules\Cache_Controller') && method_exists('\SPC\Modules\Cache_Controller', 'purge_all')) {
+    $purgeResult = \SPC\Modules\Cache_Controller::purge_all(false, false);
+    $purgeMethodUsed = '\SPC\Modules\Cache_Controller::purge_all(false, false)';
+}
+
+if (
+    $purgeMethodUsed === '' &&
+    method_exists($sw_cloudflare_pagecache, 'get_core_loader') &&
+    is_object($sw_cloudflare_pagecache->get_core_loader()) &&
+    method_exists($sw_cloudflare_pagecache->get_core_loader(), 'cache_controller')
+) {
+    $controller = $sw_cloudflare_pagecache->get_core_loader()->cache_controller();
+
+    if (is_object($controller) && method_exists($controller, 'purge_all')) {
+        $purgeResult = $controller->purge_all(false, false);
+        $purgeMethodUsed = 'get_core_loader()->cache_controller()->purge_all(false, false)';
+    }
+}
+
+// Legacy plugin API fallback.
+if ($purgeMethodUsed === '' && method_exists($sw_cloudflare_pagecache, 'get_cache_controller')) {
+    $controller = $sw_cloudflare_pagecache->get_cache_controller();
+
+    if (is_object($controller)) {
+        if (method_exists($controller, 'purge_all')) {
+            $purgeResult = $controller->purge_all(false, false);
+            $purgeMethodUsed = 'get_cache_controller()->purge_all(false, false)';
+        } elseif (method_exists($controller, 'purge_cache_everything')) {
+            $purgeResult = $controller->purge_cache_everything();
+            $purgeMethodUsed = 'get_cache_controller()->purge_cache_everything()';
+        }
+    }
+}
+
+if ($purgeMethodUsed === '' && method_exists($sw_cloudflare_pagecache, 'purge_all')) {
+    $purgeResult = $sw_cloudflare_pagecache->purge_all(false, false);
+    $purgeMethodUsed = 'purge_all(false, false)';
+}
+
+if ($purgeMethodUsed === '' && method_exists($sw_cloudflare_pagecache, 'purge_all_cache')) {
+    $purgeResult = $sw_cloudflare_pagecache->purge_all_cache();
+    $purgeMethodUsed = 'purge_all_cache()';
+}
+
+if ($purgeMethodUsed === '' && method_exists($sw_cloudflare_pagecache, 'purge_cache_everything')) {
+    $purgeResult = $sw_cloudflare_pagecache->purge_cache_everything();
+    $purgeMethodUsed = 'purge_cache_everything()';
+}
+
+if ($purgeMethodUsed === '') {
+    fwrite(STDERR, "Error: No supported purge method found on SW_CLOUDFLARE_PAGECACHE.\n");
+    exit(4);
+}
+
+if ($purgeResult === true || $purgeResult === null) {
+    fwrite(STDOUT, "Cache purged successfully via {$purgeMethodUsed}.\n");
     exit(0);
 }
 
-fwrite(STDERR, "Error: Cache purge failed. Check Super Page Cache logs for details.\n");
-exit(4);
+fwrite(STDERR, "Error: Cache purge failed via {$purgeMethodUsed}. Check Super Page Cache logs for details.\n");
+exit(5);
