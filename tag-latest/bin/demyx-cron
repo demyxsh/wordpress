@@ -5,6 +5,32 @@ set -eEuo pipefail
 #
 #	Main.
 #
+demyx_cron_env() {
+	# Cron may not inherit container runtime vars; provide safe fallbacks.
+	export DEMYX="${DEMYX:-/demyx}"
+	export DEMYX_CONFIG="${DEMYX_CONFIG:-/etc/demyx}"
+	export DEMYX_LOG="${DEMYX_LOG:-/var/log/demyx}"
+	export DEMYX_DOMAIN="${DEMYX_DOMAIN:-domain.tld}"
+	export DEMYX_BEDROCK="${DEMYX_BEDROCK:-false}"
+}
+
+DEMYX_CRON_LOG_FILE=
+
+demyx_cron_log_file() {
+	if [[ -n "${DEMYX_CRON_LOG_FILE}" ]]; then
+		printf '%s\n' "${DEMYX_CRON_LOG_FILE}"
+		return
+	fi
+
+	local log_dir="${DEMYX_LOG:-/var/log/demyx}"
+	local log_domain="${DEMYX_DOMAIN:-domain.tld}"
+
+	mkdir -p "${log_dir}" 2>/dev/null || true
+
+	DEMYX_CRON_LOG_FILE="${log_dir}/${log_domain}.cron.log"
+	printf '%s\n' "${DEMYX_CRON_LOG_FILE}"
+}
+
 demyx_cron() {
 	local DEMYX_CRON="${1:-}"
 
@@ -27,10 +53,12 @@ demyx_cron_acl() {
 #	Events.
 #
 demyx_cron_wp() {
-	local DEMYX_CRON_WP_PATH="$DEMYX"
+	local DEMYX_CRON_WP_PATH="${DEMYX:-/demyx}"
 	local DEMYX_CRON_WP_RANDOM=
+	local DEMYX_CRON_LOG_FILE_PATH=
+	DEMYX_CRON_LOG_FILE_PATH="$(demyx_cron_log_file)"
 	DEMYX_CRON_WP_RANDOM="$(shuf -i 1-30 -n 1)"
-	[[ "$DEMYX_BEDROCK" = true ]] && DEMYX_CRON_WP_PATH="$DEMYX"/web/wp
+	[[ "${DEMYX_BEDROCK:-false}" = true ]] && DEMYX_CRON_WP_PATH="${DEMYX:-/demyx}"/web/wp
 
 	# Sleep between 1 to 30 seconds before executing cron
 	#
@@ -41,10 +69,12 @@ demyx_cron_wp() {
 
 	{
 		echo "[$(date +%F-%T)] ======================================="
+		echo "[$(date +%F-%T)] path=${DEMYX_CRON_WP_PATH} bedrock=${DEMYX_BEDROCK:-false} executor=wp_cli"
 		wp --path="$DEMYX_CRON_WP_PATH" cron event run --due-now || true
-	} | tee -a "${DEMYX_LOG}/${DEMYX_DOMAIN}.cron.log"
+	} 2>&1 | tee -a "${DEMYX_CRON_LOG_FILE_PATH}"
 }
 #
 #	Init.
 #
+demyx_cron_env
 demyx_cron "$@"

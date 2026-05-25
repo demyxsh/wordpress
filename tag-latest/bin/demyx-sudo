@@ -27,11 +27,27 @@ demyx_sudo() {
 #
 demyx_sudo_cron() {
 	local DEMYX_SUDO_CRON=
+	local DEMYX_CRON_WP_INTERVAL_SAFE="${DEMYX_CRON_WP_INTERVAL:-*/5 * * * *}"
+	local DEMYX_CRON_DEMYX_SAFE="${DEMYX:-/demyx}"
+	local DEMYX_CRON_CONFIG_SAFE="${DEMYX_CONFIG:-/etc/demyx}"
+	local DEMYX_CRON_LOG_SAFE="${DEMYX_LOG:-/var/log/demyx}"
+	local DEMYX_CRON_DOMAIN_SAFE="${DEMYX_DOMAIN:-domain.tld}"
+	local DEMYX_CRON_BEDROCK_SAFE="${DEMYX_BEDROCK:-false}"
 	DEMYX_SUDO_CRON="$(pgrep crond || true)"
 
 	{
+		# Cron runs with a minimal environment; define what demyx-cron needs.
+		echo "SHELL=/bin/sh"
+		echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+		echo "DEMYX=${DEMYX_CRON_DEMYX_SAFE}"
+		echo "DEMYX_CONFIG=${DEMYX_CRON_CONFIG_SAFE}"
+		echo "DEMYX_LOG=${DEMYX_CRON_LOG_SAFE}"
+		echo "DEMYX_DOMAIN=${DEMYX_CRON_DOMAIN_SAFE}"
+		echo "DEMYX_BEDROCK=${DEMYX_CRON_BEDROCK_SAFE}"
+		echo
+
 		# WP cron
-		echo "${DEMYX_CRON_WP_INTERVAL} /usr/bin/sudo -E /usr/local/bin/demyx-cron wp"
+		echo "${DEMYX_CRON_WP_INTERVAL_SAFE} /usr/local/bin/demyx-cron wp"
 
 		# ACL
 		echo "0 0 * * * /usr/bin/sudo -E /usr/local/bin/demyx-cron acl"

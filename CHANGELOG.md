@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-05-25
+### Added
+- Added cron environment defaults in `tag-latest/bin/demyx-sudo` (`SHELL`, `PATH`, `DEMYX*`) to stabilize non-interactive cron execution.
+- Added `demyx_cron_env()` and log-file path fallback handling in `tag-latest/bin/demyx-cron`.
+### Changed
+- Updated `tag-latest` WordPress cron job to run as `demyx` without sudo root elevation.
+- Switched `tag-latest/bin/demyx-cron` WordPress execution to WP-CLI primary (`wp cron event run --due-now`) and removed `wget`/`wp-cron.php` trigger logic.
+- Updated cron logging to include stderr by default (`2>&1 | tee -a ...`) and include executor/path context in log lines.
+### Fixed
+- Fixed cron failures caused by missing cron environment variables under strict shell mode.
+- Fixed silent cron troubleshooting gaps by capturing WP-CLI stderr in cron logs.
+### Removed
+- Removed `wget` fallback and URL-based `wp-cron.php` execution path from `tag-latest/bin/demyx-cron`.
+### Security
+- Reduced privilege scope by avoiding root execution for the WordPress cron command.
+
 ## 2026-05-14
 ### Added
 - Added a cache purger script for the Super Page Cache plugin.
