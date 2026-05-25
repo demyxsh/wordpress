@@ -5,6 +5,7 @@
 - Added cron environment defaults in `tag-latest/bin/demyx-sudo` (`SHELL`, `PATH`, `DEMYX*`) to stabilize non-interactive cron execution.
 - Added `demyx_cron_env()` and log-file path fallback handling in `tag-latest/bin/demyx-cron`.
 ### Changed
+- Updated GitHub Actions Docker workflow to publish existing moving image tag(s) plus versioned tag(s) derived from `DEMYX_VERSION` from the `demyx` orchestrator.
 - Updated `tag-latest` WordPress cron job to run as `demyx` without sudo root elevation.
 - Switched `tag-latest/bin/demyx-cron` WordPress execution to WP-CLI primary (`wp cron event run --due-now`) and removed `wget`/`wp-cron.php` trigger logic.
 - Updated cron logging to include stderr by default (`2>&1 | tee -a ...`) and include executor/path context in log lines.
