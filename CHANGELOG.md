@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-05-27
+### Added
+- None.
+### Changed
+- Move `DEMYX_VERSION` to job-level `env` key set to `1.10.0` instead of resolving dynamically from remote `demyx` orchestrator via a workflow step.
+- Add `v1` and `v1-bedrock` moving tags to build and push steps in GitHub Actions workflow.
+- Pin demyx cross-repo images (`mariadb`, `nginx`) and self-image in test step `docker run` commands to `:${{ env.DEMYX_VERSION }}`.
+### Fixed
+- None.
+### Removed
+- None.
+### Security
+- None.
+
 ## 2026-05-25
 ### Added
 - Added cron environment defaults in `tag-latest/bin/demyx-sudo` (`SHELL`, `PATH`, `DEMYX*`) to stabilize non-interactive cron execution.
