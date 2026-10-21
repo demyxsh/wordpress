@@ -28,3 +28,30 @@ Join us on Discord for latest news, faster support, or just chill.
 <a href="https://demyx.sh/sponsor-buymeacoffee" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 Support this project by buying coffee (please).
+
+## PHP Security
+
+This update addresses [CVE-2026-109618](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w) and [CVE-2026-109619](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp) ([PHP advisory](https://www.php.net/archive/2026.php#2026-10-21-5)). The image uses Alpine 3.24.2, which provides PHP 8.4.27 and PHP 8.3.36. Both branches remain installed; `DEMYX_PHP` selects 8.4 (`8.4` or `84`) or 8.3 (`8.3` or `83`) and defaults to 8.4. Builds require these fixed package versions and fail if the APK indexes do not meet the minimums.
+
+The `latest`, versioned, and `v1` images and the Bedrock variant inherit the patch when rebuilt. Existing images and running workers are not patched by this repository change. With current Demyx, set `DEMYX_APP_PHP=8.4` for this image because new-site configuration defaults to PHP 8.5. Build `tag-latest` first with `--pull --no-cache`, tagging every image reference used by your Compose configuration. Set `WORDPRESS_VERSION` to the version referenced by Compose; a versioned deployment will not use a latest-only build. Then build Bedrock with `--no-cache` only so its `FROM demyx/wordpress` uses the freshly built local parent. Recreate containers after both builds:
+
+```sh
+WORDPRESS_VERSION=1.11.0
+docker build --pull --no-cache \
+  -t demyx/wordpress:latest \
+  -t "demyx/wordpress:${WORDPRESS_VERSION}" \
+  -t demyx/wordpress:v1 \
+  tag-latest
+docker build --no-cache \
+  -t demyx/wordpress:bedrock \
+  -t "demyx/wordpress:${WORDPRESS_VERSION}-bedrock" \
+  -t demyx/wordpress:v1-bedrock \
+  tag-bedrock
+docker compose up -d --force-recreate
+```
+
+The Bedrock build must resolve the freshly built `demyx/wordpress:latest` parent locally. These commands assume a builder using Docker's local image store; with the `docker-container` Buildx driver, `--load` alone does not guarantee that the child builder can see the new parent.
+
+Run the PHP security smoke test locally with `bash tests/php-security.sh demyx/wordpress:latest demyx/wordpress:bedrock`.
+
+The legacy `tag-cli` and `tag-7.4` definitions are not built or published by the current workflow and remain outside this update. Other environment variables, public tags and variants, entrypoint and command interfaces, port 9000, compose paths, the non-root `demyx` UID 1000, and volume assumptions remain unchanged.

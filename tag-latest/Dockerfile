@@ -1,4 +1,4 @@
-FROM alpine:3.22
+FROM alpine:3.24.2
 
 LABEL sh.demyx.image                    demyx/wordpress
 LABEL sh.demyx.maintainer               Demyx <info@demyx.sh>
@@ -64,17 +64,18 @@ RUN set -ex; \
     echo 'PS1="$(whoami)@\h:\w \$ "' > /root/.bashrc
 
 # Install PHP and friends
+# CVE-2026-109618 and CVE-2026-109619 require these fixed PHP package minimums.
 RUN set -ex; \
     apk add --no-cache \
     \
-    php"${DEMYX_PHP//./}" \
+    "php${DEMYX_PHP//./}>=8.4.27" \
     php"${DEMYX_PHP//./}"-bcmath \
     php"${DEMYX_PHP//./}"-ctype \
     php"${DEMYX_PHP//./}"-curl \
     php"${DEMYX_PHP//./}"-dom \
     php"${DEMYX_PHP//./}"-exif \
     php"${DEMYX_PHP//./}"-fileinfo \
-    php"${DEMYX_PHP//./}"-fpm \
+    "php${DEMYX_PHP//./}-fpm>=8.4.27" \
     php"${DEMYX_PHP//./}"-ftp \
     php"${DEMYX_PHP//./}"-gd \
     php"${DEMYX_PHP//./}"-iconv \
@@ -102,14 +103,14 @@ RUN set -ex; \
     php"${DEMYX_PHP//./}"-zip \
     php"${DEMYX_PHP//./}"-zlib \
     \
-    php83 \
+    "php83>=8.3.36" \
     php83-bcmath \
     php83-ctype \
     php83-curl \
     php83-dom \
     php83-exif \
     php83-fileinfo \
-    php83-fpm \
+    "php83-fpm>=8.3.36" \
     php83-ftp \
     php83-gd \
     php83-iconv \
@@ -135,7 +136,11 @@ RUN set -ex; \
     php83-xmlreader \
     php83-xmlwriter \
     php83-zip \
-    php83-zlib
+    php83-zlib; \
+    \
+    # Make default PHP available to build-time CLI tools
+    ln -sf /usr/bin/php"${DEMYX_PHP//./}" /usr/bin/php; \
+    ln -sf /usr/sbin/php-fpm"${DEMYX_PHP//./}" /usr/sbin/php-fpm
 
 # WordPress
 RUN set -ex; \
@@ -162,15 +167,12 @@ COPY --chown=demyx:demyx etc /etc/demyx
 
 # Finalize
 RUN set -ex; \
-    # Configure PHP8*
-    sed -i 's|^error_log = .*|error_log = /proc/self/fd/2|' /etc/php83/php-fpm.conf; \
-    sed -i 's|^error_log = .*|error_log = /proc/self/fd/2|' /etc/php84/php-fpm.conf; \
-    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php"${DEMYX_PHP//./}"/php-fpm.d/www.conf; \
-    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${DEMYX_PHP//./}"/php-fpm.d/demyx.ini; \
-    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${DEMYX_PHP//./}"/conf.d/demyx.ini; \
-    ln -sf "$DEMYX_CONFIG"/www.conf /etc/php84/php-fpm.d/www.conf; \
-    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php84/php-fpm.d/demyx.ini; \
-    ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php84/conf.d/demyx.ini; \
+    # Configure both PHP-FPM versions
+    for version in 83 84; do \
+        sed -i 's|^error_log = .*|error_log = /proc/self/fd/2|' /etc/php"${version}"/php-fpm.conf; \
+        ln -sf "$DEMYX_CONFIG"/www.conf /etc/php"${version}"/php-fpm.d/www.conf; \
+        ln -sf "$DEMYX_CONFIG"/demyx.ini /etc/php"${version}"/conf.d/demyx.ini; \
+    done; \
     \
     # Configure sudo
     echo "demyx ALL=(ALL) NOPASSWD:SETENV: /usr/local/bin/demyx-cron, /usr/local/bin/demyx-sudo" > /etc/sudoers.d/demyx; \

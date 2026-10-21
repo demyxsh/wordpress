@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-10-21
+### Added
+- Add a PHP CLI/FPM smoke gate for both supported branches.
+### Changed
+- Move `tag-latest` to Alpine 3.24.2 and require patched APK versions for PHP 8.4 and 8.3.
+### Fixed
+- Require PHP 8.4.27 or newer for the default branch and PHP 8.3.36 or newer for the fallback branch.
+- Wire both FPM pools/configs and provide the default PHP aliases needed by build-time WP-CLI and Bedrock Composer.
+### Removed
+- None.
+### Security
+- Address CVE-2026-109618 and CVE-2026-109619 with the patched PHP minimums above; builds fail closed if APK packages do not meet them.
+
 ## 2026-05-29
 ### Added
 - None.

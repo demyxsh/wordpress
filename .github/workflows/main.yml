@@ -28,11 +28,13 @@ jobs:
           echo "DEMYX_UPSTREAM_VERSION=$DEMYX_UPSTREAM_VERSION" >> "$GITHUB_ENV"
       - name: Build
         run: |
-          docker pull alpine
+          docker pull alpine:3.24.2
           docker pull demyx/nginx:${{ env.DEMYX_UPSTREAM_VERSION }}
           docker pull demyx/mariadb:${{ env.DEMYX_UPSTREAM_VERSION }}
           docker build -t demyx/${{ env.DEMYX_REPOSITORY }} -t demyx/${{ env.DEMYX_REPOSITORY }}:${{ env.DEMYX_VERSION }} -t demyx/${{ env.DEMYX_REPOSITORY }}:v1 tag-latest
           docker build -t demyx/${{ env.DEMYX_REPOSITORY }}:bedrock -t demyx/${{ env.DEMYX_REPOSITORY }}:${{ env.DEMYX_VERSION }}-bedrock -t demyx/${{ env.DEMYX_REPOSITORY }}:v1-bedrock tag-bedrock
+      - name: PHP Security
+        run: bash tests/php-security.sh demyx/${{ env.DEMYX_REPOSITORY }}:${{ env.DEMYX_VERSION }} demyx/${{ env.DEMYX_REPOSITORY }}:${{ env.DEMYX_VERSION }}-bedrock
       - name: Test
         id: test
         shell: 'script -q -e -c "bash {0}"'
