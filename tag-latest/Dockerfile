@@ -64,18 +64,18 @@ RUN set -ex; \
     echo 'PS1="$(whoami)@\h:\w \$ "' > /root/.bashrc
 
 # Install PHP and friends
-# CVE-2026-109618 and CVE-2026-109619 require these fixed PHP package minimums.
+# Require the fixed patch releases from the November 2026 PHP security update.
 RUN set -ex; \
     apk add --no-cache \
     \
-    "php${DEMYX_PHP//./}>=8.4.27" \
+    "php${DEMYX_PHP//./}>=8.4.28" \
     php"${DEMYX_PHP//./}"-bcmath \
     php"${DEMYX_PHP//./}"-ctype \
     php"${DEMYX_PHP//./}"-curl \
     php"${DEMYX_PHP//./}"-dom \
     php"${DEMYX_PHP//./}"-exif \
     php"${DEMYX_PHP//./}"-fileinfo \
-    "php${DEMYX_PHP//./}-fpm>=8.4.27" \
+    "php${DEMYX_PHP//./}-fpm>=8.4.28" \
     php"${DEMYX_PHP//./}"-ftp \
     php"${DEMYX_PHP//./}"-gd \
     php"${DEMYX_PHP//./}"-iconv \
@@ -103,14 +103,14 @@ RUN set -ex; \
     php"${DEMYX_PHP//./}"-zip \
     php"${DEMYX_PHP//./}"-zlib \
     \
-    "php83>=8.3.36" \
+    "php83>=8.3.37" \
     php83-bcmath \
     php83-ctype \
     php83-curl \
     php83-dom \
     php83-exif \
     php83-fileinfo \
-    "php83-fpm>=8.3.36" \
+    "php83-fpm>=8.3.37" \
     php83-ftp \
     php83-gd \
     php83-iconv \

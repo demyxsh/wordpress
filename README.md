@@ -31,7 +31,7 @@ Support this project by buying coffee (please).
 
 ## PHP Security
 
-This update addresses [CVE-2026-109618](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w) and [CVE-2026-109619](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp) ([PHP advisory](https://www.php.net/archive/2026.php#2026-10-21-5)). The image uses Alpine 3.24.2, which provides PHP 8.4.27 and PHP 8.3.36. Both branches remain installed; `DEMYX_PHP` selects 8.4 (`8.4` or `84`) or 8.3 (`8.3` or `83`) and defaults to 8.4. Builds require these fixed package versions and fail if the APK indexes do not meet the minimums.
+The [November 2026 PHP security releases](https://www.php.net/archive/2026.php#2026-11-19-3) fix CVE-2026-129289 and other vulnerabilities. Builds on Alpine 3.24.2 require PHP 8.4.28 and 8.3.37 or newer on their respective branches, for both CLI and FPM. Both branches remain installed; `DEMYX_PHP` selects 8.4 (`8.4` or `84`) or 8.3 (`8.3` or `83`) and defaults to 8.4.
 
 The `latest`, versioned, and `v1` images and the Bedrock variant inherit the patch when rebuilt. Existing images and running workers are not patched by this repository change. With current Demyx, set `DEMYX_APP_PHP=8.4` for this image because new-site configuration defaults to PHP 8.5. Build `tag-latest` first with `--pull --no-cache`, tagging every image reference used by your Compose configuration. Set `WORDPRESS_VERSION` to the version referenced by Compose; a versioned deployment will not use a latest-only build. Then build Bedrock with `--no-cache` only so its `FROM demyx/wordpress` uses the freshly built local parent. Recreate containers after both builds:
 

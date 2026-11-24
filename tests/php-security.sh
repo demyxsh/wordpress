@@ -118,7 +118,7 @@ done
 assert_executable /usr/bin/php /usr/sbin/php-fpm
 assert_link_target /usr/bin/php /usr/bin/php84
 assert_link_target /usr/sbin/php-fpm /usr/sbin/php-fpm84
-assert_php_branch /usr/bin/php /usr/sbin/php-fpm 4 8.4.27
+assert_php_branch /usr/bin/php /usr/sbin/php-fpm 4 8.4.28
 
 assert_link_target /etc/php83/php-fpm.d/www.conf /etc/demyx/www.conf
 assert_link_target /etc/php84/php-fpm.d/www.conf /etc/demyx/www.conf
@@ -135,12 +135,12 @@ for version in 8.4 8.3; do
         8.4)
             suffix=84
             minor=4
-            minimum=8.4.27
+            minimum=8.4.28
         ;;
         8.3)
             suffix=83
             minor=3
-            minimum=8.3.36
+            minimum=8.3.37
         ;;
     esac
 

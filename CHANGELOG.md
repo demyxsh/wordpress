@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-23
+### Added
+- None.
+### Changed
+- None.
+### Fixed
+- None.
+### Removed
+- None.
+### Security
+- Require PHP 8.4.28 and 8.3.37 or newer on their respective branches for CLI and FPM, addressing CVE-2026-129289 and the other November 2026 PHP security fixes.
+
 ## 2026-10-21
 ### Added
 - Add a PHP CLI/FPM smoke gate for both supported branches.
